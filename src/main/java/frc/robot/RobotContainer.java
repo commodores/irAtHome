@@ -11,6 +11,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -27,6 +28,7 @@ public class RobotContainer {
   public static final DriveTrain m_drivetrain = new DriveTrain();
   public static final Intake m_intake = new Intake();
   public static final Shooter m_shooter = new Shooter();
+  public static final Hopper m_hopper = new Hopper();
   
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 

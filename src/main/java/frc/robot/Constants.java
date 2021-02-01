@@ -3,7 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-
+import frc.robot.commands.*;
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -26,7 +26,7 @@ public final class Constants {
     public static final class ShooterConstants {
         public static final int kRightShooterPort = 5;
         public static final int kLeftShooterPort = 6;
-        public static final int kTopShooterPort = 7;
+        //public static final int kTopShooterPort = 7;
 
         public static final double shooterP = 0.0011;
         public static final double shooterI = 0;
@@ -41,10 +41,20 @@ public final class Constants {
         public static final int kLeftJoystickPort = 1;
         public static final int kRightJoystickPort = 2;
     }
+    
+    public static final class HopperConstants{
+        public static final int kHopperLeftPort = 7;
+        public static final int kHopperRightPort = 8;
+        public static final int kFeederPort = 9;
+    }
 
     public static final class IntakeConstants{
         public static final int kIntakePort = 5;
         public static final int kIntakeSolenoidPort = 1;
+    }
+
+    public static final class GainsConstants{
+        
     }
 
 
