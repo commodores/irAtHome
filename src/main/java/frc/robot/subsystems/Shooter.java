@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
@@ -15,11 +16,17 @@ public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
   private final WPI_TalonFX leftShooterMotor;
   private final WPI_TalonFX rightShooterMotor;
+
+  private final Servo leftServo;
+  private final Servo rightServo;
   
   public Shooter() {
 
     leftShooterMotor = new WPI_TalonFX(ShooterConstants.kLeftShooterPort);
     rightShooterMotor = new WPI_TalonFX(ShooterConstants.kRightShooterPort);
+
+    leftServo = new Servo(ShooterConstants.kLeftServo);
+    rightServo = new Servo(ShooterConstants.kRightServo);
     
     leftShooterMotor.configFactoryDefault();
     rightShooterMotor.configFactoryDefault();
@@ -46,6 +53,21 @@ public class Shooter extends SubsystemBase {
   public void stop() {
     leftShooterMotor.set(0);
     rightShooterMotor.set(0);
+  }
+
+  public void NiceShot() {
+    leftServo.setPosition(1);
+    rightServo.setPosition(1);
+  }
+
+  public void WhataShot(){
+    leftServo.setPosition(.75);
+    rightServo.setPosition(.75);
+  }
+
+  public void WhatShot(){
+    leftServo.setPosition(.25);
+    rightServo.setPosition(.25);
   }
 
   public double getAverageSpeed() {

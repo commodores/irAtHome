@@ -28,6 +28,10 @@ public final class Constants {
         public static final int kLeftShooterPort = 6;
         //public static final int kTopShooterPort = 7;
 
+        public static final int kLeftServo = 1;
+        public static final int kRightServo = 2;
+
+
         public static final double shooterP = 0.0011;
         public static final double shooterI = 0;
         public static final double shooterD = 4;
@@ -51,6 +55,10 @@ public final class Constants {
     public static final class IntakeConstants{
         public static final int kIntakePort = 5;
         public static final int kIntakeSolenoidPort = 1;
+    }
+    
+    public static final class CompressorConstant{
+        public static final int kCompressor = 0;
     }
 
     public static final class GainsConstants{

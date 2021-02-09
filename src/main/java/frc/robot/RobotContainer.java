@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -29,6 +30,7 @@ public class RobotContainer {
   public static final Intake m_intake = new Intake();
   public static final Shooter m_shooter = new Shooter();
   public static final Hopper m_hopper = new Hopper();
+  public static final Compressor m_compressor = new Compressor();
   
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
