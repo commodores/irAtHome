@@ -54,6 +54,8 @@ public final class Constants {
 
     public static final class IntakeConstants{
         public static final int kIntakePort = 5;
+        public static final int kLeftIntakePort = 10;
+        public static final int kRightIntakePort =11;
         public static final int kIntakeSolenoidPort = 1;
     }
     

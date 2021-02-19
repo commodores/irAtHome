@@ -35,6 +35,7 @@ public class Shooter extends SubsystemBase {
     rightShooterMotor.setNeutralMode(NeutralMode.Coast);
     
     rightShooterMotor.setInverted(true);
+    rightShooterMotor.follow(leftShooterMotor);
     
     leftShooterMotor.configOpenloopRamp(ShooterConstants.SHOOTER_VOLTAGE_RAMP_RATE);
     rightShooterMotor.configOpenloopRamp(ShooterConstants.SHOOTER_VOLTAGE_RAMP_RATE);
@@ -43,16 +44,15 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    leftShooterMotor.set(.1);
   }
 
   public void set(double speed) {
     leftShooterMotor.set(speed);
-    rightShooterMotor.set(speed);
   }
   
   public void stop() {
     leftShooterMotor.set(0);
-    rightShooterMotor.set(0);
   }
 
   public void NiceShot() {
