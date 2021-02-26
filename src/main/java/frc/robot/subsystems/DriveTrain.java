@@ -47,9 +47,9 @@ public class DriveTrain extends SubsystemBase {
     leftSlaveMotor.follow(leftMasterMotor);
     
   //Set Electronics To Brake Mode
-    rightMasterMotor.setNeutralMode(NeutralMode.Brake);
+    rightMasterMotor.setNeutralMode(NeutralMode.Coast);
 
-    leftMasterMotor.setNeutralMode(NeutralMode.Brake);
+    leftMasterMotor.setNeutralMode(NeutralMode.Coast);
   
   //Set Electronics To Follow Control Mode
     rightMasterMotor.set(ControlMode.PercentOutput, 0.0);

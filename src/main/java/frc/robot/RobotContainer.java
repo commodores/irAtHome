@@ -55,16 +55,39 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-/*
+
     new JoystickButton(m_driverController, Button.kA.value)
-      .whenPressed(m_intake.extendIntake());
+      //.whenPressed(m_intake.extendIntake())
+      .whenPressed(() -> m_intake.extendIntake());
 
     new JoystickButton(m_driverController, Button.kB.value)
-      .whenPressed(m_intake.retractIntake());
+      .whenPressed(() -> m_intake.retractIntake());
 
     new JoystickButton(m_driverController, Button.kBumperLeft.value)
-      .whenHeld(m_shooter.set(.5));
-*/
+      .whileHeld(() -> m_shooter.set(.35))
+      .whenReleased(()-> m_shooter.stop());
+
+    new JoystickButton(m_driverController, Button.kBumperRight.value)
+      .whileHeld(() -> m_shooter.set(.45))
+      .whenReleased(()-> m_shooter.stop());
+
+    new JoystickButton(m_driverController, Button.kX.value)
+      .whenPressed(() -> m_hopper.feedIn())
+      .whenReleased(() -> m_hopper.stopFeeder());
+
+    new JoystickButton(m_driverController, Button.kY.value)
+      .whenPressed(() -> m_hopper.feedOut())
+      .whenReleased(() -> m_hopper.stopFeeder());
+
+    new JoystickButton(m_driverController, Button.kBack.value)
+      .whenPressed(() -> m_hopper.hopperIn())
+      .whenReleased(() -> m_hopper.stopHopper());
+
+    new JoystickButton(m_driverController, Button.kStart.value)
+      .whenPressed(() -> m_hopper.hopperOut())
+      .whenReleased(() -> m_hopper.stopHopper());
+
+    
   }
 
   /**

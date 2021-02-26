@@ -33,7 +33,7 @@ public class Hopper extends SubsystemBase {
     rightHopper.setNeutralMode(NeutralMode.Coast);
     feederMotor.setNeutralMode(NeutralMode.Coast);
 
-    rightHopper.setInverted(true);
+    rightHopper.setInverted(false);
 
     leftHopper.follow(rightHopper);
 
@@ -45,11 +45,11 @@ public class Hopper extends SubsystemBase {
 
   //Commands For Hopper
   public void hopperIn(){
-    rightHopper.set(ControlMode.PercentOutput, 1);
+    rightHopper.set(ControlMode.PercentOutput, .2);
   }
 
   public void hopperOut(){
-    rightHopper.set(ControlMode.PercentOutput, -.6);
+    rightHopper.set(ControlMode.PercentOutput, -.2);
   }
 
   public void stopHopper(){
@@ -58,11 +58,11 @@ public class Hopper extends SubsystemBase {
  
   //Commands For Feeder
   public void feedIn(){
-    feederMotor.set(ControlMode.PercentOutput, .5);
+    feederMotor.set(ControlMode.PercentOutput, .2);
   }
 
   public void feedOut(){
-    feederMotor.set(ControlMode.PercentOutput, -.5);
+    feederMotor.set(ControlMode.PercentOutput, -.2);
   }
 
   public void stopFeeder(){
