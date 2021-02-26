@@ -7,14 +7,10 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
-import com.ctre.phoenix.motorcontrol.can.TalonFXPIDSetConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.sensors.CANCoder;
 
-import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.commands.*;
 import frc.robot.Constants.ShooterConstants;
 
 public class VelocityShooter extends SubsystemBase {
@@ -23,13 +19,12 @@ public class VelocityShooter extends SubsystemBase {
   private final WPI_TalonFX shooterFXRight = new WPI_TalonFX(ShooterConstants.kRightShooterPort);
 
   private final TalonFXSensorCollection leftShooterSensor;
-  private final TalonFXSensorCollection rightShooterSensor;
 
   //private CANCoder m_Coder;
 
   //hard set PID values
   double pValue = 0.06;
-  double iValue = 0.02;
+  double iValue = 0.001;
   double dValue = 0.8;
   double fValue = 0.05;
   int allowableError = 150;
@@ -50,20 +45,8 @@ public class VelocityShooter extends SubsystemBase {
 
     shooterFXRight.follow(shooterFXLeft);
 
-
-    rightShooterSensor = shooterFXRight.getSensorCollection();
-    shooterFXRight.configPeakOutputForward(1);
-    shooterFXRight.configPeakOutputReverse(0);
-    shooterFXRight.config_kP(0, pValue);
-    shooterFXRight.config_kI(0, iValue);
-    shooterFXRight.config_kD(0, dValue);
-    shooterFXRight.config_kF(0, fValue);
-    shooterFXRight.configAllowableClosedloopError(0, 0);
-    shooterFXRight.configMaxIntegralAccumulator(0, maxIntegralAccumulator);
-    shooterFXRight.configClosedLoopPeriod(0, PIDLoopRate);
-
-
     leftShooterSensor = shooterFXLeft.getSensorCollection();
+    
     shooterFXLeft.configPeakOutputForward(0);
     shooterFXLeft.configPeakOutputReverse(-1);
     shooterFXLeft.config_kP(0, pValue);
@@ -82,15 +65,28 @@ public class VelocityShooter extends SubsystemBase {
     // This method will be called once per scheduler run poop
   }
 
-  public void shoot(double rightSpeed, double leftSpeed){
-    shooterFXLeft.set(ControlMode.PercentOutput, leftSpeed);
-    shooterFXRight.set(ControlMode.PercentOutput, rightSpeed);
+  public void shoot(double speed){
+    shooterFXLeft.set(ControlMode.PercentOutput, speed);
+  }
+
+  public void velocityShoot(double velocity){
+    shooterFXLeft.set(ControlMode.Velocity, RPMtoFalconUnits(velocity));
   }
 
   public void displayEncoders(){
-    SmartDashboard.putNumber("Right Shooter Encoder", rightShooterSensor.getIntegratedSensorVelocity());
-    SmartDashboard.putNumber("Left Shooter Encoder", leftShooterSensor.getIntegratedSensorVelocity());
-    
+    SmartDashboard.putNumber("Shooter Encoder", leftShooterSensor.getIntegratedSensorVelocity());
+  }
+
+  public double getRPM() {
+    return falconUnitsToRPM(leftShooterSensor.getIntegratedSensorVelocity());
+  }
+
+  public double falconUnitsToRPM(double sensorUnits) {
+    return (sensorUnits / 2048.0) * 600.0;
+  }
+
+  public double RPMtoFalconUnits(double RPM) {
+    return (RPM / 600.0) * 2048.0;
   }
   
   

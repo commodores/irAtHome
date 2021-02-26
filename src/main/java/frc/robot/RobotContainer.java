@@ -4,17 +4,16 @@
 
 package frc.robot;
 
-import javax.annotation.meta.When;
-
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.AutoDrive;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
@@ -29,23 +28,25 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   public static final DriveTrain m_drivetrain = new DriveTrain();
   public static final Intake m_intake = new Intake();
   public static final Shooter m_shooter = new Shooter();
   public static final Hopper m_hopper = new Hopper();
   public static final Compressor m_compressor = new Compressor();
   
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-
   public static final XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
   public static final Joystick leftJoystick = new Joystick(OIConstants.kLeftJoystickPort);
   public static final Joystick rightJoystick = new Joystick(OIConstants.kRightJoystickPort);
 
+  private final SendableChooser<String> m_autoChooser = new SendableChooser<>();
+  
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
+    /* Initialize autonomous command chooser and display on the SmartDashboard. */
+    this.initializeAutoChooser();
   }
 
   /**
@@ -91,12 +92,39 @@ public class RobotContainer {
   }
 
   /**
+   * Set options for autonomous command chooser and display them for selection on the SmartDashboard.
+   * Using string chooser rather than command chooser because if using a command chooser, will instantiate
+   * all the autonomous commands. This may cause problems (e.g. initial trajectory position is from a
+   * different command's path).
+   */
+  private void initializeAutoChooser()
+  {
+    /* Add options (which autonomous commands can be selected) to chooser. */
+    m_autoChooser.setDefaultOption("Just Choot 'em'", "simpleShoot");
+    m_autoChooser.addOption("Drive forward off line", "forward1");
+    m_autoChooser.addOption("Drive reverse off line", "reverse1");
+    m_autoChooser.addOption("6 Balls is nuts!!!", "sixBall");
+    //m_autoChooser.addOption("Three Ball", "threeBall");
+    //m_autoChooser.addOption("Six Ball", "sixBall");
+
+    /* Display chooser on SmartDashboard for operators to select which autonomous command to run during the auto period. */
+    SmartDashboard.putData("Autonomous Command", m_autoChooser);
+  }  
+  
+  /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    switch (m_autoChooser.getSelected())
+    {
+      case "forward1":
+        return new AutoDrive(-1,.5)
+        .withTimeout(5);
+      default:
+        System.out.println("\nError selecting autonomous command:\nCommand selected: " + m_autoChooser.getSelected() + "\n");
+        return null;
+    }
   }
 }
