@@ -14,6 +14,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 
@@ -73,11 +74,11 @@ public class Intake extends SubsystemBase {
     leftIntake.set(0.0);
   }
 
-  public void extendIntake(){
+  public Command extendIntake(){
     intakeSolenoid.set(true);
   }
 
-  public void retractIntake(){
+  public Command retractIntake(){
     intakeSolenoid.set(false);
   }
 
