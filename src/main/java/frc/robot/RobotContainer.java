@@ -55,7 +55,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-
+/*
     new JoystickButton(m_driverController, Button.kA.value)
       .whenPressed(m_intake.extendIntake());
 
@@ -64,7 +64,7 @@ public class RobotContainer {
 
     new JoystickButton(m_driverController, Button.kBumperLeft.value)
       .whenHeld(m_shooter.set(.5));
-
+*/
   }
 
   /**

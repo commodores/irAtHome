@@ -74,11 +74,11 @@ public class Intake extends SubsystemBase {
     leftIntake.set(0.0);
   }
 
-  public Command extendIntake(){
+  public void extendIntake() {
     intakeSolenoid.set(true);
   }
 
-  public Command retractIntake(){
+  public void retractIntake() {
     intakeSolenoid.set(false);
   }
 
