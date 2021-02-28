@@ -36,8 +36,8 @@ public class Shooter extends SubsystemBase {
     rightShooterMotor.setInverted(true);
     rightShooterMotor.follow(leftShooterMotor);
     
-    leftShooterMotor.configOpenloopRamp(ShooterConstants.SHOOTER_VOLTAGE_RAMP_RATE);
-    rightShooterMotor.configOpenloopRamp(ShooterConstants.SHOOTER_VOLTAGE_RAMP_RATE);
+    leftShooterMotor.configOpenloopRamp(ShooterConstants.kShooterVoltageRampRate);
+    rightShooterMotor.configOpenloopRamp(ShooterConstants.kShooterVoltageRampRate);
   }
 
   @Override

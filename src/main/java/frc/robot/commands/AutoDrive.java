@@ -6,10 +6,13 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import frc.robot.Constants.DriveConstants;
 
 public class AutoDrive extends CommandBase {
   private double distance;
   private double speed;
+  private double currentHeading;
+
   /** Creates a new AutoDrive. */
   public AutoDrive(double getDistance, double getSpeed) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -20,12 +23,23 @@ public class AutoDrive extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    RobotContainer.m_drivetrain.zeroSensors();
+    currentHeading = RobotContainer.m_drivetrain.getDirection();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.m_drivetrain.tankDrive(-speed, -speed);
+    if(distance > 0){
+      //drive forward
+      double pTerm = DriveConstants.kDriveTrainGain * (currentHeading - RobotContainer.m_drivetrain.getDirection());
+      RobotContainer.m_drivetrain.tankDrive(speed - pTerm, speed + pTerm);
+    } else {
+      //drive reverse
+      double pTerm = DriveConstants.kDriveTrainGain * (currentHeading - RobotContainer.m_drivetrain.getDirection());
+      RobotContainer.m_drivetrain.tankDrive(-speed + pTerm, -speed - pTerm);
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -37,6 +51,12 @@ public class AutoDrive extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    if(distance > 0){
+      //forward
+      return RobotContainer.m_drivetrain.getAverageDistance() > distance;
+    } else {
+      //reverse
+      return RobotContainer.m_drivetrain.getAverageDistance() < distance;
+    }
   }
 }

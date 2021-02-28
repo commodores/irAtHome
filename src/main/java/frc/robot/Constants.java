@@ -3,6 +3,8 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
+
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -20,6 +22,15 @@ public final class Constants {
         public static final int kRightMasterPort = 2;
         public static final int kRightSlave0Port = 1;
 
+        public static final int kPigeonPort = 10;
+
+        public static final int kEncoderCPR = 2048; //https://docs.ctre-phoenix.com/en/latest/ch14_MCSensor.html
+        public static final double kWheelDiameterMeters = 0.10; //6 inches
+        public static final double kGearReduction = 7;
+        public static final double kEncoderDistancePerPulse = ((kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR) / kGearReduction; 
+        public static final double kWheelDistancePerPulse = kEncoderDistancePerPulse/ kGearReduction; //DISTANCE PER PULSE OF WHEEL= (OUTER CIRCUMFERENCE OF WHEEL)/(ENCODER CPR*GEAR REDUCTION)
+        public static final double kDriveTrainGain = .015;
+
     }
 
     public static final class ShooterConstants {
@@ -31,12 +42,15 @@ public final class Constants {
         public static final int kRightServo = 2;
 
 
-        public static final double shooterP = 0.0011;
-        public static final double shooterI = 0;
-        public static final double shooterD = 4;
-        public static final double shooterF = 0.00017;
-        public static final double MAX_RPM = 6200;
-        public static final double SHOOTER_VOLTAGE_RAMP_RATE = .2;
+        public static final double kShooterP = 0.0011;
+        public static final double kShooterI = 0;
+        public static final double kShooterD = 4;
+        public static final double kShooterF = 0.00017;
+        public static final double kShooterVoltageRampRate = .2;
+
+        public static final int kAllowableError = 150;
+        public static final int kPIDLoopRate = 10; //In ms
+        public static final int kMaxIntegralAccumulator = 1000;
     }
 
     public static final class OIConstants{

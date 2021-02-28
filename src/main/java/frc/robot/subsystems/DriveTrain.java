@@ -9,8 +9,9 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-
+import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 public class DriveTrain extends SubsystemBase {
@@ -24,6 +25,8 @@ public class DriveTrain extends SubsystemBase {
 
   private final DifferentialDrive m_drive;
 
+  private PigeonIMU pigeon;
+
 
   public DriveTrain() {
 
@@ -33,6 +36,8 @@ public class DriveTrain extends SubsystemBase {
 
     leftMasterMotor = new WPI_TalonFX(DriveConstants.kLeftMasterPort);
     leftSlaveMotor = new WPI_TalonFX(DriveConstants.kLeftSlave0Port);
+
+    pigeon = new PigeonIMU(DriveConstants.kPigeonPort);
 
   //Set Electronics To Default
     rightMasterMotor.configFactoryDefault();
@@ -60,7 +65,10 @@ public class DriveTrain extends SubsystemBase {
     setDefaultCommand(new DriveManual(this));
   
   // Finalizing DriveTrain
-     m_drive = new DifferentialDrive(leftMasterMotor, rightMasterMotor);
+    leftMasterMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+    rightMasterMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+    
+    m_drive = new DifferentialDrive(leftMasterMotor, rightMasterMotor);
   }
 
   
@@ -83,6 +91,46 @@ public class DriveTrain extends SubsystemBase {
   public void curvatureDrive(double speed, double rotation, boolean quickturn){
     m_drive.curvatureDrive(speed, rotation, quickturn);
   }
+
+  public void resetEncoders() {
+    leftMasterMotor.setSelectedSensorPosition(0);
+    rightMasterMotor.setSelectedSensorPosition(0);
+  }
+
+  public void resetDirection() {
+    pigeon.setFusedHeading(0);
+  }
+
+  public void zeroSensors() {
+    resetEncoders();
+    resetDirection();
+  }
+
+  public double getDirection() {
+    return Math.IEEEremainder(pigeon.getFusedHeading(), 360);
+  }
+
+  public double getLeftDistance() {
+    return leftMasterMotor.getSelectedSensorPosition()*DriveConstants.kWheelDistancePerPulse;
+  }
+
+  public double getRightDistance() {
+    return rightMasterMotor.getSelectedSensorPosition()*DriveConstants.kWheelDistancePerPulse;
+  }
+
+  public double getAverageDistance() {
+    return (getLeftDistance() + getRightDistance()) / 2;
+  }
+
+  public double getLeftSpeed() {
+    return leftMasterMotor.getSelectedSensorVelocity();
+  }
+
+  public double getRightSpeed() {
+    return rightMasterMotor.getSelectedSensorVelocity();
+  }
+
+  
 
 
 }
