@@ -38,8 +38,8 @@ public final class Constants {
         public static final int kLeftShooterPort = 6;
         //public static final int kTopShooterPort = 7;
 
-        public static final int kLeftServo = 1;
-        public static final int kRightServo = 2;
+        public static final int kLeftServo = 0;
+        public static final int kRightServo = 1;
 
 
         public static final double kShooterP = 0.0011;
