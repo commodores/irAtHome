@@ -42,9 +42,9 @@ public final class Constants {
         public static final int kRightServo = 1;
 
 
-        public static final double kShooterP = 0.0011;
-        public static final double kShooterI = 0;
-        public static final double kShooterD = 4;
+        public static final double kShooterP = 0.0001;
+        public static final double kShooterI = 0.0;
+        public static final double kShooterD = 0.0;
         public static final double kShooterF = 0.00017;
         public static final double kShooterVoltageRampRate = .2;
 
