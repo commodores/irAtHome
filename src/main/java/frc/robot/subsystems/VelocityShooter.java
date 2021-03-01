@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
@@ -19,9 +20,15 @@ public class VelocityShooter extends SubsystemBase {
   private final WPI_TalonFX shooterFXRight = new WPI_TalonFX(ShooterConstants.kRightShooterPort);
 
   private final TalonFXSensorCollection leftShooterSensor;
+
+  private final Servo leftServo;
+  private final Servo rightServo;
  
 
   public VelocityShooter() {
+
+    leftServo = new Servo(ShooterConstants.kLeftServo);
+    rightServo = new Servo(ShooterConstants.kRightServo);
 
     shooterFXLeft.configFactoryDefault();
     shooterFXRight.configFactoryDefault();
@@ -80,6 +87,21 @@ public class VelocityShooter extends SubsystemBase {
 
   public double RPMtoFalconUnits(double RPM) {
     return (RPM / 600.0) * 2048.0;
+  }
+
+  public void NiceShot() {
+    leftServo.setPosition(1);
+    rightServo.setPosition(1);
+  }
+
+  public void WhataShot(){
+    leftServo.setPosition(.75);
+    rightServo.setPosition(.75);
+  }
+
+  public void WhatShot(){
+    leftServo.setPosition(.25);
+    rightServo.setPosition(.25);
   }
   
   
