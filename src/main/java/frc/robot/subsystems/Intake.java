@@ -24,52 +24,42 @@ public class Intake extends SubsystemBase {
 
   
 
-  private final WPI_TalonSRX intakeMotor;
   private final Solenoid intakeSolenoid;
 
   public Intake() {
 
-    intakeMotor = new WPI_TalonSRX(IntakeConstants.kIntakePort);
-
     intakeSolenoid = new Solenoid(IntakeConstants.kIntakeSolenoidPort);
 
-
-    intakeMotor.configFactoryDefault();
     leftIntake.restoreFactoryDefaults();
     rightIntake.restoreFactoryDefaults();
 
-    leftIntake.setOpenLoopRampRate(1.0);
-    rightIntake.setOpenLoopRampRate(1.0);
+    //leftIntake.setOpenLoopRampRate(1.0);
+    //rightIntake.setOpenLoopRampRate(1.0);
 
     leftIntake.setIdleMode(IdleMode.kCoast);
     rightIntake.setIdleMode(IdleMode.kCoast);
 
-    leftIntake.setInverted(true);
+    leftIntake.setInverted(false);
 
-    intakeMotor.setNeutralMode(NeutralMode.Coast);
-
-    intakeMotor.set(ControlMode.PercentOutput, 0.0);
     
-    rightIntake.follow(leftIntake);
+    //rightIntake.follow(leftIntake);
   
 
   }
 
-  public void BallIn(){
-    intakeMotor.set(ControlMode.PercentOutput, -1);
-    leftIntake.set(-1);
-    //rightIntake.set(-1);
+  public void BallOut(){
+    leftIntake.set(-.5);
+    rightIntake.set(.5);
   }
 
-  public void BallOut(){
-    intakeMotor.set(ControlMode.PercentOutput, .6);
-    leftIntake.set(.6);
-    //rightIntake.set(.6);
+  public void BallIn(){
+    leftIntake.set(.8);
+    rightIntake.set(-.8);
   }
 
   public void stopIntake(){
-    intakeMotor.set(ControlMode.PercentOutput, 0.0);
     leftIntake.set(0.0);
+    rightIntake.set(0.0);
   }
 
   public void extendIntake() {

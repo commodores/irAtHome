@@ -45,6 +45,10 @@ public class DriveTrain extends SubsystemBase {
 
     leftMasterMotor.configFactoryDefault();
     leftSlaveMotor.configFactoryDefault();
+  //Set Electronics To Open Ramp Rate
+    leftMasterMotor.configOpenloopRamp(1.0);
+
+    rightMasterMotor.configOpenloopRamp(1.0);
 
   //Set Electronics To Follow Mode
     rightSlaveMotor.follow(rightMasterMotor);

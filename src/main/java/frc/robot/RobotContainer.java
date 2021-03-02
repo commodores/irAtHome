@@ -69,7 +69,7 @@ public class RobotContainer {
       .whenReleased(()-> m_shooter.stop());
 
     new JoystickButton(m_driverController, Button.kBumperRight.value)
-      .whileHeld(() -> m_shooter.set(.45))
+      .whileHeld(() -> m_shooter.set(.5))
       .whenReleased(()-> m_shooter.stop());
 
     new JoystickButton(m_driverController, Button.kX.value)
@@ -87,6 +87,14 @@ public class RobotContainer {
     new JoystickButton(m_driverController, Button.kStart.value)
       .whenPressed(() -> m_hopper.hopperOut())
       .whenReleased(() -> m_hopper.stopHopper());
+
+    new JoystickButton(rightJoystick, 3)
+      .whileHeld(() -> m_intake.BallIn())
+      .whenReleased(() -> m_intake.stopIntake());
+
+    new JoystickButton(rightJoystick, 2)
+      .whileHeld(() -> m_intake.BallOut())
+      .whenReleased(() -> m_intake.stopIntake());
 
     
   }
