@@ -17,6 +17,7 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.VelocityShooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -31,6 +32,7 @@ public class RobotContainer {
   public static final DriveTrain m_drivetrain = new DriveTrain();
   public static final Intake m_intake = new Intake();
   public static final Shooter m_shooter = new Shooter();
+  //public static final VelocityShooter m_chooter = new VelocityShooter();
   public static final Hopper m_hopper = new Hopper();
   public static final Compressor m_compressor = new Compressor();
   
@@ -68,9 +70,15 @@ public class RobotContainer {
       .whileHeld(() -> m_shooter.set(.35))
       .whenReleased(()-> m_shooter.stop());
 
+      //.whileHeld(() -> m_chooter.velocityShoot(1500))
+      //.whenReleased(() -> m_chooter.velocityShoot(0.0));
+
     new JoystickButton(m_driverController, Button.kBumperRight.value)
-      .whileHeld(() -> m_shooter.set(.5))
+      .whileHeld(() -> m_shooter.set(.45))
       .whenReleased(()-> m_shooter.stop());
+
+      //.whileHeld(() -> m_chooter.velocityShoot(3000))
+      //.whenReleased(() -> m_chooter.velocityShoot(0.0));
 
     new JoystickButton(m_driverController, Button.kX.value)
       .whenPressed(() -> m_hopper.feedIn())
@@ -96,7 +104,14 @@ public class RobotContainer {
       .whileHeld(() -> m_intake.BallOut())
       .whenReleased(() -> m_intake.stopIntake());
 
-    
+    new JoystickButton(rightJoystick, 9)
+      .whenPressed(()-> m_shooter.UnderGoal());
+
+    new JoystickButton(rightJoystick, 7)
+      .whenPressed(()-> m_shooter.LongShot());
+
+    new JoystickButton(rightJoystick, 8)
+      .whenPressed(() -> m_shooter.whiteLineExtend());
   }
 
   /**

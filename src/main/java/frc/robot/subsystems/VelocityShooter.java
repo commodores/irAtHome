@@ -89,19 +89,24 @@ public class VelocityShooter extends SubsystemBase {
     return (RPM / 600.0) * 2048.0;
   }
 
-  public void NiceShot() {
-    leftServo.setPosition(1);
-    rightServo.setPosition(1);
+  public void FullRetract() {
+    leftServo.setPosition(.29);
+    rightServo.setPosition(.29);
   }
 
-  public void WhataShot(){
-    leftServo.setPosition(.75);
-    rightServo.setPosition(.75);
+  public void HalfExtend(){
+    leftServo.setPosition(.6);
+    rightServo.setPosition(.6);
   }
 
-  public void WhatShot(){
-    leftServo.setPosition(.25);
-    rightServo.setPosition(.25);
+  public void whiteLineExtend(){
+    leftServo.setPosition(.55);
+    rightServo.setPosition(.55);
+  }
+
+  public void FullExtend(){
+    leftServo.setPosition(.7);
+    rightServo.setPosition(.7);
   }
   
   

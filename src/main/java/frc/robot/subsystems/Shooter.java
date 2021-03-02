@@ -54,19 +54,19 @@ public class Shooter extends SubsystemBase {
     leftShooterMotor.set(0);
   }
 
-  public void NiceShot() {
-    leftServo.setPosition(1);
-    rightServo.setPosition(1);
+  public void UnderGoal() {
+    leftServo.setPosition(.29);
+    rightServo.setPosition(.29);
   }
 
-  public void WhataShot(){
-    leftServo.setPosition(.75);
-    rightServo.setPosition(.75);
+  public void LongShot(){
+    leftServo.setPosition(.6);
+    rightServo.setPosition(.6);
   }
 
-  public void WhatShot(){
-    leftServo.setPosition(.25);
-    rightServo.setPosition(.25);
+  public void whiteLineExtend(){
+    leftServo.setPosition(.55);
+    rightServo.setPosition(.55);
   }
 
   public double getAverageSpeed() {

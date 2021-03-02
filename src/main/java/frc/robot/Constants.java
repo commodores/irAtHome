@@ -22,7 +22,7 @@ public final class Constants {
         public static final int kRightMasterPort = 2;
         public static final int kRightSlave0Port = 1;
 
-        public static final int kPigeonPort = 10;
+        public static final int kPigeonPort = 7;
 
         public static final int kEncoderCPR = 2048; //https://docs.ctre-phoenix.com/en/latest/ch14_MCSensor.html
         public static final double kWheelDiameterMeters = 0.10; //6 inches
