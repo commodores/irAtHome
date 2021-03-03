@@ -1,105 +1,135 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.*;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
-import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 
+/*
+Subsystem for controlling to robot's shooter
+ */
+
 public class VelocityShooter extends SubsystemBase {
-  /** Creates a new VelocityShooter. */
-  private final WPI_TalonFX leftShooterMotor;
-  private final WPI_TalonFX rightShooterMotor;
-
-  private final Servo leftServo;
-  private final Servo rightServo; 
-
-  public VelocityShooter() {
-
-    leftShooterMotor = new WPI_TalonFX(ShooterConstants.kLeftShooterPort);
-    rightShooterMotor = new WPI_TalonFX(ShooterConstants.kRightShooterPort);
-
-    leftServo = new Servo(ShooterConstants.kLeftServo);
-    rightServo = new Servo(ShooterConstants.kRightServo);
     
-    leftShooterMotor.configFactoryDefault();
-    rightShooterMotor.configFactoryDefault();
-   
-    leftShooterMotor.setNeutralMode(NeutralMode.Coast);
-    rightShooterMotor.setNeutralMode(NeutralMode.Coast);
+    // PID loop constants
+    private double kF = 0.0523;  // 0.054      //  Gree: 0.0475;
+    private double kP = 0.6;      //  0.4       //  0.00047
+    private double kI = 0.0;                    //  0.0000287
+    private double kD = 0.0;
+
+    private double kS = 0.155;
+    private double kV = 0.111;
+    private double kA = 0.02;
+
+    public int kI_Zone = 100;
+    public int kAllowableError = 50;
+
+    private TalonFX[] outtakeMotors = {
+            new TalonFX(ShooterConstants.kLeftShooterPort),
+            new TalonFX(ShooterConstants.kRightShooterPort),
+    };
+
+    public double rpmOutput;
+    public double rpmTolerance = 50.0;
+
+    private double setpoint;
+
+
+//    public PIDController flywheelController = new PIDController(kP, kI, kD);
+//    public SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(kS, kV, kA);
+
+    public VelocityShooter() {
+        // Setup shooter motors (Falcons)
+        for (TalonFX outtakeMotor : outtakeMotors) {
+            outtakeMotor.configFactoryDefault();
+            outtakeMotor.setNeutralMode(NeutralMode.Coast);
+            outtakeMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0));
+            outtakeMotor.configVoltageCompSaturation(10);
+            outtakeMotor.enableVoltageCompensation(true);
+        }
+        outtakeMotors[0].setInverted(true);
+        outtakeMotors[1].follow(outtakeMotors[0], FollowerType.PercentOutput);
+
+        outtakeMotors[0].config_kF(0, kF);
+        outtakeMotors[0].config_kP(0, kP);
+        outtakeMotors[0].config_kI(0, kI);
+        outtakeMotors[0].config_IntegralZone(0, kI_Zone);
+        outtakeMotors[0].config_kD(0, kD);
+        outtakeMotors[0].configAllowableClosedloopError(0, kAllowableError);
+        outtakeMotors[0].configClosedloopRamp(0.2);
+        outtakeMotors[1].configClosedloopRamp(0);
+        outtakeMotors[1].configOpenloopRamp(0);
+    }
+
+    public double getMotorInputCurrent(int motorIndex) {
+        return outtakeMotors[motorIndex].getSupplyCurrent();
+    }
+
+    public void setPower(double output) {
+        outtakeMotors[0].set(ControlMode.PercentOutput, output);
+    }
+
+    public void setRPM(double setpoint) {
+        this.setpoint = setpoint;
+    }
+
+    public double getSetpoint() {
+        return setpoint;
+    }
+
+    private void updateRPMSetpoint() {
+        if (setpoint >= 0)
+            outtakeMotors[0].set(ControlMode.Velocity, RPMtoFalconUnits(setpoint));
+        else
+            setPower(0);
+    }
+
+    public void setTestRPM() {
+        outtakeMotors[0].set(ControlMode.Velocity, RPMtoFalconUnits(rpmOutput));
+    }
+
+    public double getTestRPM() {
+        return rpmOutput;
+    }
+
+    public double getRPMTolerance() {
+        return rpmTolerance;
+    }
+
+    public boolean encoderAtSetpoint(int motorIndex) {
+        return (Math.abs(outtakeMotors[motorIndex].getClosedLoopError()) < 100.0);
+    }
+
+    public double getRPM(int motorIndex) {
+        return falconUnitsToRPM(outtakeMotors[motorIndex].getSelectedSensorVelocity());
+    }
+
+    public double falconUnitsToRPM(double sensorUnits) {
+        return (sensorUnits / 2048.0) * 600.0;
+    }
+
+    public double RPMtoFalconUnits(double RPM) {
+        return (RPM / 600.0) * 2048.0;
+    }
     
-    leftShooterMotor.setInverted(false);
-    rightShooterMotor.setInverted(true);
-    rightShooterMotor.follow(leftShooterMotor);
+    @Override
+    public void periodic() {
+        updateRPMSetpoint();
+    }
 
-    leftShooterMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-
-    leftShooterMotor.setSensorPhase(false);
-    
-    leftShooterMotor.configPeakOutputForward(0);
-    leftShooterMotor.configPeakOutputReverse(-1);
-    leftShooterMotor.config_kP(0, ShooterConstants.kShooterP);
-    leftShooterMotor.config_kI(0, ShooterConstants.kShooterI);
-    leftShooterMotor.config_kD(0, ShooterConstants.kShooterD);
-    leftShooterMotor.config_kF(0, ShooterConstants.kShooterF);
-    leftShooterMotor.configAllowableClosedloopError(0, ShooterConstants.kAllowableError);
-    leftShooterMotor.configMaxIntegralAccumulator(0, ShooterConstants.kMaxIntegralAccumulator);
-    leftShooterMotor.configClosedLoopPeriod(0, ShooterConstants.kPIDLoopRate);
-  
-
-  }
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run poop
-  }
-
-  public void shoot(double speed){
-    leftShooterMotor.set(ControlMode.PercentOutput, speed);
-  }
-
-  public void velocityShoot(double velocity){
-    leftShooterMotor.set(ControlMode.Velocity, RPMtoFalconUnits(velocity));
-  }
-
-  public void displayEncoders(){
-    SmartDashboard.putNumber("Shooter Encoder", leftShooterMotor.getSelectedSensorVelocity());
-    SmartDashboard.putNumber("Shooter RPM", falconUnitsToRPM(leftShooterMotor.getSelectedSensorVelocity()));
-  }
-
-  public double getRPM() {
-    return falconUnitsToRPM(leftShooterMotor.getSelectedSensorVelocity());
-  }
-
-  public double falconUnitsToRPM(double sensorUnits) {
-    return (sensorUnits / 2048.0) * 600.0;
-  }
-
-  public double RPMtoFalconUnits(double RPM) {
-    return (RPM / 600.0) * 2048.0;
-  }
-
-  public void UnderGoal() {
-    leftServo.setPosition(.29);
-    rightServo.setPosition(.29);
-  }
-
-  public void whiteLineExtend(){
-    leftServo.setPosition(.55);
-    rightServo.setPosition(.55);
-  }
-
-  public void LongShot(){
-    leftServo.setPosition(.6);
-    rightServo.setPosition(.6);
-  }
-  
 }
