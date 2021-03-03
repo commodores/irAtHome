@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -21,6 +22,7 @@ public class VelocityShooter extends SubsystemBase {
 
   private final Servo leftServo;
   private final Servo rightServo;
+private ErrorCode configSelectedFeedbackSensor;
  
 
   public VelocityShooter() {
@@ -41,7 +43,7 @@ public class VelocityShooter extends SubsystemBase {
     rightShooterMotor.setInverted(true);
     rightShooterMotor.follow(leftShooterMotor);
 
-    leftShooterMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+    configSelectedFeedbackSensor = leftShooterMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 
     leftShooterMotor.setSensorPhase(false);
     
