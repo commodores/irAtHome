@@ -130,6 +130,8 @@ public class VelocityShooter extends SubsystemBase {
     @Override
     public void periodic() {
         updateRPMSetpoint();
+        SmartDashboard.putNumber("Shooter Encoder", outtakeMotors[0].getSelectedSensorVelocity());
+        SmartDashboard.putNumber("Shooter RPM", falconUnitsToRPM(outtakeMotors[0].getSelectedSensorVelocity()));
     }
 
 }
