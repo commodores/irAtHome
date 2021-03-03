@@ -70,14 +70,14 @@ public class RobotContainer {
       //.whenReleased(()-> m_shooter.stop());
 
       .whenPressed(() -> m_shooter.setRPM(1000))
-      .whenReleased(() -> m_shooter.setRPM(0));
+      .whenReleased(() -> m_shooter.setRPM(-1));
 
     new JoystickButton(m_driverController, Button.kBumperRight.value)
       //.whileHeld(() -> m_shooter.set(.45))
       //.whenReleased(()-> m_shooter.stop());
 
       .whileHeld(() -> m_shooter.setRPM(2000))
-      .whenReleased(() -> m_shooter.setRPM(0));
+      .whenReleased(() -> m_shooter.setRPM(-1));
 
     new JoystickButton(m_driverController, Button.kX.value)
       .whenPressed(() -> m_hopper.feedIn())

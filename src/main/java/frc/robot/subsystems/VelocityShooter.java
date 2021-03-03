@@ -10,12 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
@@ -27,9 +22,9 @@ Subsystem for controlling to robot's shooter
 public class VelocityShooter extends SubsystemBase {
     
     // PID loop constants
-    private double kF = 0.0523;  // 0.054      //  Gree: 0.0475;
-    private double kP = 0.6;      //  0.4       //  0.00047
-    private double kI = 0.0;                    //  0.0000287
+    private double kF = 0.0665;  // 0.054      //  Gree: 0.0475;
+    private double kP = 0.09;      //  0.4       //  0.00047
+    private double kI = 0.001;                    //  0.0000287
     private double kD = 0.0;
 
     private double kS = 0.155;
@@ -44,6 +39,9 @@ public class VelocityShooter extends SubsystemBase {
             new TalonFX(ShooterConstants.kRightShooterPort),
     };
 
+    private final Servo leftServo;
+    private final Servo rightServo;
+
     public double rpmOutput;
     public double rpmTolerance = 50.0;
 
@@ -54,6 +52,10 @@ public class VelocityShooter extends SubsystemBase {
 //    public SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(kS, kV, kA);
 
     public VelocityShooter() {
+
+        leftServo = new Servo(ShooterConstants.kLeftServo);
+        rightServo = new Servo(ShooterConstants.kRightServo);
+
         // Setup shooter motors (Falcons)
         for (TalonFX outtakeMotor : outtakeMotors) {
             outtakeMotor.configFactoryDefault();
@@ -62,7 +64,8 @@ public class VelocityShooter extends SubsystemBase {
             outtakeMotor.configVoltageCompSaturation(10);
             outtakeMotor.enableVoltageCompensation(true);
         }
-        outtakeMotors[0].setInverted(true);
+        outtakeMotors[0].setInverted(false);
+        outtakeMotors[1].setInverted(true);
         outtakeMotors[1].follow(outtakeMotors[0], FollowerType.PercentOutput);
 
         outtakeMotors[0].config_kF(0, kF);
@@ -133,5 +136,20 @@ public class VelocityShooter extends SubsystemBase {
         SmartDashboard.putNumber("Shooter Encoder", outtakeMotors[0].getSelectedSensorVelocity());
         SmartDashboard.putNumber("Shooter RPM", falconUnitsToRPM(outtakeMotors[0].getSelectedSensorVelocity()));
     }
+
+    public void UnderGoal() {
+        leftServo.setPosition(.29);
+        rightServo.setPosition(.29);
+      }
+    
+      public void whiteLineExtend(){
+        leftServo.setPosition(.55);
+        rightServo.setPosition(.55);
+      }
+    
+      public void LongShot(){
+        leftServo.setPosition(.6);
+        rightServo.setPosition(.6);
+      }
 
 }
