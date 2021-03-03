@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
@@ -39,6 +40,8 @@ public class VelocityShooter extends SubsystemBase {
     leftShooterMotor.setInverted(false);
     rightShooterMotor.setInverted(true);
     rightShooterMotor.follow(leftShooterMotor);
+
+    leftShooterMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 
     leftShooterMotor.setSensorPhase(false);
     
