@@ -43,7 +43,7 @@ public class Intake extends SubsystemBase {
 
   public void BallIn(){
     leftIntake.set(.8);
-    rightIntake.set(-.8);
+    rightIntake.set(-.9);
   }
 
   public void stopIntake(){
