@@ -21,9 +21,7 @@ public class VelocityShooter extends SubsystemBase {
   private final WPI_TalonFX rightShooterMotor;
 
   private final Servo leftServo;
-  private final Servo rightServo;
-private ErrorCode configSelectedFeedbackSensor;
- 
+  private final Servo rightServo; 
 
   public VelocityShooter() {
 
@@ -43,7 +41,7 @@ private ErrorCode configSelectedFeedbackSensor;
     rightShooterMotor.setInverted(true);
     rightShooterMotor.follow(leftShooterMotor);
 
-    configSelectedFeedbackSensor = leftShooterMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+    leftShooterMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 
     leftShooterMotor.setSensorPhase(false);
     
