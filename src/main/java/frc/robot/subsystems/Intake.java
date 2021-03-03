@@ -4,9 +4,6 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -27,24 +24,16 @@ public class Intake extends SubsystemBase {
   private final Solenoid intakeSolenoid;
 
   public Intake() {
-
+    
     intakeSolenoid = new Solenoid(IntakeConstants.kIntakeSolenoidPort);
 
     leftIntake.restoreFactoryDefaults();
     rightIntake.restoreFactoryDefaults();
 
-    //leftIntake.setOpenLoopRampRate(1.0);
-    //rightIntake.setOpenLoopRampRate(1.0);
-
     leftIntake.setIdleMode(IdleMode.kCoast);
     rightIntake.setIdleMode(IdleMode.kCoast);
 
     leftIntake.setInverted(false);
-
-    
-    //rightIntake.follow(leftIntake);
-  
-
   }
 
   public void BallOut(){
