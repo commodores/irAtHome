@@ -24,7 +24,7 @@ public class VelocityShooter extends SubsystemBase {
     // PID loop constants
     private double kF = 0.0665;  // 0.054      //  Gree: 0.0475;
     private double kP = 0.09;      //  0.4       //  0.00047
-    private double kI = 0.001;                    //  0.0000287
+    private double kI = 0.0;                    //  0.0000287
     private double kD = 0.0;
 
     private double kS = 0.155;
