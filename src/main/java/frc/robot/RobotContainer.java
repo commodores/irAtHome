@@ -31,8 +31,8 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public static final DriveTrain m_drivetrain = new DriveTrain();
   public static final Intake m_intake = new Intake();
-  public static final Shooter m_shooter = new Shooter();
-  //public static final VelocityShooter m_chooter = new VelocityShooter();
+  //public static final Shooter m_shooter = new Shooter();
+  public static final VelocityShooter m_shooter = new VelocityShooter();
   public static final Hopper m_hopper = new Hopper();
   public static final Compressor m_compressor = new Compressor();
   
@@ -60,25 +60,24 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     new JoystickButton(m_driverController, Button.kA.value)
-      //.whenPressed(m_intake.extendIntake())
       .whenPressed(() -> m_intake.extendIntake());
 
     new JoystickButton(m_driverController, Button.kB.value)
       .whenPressed(() -> m_intake.retractIntake());
 
     new JoystickButton(m_driverController, Button.kBumperLeft.value)
-      .whileHeld(() -> m_shooter.set(.35))
-      .whenReleased(()-> m_shooter.stop());
+      //.whileHeld(() -> m_shooter.set(.35))
+      //.whenReleased(()-> m_shooter.stop());
 
-      //.whileHeld(() -> m_chooter.velocityShoot(1500))
-      //.whenReleased(() -> m_chooter.velocityShoot(0.0));
+      .whileHeld(() -> m_shooter.velocityShoot(1500))
+      .whenReleased(() -> m_shooter.velocityShoot(0.0));
 
     new JoystickButton(m_driverController, Button.kBumperRight.value)
-      .whileHeld(() -> m_shooter.set(.45))
-      .whenReleased(()-> m_shooter.stop());
+      //.whileHeld(() -> m_shooter.set(.45))
+      //.whenReleased(()-> m_shooter.stop());
 
-      //.whileHeld(() -> m_chooter.velocityShoot(3000))
-      //.whenReleased(() -> m_chooter.velocityShoot(0.0));
+      .whileHeld(() -> m_shooter.velocityShoot(3000))
+      .whenReleased(() -> m_shooter.velocityShoot(0.0));
 
     new JoystickButton(m_driverController, Button.kX.value)
       .whenPressed(() -> m_hopper.feedIn())
@@ -96,22 +95,22 @@ public class RobotContainer {
       .whenPressed(() -> m_hopper.hopperOut())
       .whenReleased(() -> m_hopper.stopHopper());
 
-    new JoystickButton(rightJoystick, 3)
-      .whileHeld(() -> m_intake.BallIn())
-      .whenReleased(() -> m_intake.stopIntake());
-
     new JoystickButton(rightJoystick, 2)
       .whileHeld(() -> m_intake.BallOut())
       .whenReleased(() -> m_intake.stopIntake());
 
-    new JoystickButton(rightJoystick, 9)
-      .whenPressed(()-> m_shooter.UnderGoal());
+      new JoystickButton(rightJoystick, 3)
+      .whileHeld(() -> m_intake.BallIn())
+      .whenReleased(() -> m_intake.stopIntake());
 
     new JoystickButton(rightJoystick, 7)
       .whenPressed(()-> m_shooter.LongShot());
 
     new JoystickButton(rightJoystick, 8)
       .whenPressed(() -> m_shooter.whiteLineExtend());
+
+    new JoystickButton(rightJoystick, 9)
+      .whenPressed(()-> m_shooter.UnderGoal());
   }
 
   /**

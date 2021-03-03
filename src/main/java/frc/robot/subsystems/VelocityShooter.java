@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -88,14 +87,9 @@ public class VelocityShooter extends SubsystemBase {
     return (RPM / 600.0) * 2048.0;
   }
 
-  public void FullRetract() {
+  public void UnderGoal() {
     leftServo.setPosition(.29);
     rightServo.setPosition(.29);
-  }
-
-  public void HalfExtend(){
-    leftServo.setPosition(.6);
-    rightServo.setPosition(.6);
   }
 
   public void whiteLineExtend(){
@@ -103,11 +97,9 @@ public class VelocityShooter extends SubsystemBase {
     rightServo.setPosition(.55);
   }
 
-  public void FullExtend(){
-    leftServo.setPosition(.7);
-    rightServo.setPosition(.7);
+  public void LongShot(){
+    leftServo.setPosition(.6);
+    rightServo.setPosition(.6);
   }
   
-  
-
 }
