@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.Servo;
@@ -16,10 +15,8 @@ import frc.robot.Constants.ShooterConstants;
 
 public class VelocityShooter extends SubsystemBase {
   /** Creates a new VelocityShooter. */
-  private final WPI_TalonFX shooterFXLeft = new WPI_TalonFX(ShooterConstants.kLeftShooterPort);
-  private final WPI_TalonFX shooterFXRight = new WPI_TalonFX(ShooterConstants.kRightShooterPort);
-
-  private final TalonFXSensorCollection leftShooterSensor;
+  private final WPI_TalonFX leftShooterMotor;
+  private final WPI_TalonFX rightShooterMotor;
 
   private final Servo leftServo;
   private final Servo rightServo;
@@ -27,34 +24,33 @@ public class VelocityShooter extends SubsystemBase {
 
   public VelocityShooter() {
 
+    leftShooterMotor = new WPI_TalonFX(ShooterConstants.kLeftShooterPort);
+    rightShooterMotor = new WPI_TalonFX(ShooterConstants.kRightShooterPort);
+
     leftServo = new Servo(ShooterConstants.kLeftServo);
     rightServo = new Servo(ShooterConstants.kRightServo);
-
-    shooterFXLeft.configFactoryDefault();
-    shooterFXRight.configFactoryDefault();
     
-    shooterFXLeft.setNeutralMode(NeutralMode.Coast);
-    shooterFXRight.setNeutralMode(NeutralMode.Coast);
-
-    shooterFXLeft.setInverted(true);
-    shooterFXRight.setInverted(true);
-
-    shooterFXLeft.configOpenloopRamp(ShooterConstants.kShooterVoltageRampRate);
-    shooterFXRight.configOpenloopRamp(ShooterConstants.kShooterVoltageRampRate);
-
-    shooterFXRight.follow(shooterFXLeft);
-
-    leftShooterSensor = shooterFXLeft.getSensorCollection();
+    leftShooterMotor.configFactoryDefault();
+    rightShooterMotor.configFactoryDefault();
+   
+    leftShooterMotor.setNeutralMode(NeutralMode.Coast);
+    rightShooterMotor.setNeutralMode(NeutralMode.Coast);
     
-    shooterFXLeft.configPeakOutputForward(0);
-    shooterFXLeft.configPeakOutputReverse(-1);
-    shooterFXLeft.config_kP(0, ShooterConstants.kShooterP);
-    shooterFXLeft.config_kI(0, ShooterConstants.kShooterI);
-    shooterFXLeft.config_kD(0, ShooterConstants.kShooterD);
-    shooterFXLeft.config_kF(0, ShooterConstants.kShooterF);
-    shooterFXLeft.configAllowableClosedloopError(0, ShooterConstants.kAllowableError);
-    shooterFXLeft.configMaxIntegralAccumulator(0, ShooterConstants.kMaxIntegralAccumulator);
-    shooterFXLeft.configClosedLoopPeriod(0, ShooterConstants.kPIDLoopRate);
+    leftShooterMotor.setInverted(false);
+    rightShooterMotor.setInverted(true);
+    rightShooterMotor.follow(leftShooterMotor);
+
+    leftShooterMotor.setSensorPhase(false);
+    
+    leftShooterMotor.configPeakOutputForward(0);
+    leftShooterMotor.configPeakOutputReverse(-1);
+    leftShooterMotor.config_kP(0, ShooterConstants.kShooterP);
+    leftShooterMotor.config_kI(0, ShooterConstants.kShooterI);
+    leftShooterMotor.config_kD(0, ShooterConstants.kShooterD);
+    leftShooterMotor.config_kF(0, ShooterConstants.kShooterF);
+    leftShooterMotor.configAllowableClosedloopError(0, ShooterConstants.kAllowableError);
+    leftShooterMotor.configMaxIntegralAccumulator(0, ShooterConstants.kMaxIntegralAccumulator);
+    leftShooterMotor.configClosedLoopPeriod(0, ShooterConstants.kPIDLoopRate);
   
 
   }
@@ -65,20 +61,20 @@ public class VelocityShooter extends SubsystemBase {
   }
 
   public void shoot(double speed){
-    shooterFXLeft.set(ControlMode.PercentOutput, speed);
+    leftShooterMotor.set(ControlMode.PercentOutput, speed);
   }
 
   public void velocityShoot(double velocity){
-    shooterFXLeft.set(ControlMode.Velocity, RPMtoFalconUnits(velocity));
+    leftShooterMotor.set(ControlMode.Velocity, RPMtoFalconUnits(velocity));
   }
 
   public void displayEncoders(){
-    SmartDashboard.putNumber("Shooter Encoder", leftShooterSensor.getIntegratedSensorVelocity());
-    SmartDashboard.putNumber("Shooter RPM", falconUnitsToRPM(leftShooterSensor.getIntegratedSensorVelocity()));
+    SmartDashboard.putNumber("Shooter Encoder", leftShooterMotor.getSelectedSensorVelocity());
+    SmartDashboard.putNumber("Shooter RPM", falconUnitsToRPM(leftShooterMotor.getSelectedSensorVelocity()));
   }
 
   public double getRPM() {
-    return falconUnitsToRPM(leftShooterSensor.getIntegratedSensorVelocity());
+    return falconUnitsToRPM(leftShooterMotor.getSelectedSensorVelocity());
   }
 
   public double falconUnitsToRPM(double sensorUnits) {
