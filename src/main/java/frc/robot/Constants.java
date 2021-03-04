@@ -36,21 +36,25 @@ public final class Constants {
     public static final class ShooterConstants {
         public static final int kRightShooterPort = 5;
         public static final int kLeftShooterPort = 6;
-        //public static final int kTopShooterPort = 7;
 
         public static final int kLeftServo = 0;
         public static final int kRightServo = 1;
 
+        public static final double kShooterVoltageRampRate = 0.2;
 
-        public static final double kShooterP = 0.0001;
+
+        public static final double kShooterP = 0.09;
         public static final double kShooterI = 0.0;
         public static final double kShooterD = 0.0;
-        public static final double kShooterF = 0.00017;
-        public static final double kShooterVoltageRampRate = .2;
+        public static final double kShooterF = 0.0665;
 
-        public static final int kAllowableError = 150;
+        public static final int kAllowableError = 50;
         public static final int kPIDLoopRate = 10; //In ms
         public static final int kMaxIntegralAccumulator = 1000;
+
+        public static final double klimeLightHeight = 18.5;//inches
+        public static final double ktargetHeight = 89.75;//inches
+        public static final double kCameraAngle = 25;
     }
 
     public static final class OIConstants{

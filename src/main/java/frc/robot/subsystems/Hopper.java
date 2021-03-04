@@ -43,12 +43,8 @@ public class Hopper extends SubsystemBase {
   }
 
   //Commands For Hopper
-  public void hopperIn(){
-    rightHopper.set(ControlMode.PercentOutput, .4);
-  }
-
-  public void hopperOut(){
-    rightHopper.set(ControlMode.PercentOutput, -.4);
+  public void runHopper(double speed){
+    rightHopper.set(ControlMode.PercentOutput, speed);
   }
 
   public void stopHopper(){
@@ -56,12 +52,8 @@ public class Hopper extends SubsystemBase {
   }
  
   //Commands For Feeder
-  public void feedIn(){
-    feederMotor.set(ControlMode.PercentOutput, .4);
-  }
-
-  public void feedOut(){
-    feederMotor.set(ControlMode.PercentOutput, -.4);
+  public void runFeed(double speed){
+    feederMotor.set(ControlMode.PercentOutput, speed);
   }
 
   public void stopFeeder(){

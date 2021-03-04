@@ -66,16 +66,10 @@ public class RobotContainer {
       .whenPressed(() -> m_intake.retractIntake());
 
     new JoystickButton(m_driverController, Button.kBumperLeft.value)
-      //.whileHeld(() -> m_shooter.set(.35))
-      //.whenReleased(()-> m_shooter.stop());
-
       .whenPressed(() -> m_shooter.setRPM(2000))
       .whenReleased(() -> m_shooter.setRPM(-1));
 
     new JoystickButton(m_driverController, Button.kBumperRight.value)
-      //.whileHeld(() -> m_shooter.set(.45))
-      //.whenReleased(()-> m_shooter.stop());
-
       .whileHeld(() -> m_shooter.setRPM(2350))
       .whenReleased(() -> m_shooter.setRPM(-1));
 
@@ -88,27 +82,27 @@ public class RobotContainer {
       .whenReleased(() -> m_shooter.setRPM(-1));
 
     new JoystickButton(m_driverController, Button.kX.value)
-      .whenPressed(() -> m_hopper.feedIn())
+      .whenPressed(() -> m_hopper.runFeed(.5))
       .whenReleased(() -> m_hopper.stopFeeder());
 
     new JoystickButton(m_driverController, Button.kY.value)
-      .whenPressed(() -> m_hopper.feedOut())
+      .whenPressed(() -> m_hopper.runFeed(-.5))
       .whenReleased(() -> m_hopper.stopFeeder());
 
     new JoystickButton(rightJoystick, 5)
-      .whenPressed(() -> m_hopper.hopperIn())
+      .whenPressed(() -> m_hopper.runHopper(.5))
       .whenReleased(() -> m_hopper.stopHopper());
 
     new JoystickButton(rightJoystick, 6)
-      .whenPressed(() -> m_hopper.hopperOut())
+      .whenPressed(() -> m_hopper.runHopper(-.5))
       .whenReleased(() -> m_hopper.stopHopper());
 
     new JoystickButton(rightJoystick, 2)
-      .whileHeld(() -> m_intake.BallOut())
+      .whileHeld(() -> m_intake.runIntake(.5))
       .whenReleased(() -> m_intake.stopIntake());
 
       new JoystickButton(rightJoystick, 3)
-      .whileHeld(() -> m_intake.BallIn())
+      .whileHeld(() -> m_intake.runIntake(-.5))
       .whenReleased(() -> m_intake.stopIntake());
 
     new JoystickButton(rightJoystick, 7)

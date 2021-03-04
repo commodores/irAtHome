@@ -22,19 +22,15 @@ Subsystem for controlling to robot's shooter
 public class VelocityShooter extends SubsystemBase {
     
     // PID loop constants
-    private double kF = 0.0665;  // 0.054      //  Gree: 0.0475;
-    private double kP = 0.09;      //  0.4       //  0.00047
-    private double kI = 0.0;                    //  0.0000287
-    private double kD = 0.0;
-
-    private double kS = 0.155;
-    private double kV = 0.111;
-    private double kA = 0.02;
+    private double kF = ShooterConstants.kShooterF;
+    private double kP = ShooterConstants.kShooterP;
+    private double kI = ShooterConstants.kShooterI;
+    private double kD = ShooterConstants.kShooterD;
 
     public int kI_Zone = 100;
     public int kAllowableError = 50;
 
-    private TalonFX[] outtakeMotors = {
+    private TalonFX[] shooterMotors = {
             new TalonFX(ShooterConstants.kLeftShooterPort),
             new TalonFX(ShooterConstants.kRightShooterPort),
     };
@@ -57,34 +53,34 @@ public class VelocityShooter extends SubsystemBase {
         rightServo = new Servo(ShooterConstants.kRightServo);
 
         // Setup shooter motors (Falcons)
-        for (TalonFX outtakeMotor : outtakeMotors) {
-            outtakeMotor.configFactoryDefault();
-            outtakeMotor.setNeutralMode(NeutralMode.Coast);
-            outtakeMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0));
-            outtakeMotor.configVoltageCompSaturation(10);
-            outtakeMotor.enableVoltageCompensation(true);
+        for (TalonFX shooterMotor : shooterMotors) {
+            shooterMotor.configFactoryDefault();
+            shooterMotor.setNeutralMode(NeutralMode.Coast);
+            shooterMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0));
+            shooterMotor.configVoltageCompSaturation(10);
+            shooterMotor.enableVoltageCompensation(true);
         }
-        outtakeMotors[0].setInverted(false);
-        outtakeMotors[1].setInverted(true);
-        outtakeMotors[1].follow(outtakeMotors[0], FollowerType.PercentOutput);
+        shooterMotors[0].setInverted(false);
+        shooterMotors[1].setInverted(true);
+        shooterMotors[1].follow(shooterMotors[0], FollowerType.PercentOutput);
 
-        outtakeMotors[0].config_kF(0, kF);
-        outtakeMotors[0].config_kP(0, kP);
-        outtakeMotors[0].config_kI(0, kI);
-        outtakeMotors[0].config_IntegralZone(0, kI_Zone);
-        outtakeMotors[0].config_kD(0, kD);
-        outtakeMotors[0].configAllowableClosedloopError(0, kAllowableError);
-        outtakeMotors[0].configClosedloopRamp(0.2);
-        outtakeMotors[1].configClosedloopRamp(0);
-        outtakeMotors[1].configOpenloopRamp(0);
+        shooterMotors[0].config_kF(0, kF);
+        shooterMotors[0].config_kP(0, kP);
+        shooterMotors[0].config_kI(0, kI);
+        shooterMotors[0].config_IntegralZone(0, kI_Zone);
+        shooterMotors[0].config_kD(0, kD);
+        shooterMotors[0].configAllowableClosedloopError(0, kAllowableError);
+        shooterMotors[0].configClosedloopRamp(0.2);
+        shooterMotors[1].configClosedloopRamp(0);
+        shooterMotors[1].configOpenloopRamp(0);
     }
 
     public double getMotorInputCurrent(int motorIndex) {
-        return outtakeMotors[motorIndex].getSupplyCurrent();
+        return shooterMotors[motorIndex].getSupplyCurrent();
     }
 
     public void setPower(double output) {
-        outtakeMotors[0].set(ControlMode.PercentOutput, output);
+        shooterMotors[0].set(ControlMode.PercentOutput, output);
     }
 
     public void setRPM(double setpoint) {
@@ -97,13 +93,13 @@ public class VelocityShooter extends SubsystemBase {
 
     private void updateRPMSetpoint() {
         if (setpoint >= 0)
-            outtakeMotors[0].set(ControlMode.Velocity, RPMtoFalconUnits(setpoint));
+            shooterMotors[0].set(ControlMode.Velocity, RPMtoFalconUnits(setpoint));
         else
             setPower(0);
     }
 
     public void setTestRPM() {
-        outtakeMotors[0].set(ControlMode.Velocity, RPMtoFalconUnits(rpmOutput));
+        shooterMotors[0].set(ControlMode.Velocity, RPMtoFalconUnits(rpmOutput));
     }
 
     public double getTestRPM() {
@@ -115,11 +111,11 @@ public class VelocityShooter extends SubsystemBase {
     }
 
     public boolean encoderAtSetpoint(int motorIndex) {
-        return (Math.abs(outtakeMotors[motorIndex].getClosedLoopError()) < 100.0);
+        return (Math.abs(shooterMotors[motorIndex].getClosedLoopError()) < 100.0);
     }
 
     public double getRPM(int motorIndex) {
-        return falconUnitsToRPM(outtakeMotors[motorIndex].getSelectedSensorVelocity());
+        return falconUnitsToRPM(shooterMotors[motorIndex].getSelectedSensorVelocity());
     }
 
     public double falconUnitsToRPM(double sensorUnits) {
@@ -133,8 +129,8 @@ public class VelocityShooter extends SubsystemBase {
     @Override
     public void periodic() {
         updateRPMSetpoint();
-        SmartDashboard.putNumber("Shooter Encoder", outtakeMotors[0].getSelectedSensorVelocity());
-        SmartDashboard.putNumber("Shooter RPM", falconUnitsToRPM(outtakeMotors[0].getSelectedSensorVelocity()));
+        SmartDashboard.putNumber("Shooter Encoder", shooterMotors[0].getSelectedSensorVelocity());
+        SmartDashboard.putNumber("Shooter RPM", falconUnitsToRPM(shooterMotors[0].getSelectedSensorVelocity()));
     }
 
     public void UnderGoal() {

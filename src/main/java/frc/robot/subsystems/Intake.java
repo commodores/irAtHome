@@ -36,14 +36,9 @@ public class Intake extends SubsystemBase {
     leftIntake.setInverted(false);
   }
 
-  public void BallOut(){
-    leftIntake.set(-.5);
-    rightIntake.set(.5);
-  }
-
-  public void BallIn(){
-    leftIntake.set(.8);
-    rightIntake.set(-.9);
+  public void runIntake(double speed){
+    leftIntake.set(-speed);
+    rightIntake.set(speed);
   }
 
   public void stopIntake(){
