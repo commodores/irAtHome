@@ -105,9 +105,6 @@ public class RobotContainer {
     .whileHeld(() -> m_intake.runIntake(-.5))
     .whenReleased(() -> m_intake.stopIntake());
 
-    new JoystickButton(rightJoystick, 4)
-      .whenPressed(()-> m_shooter.yellowShot());
-
     new JoystickButton(rightJoystick, 7)
       .whenPressed(()-> m_shooter.LongShot());
 

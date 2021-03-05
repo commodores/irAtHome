@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.sensors.PigeonIMU;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.HopperConstants;
@@ -17,12 +18,15 @@ public class Hopper extends SubsystemBase {
   private final WPI_TalonSRX leftHopper;
   private final WPI_TalonSRX rightHopper;
   private final WPI_TalonSRX feederMotor;
+  private PigeonIMU pigeon;
 
   public Hopper() {
 
     leftHopper = new WPI_TalonSRX(HopperConstants.kHopperLeftPort);
     rightHopper = new WPI_TalonSRX(HopperConstants.kHopperRightPort);
     feederMotor = new WPI_TalonSRX(HopperConstants.kFeederPort);
+
+    pigeon = new PigeonIMU(leftHopper);
 
     leftHopper.configFactoryDefault();
     rightHopper.configFactoryDefault();
@@ -58,6 +62,14 @@ public class Hopper extends SubsystemBase {
 
   public void stopFeeder(){
     feederMotor.set(ControlMode.PercentOutput, 0.0);
+  }
+
+  public void resetDirection() {
+    pigeon.setFusedHeading(0);
+  }
+
+  public double getDirection() {
+    return Math.IEEEremainder(pigeon.getFusedHeading(), 360);
   }
 
   @Override

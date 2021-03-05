@@ -59,11 +59,6 @@ public class Shooter extends SubsystemBase {
     rightServo.setPosition(.29);
   }
 
-  public void yellowShot() {
-    leftServo.setPosition(.35);
-    rightServo.setPosition(.35);
-  }
-
   public void whiteLineExtend(){
     leftServo.setPosition(.55);
     rightServo.setPosition(.55);
