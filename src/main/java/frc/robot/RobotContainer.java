@@ -69,16 +69,16 @@ public class RobotContainer {
       .whenPressed(() -> m_shooter.setRPM(2000))
       .whenReleased(() -> m_shooter.setRPM(-1));
 
-    new JoystickButton(m_driverController, Button.kBumperRight.value)
-      .whileHeld(() -> m_shooter.setRPM(2350))
-      .whenReleased(() -> m_shooter.setRPM(-1));
-
     new JoystickButton(m_driverController, Button.kBack.value)
-      .whenPressed(() -> m_shooter.setRPM(3000))
+      .whenPressed(() -> m_shooter.setRPM(2350))
       .whenReleased(() -> m_shooter.setRPM(-1));
 
     new JoystickButton(m_driverController, Button.kStart.value)
-      .whenPressed(() -> m_shooter.setRPM(4400))
+      .whenPressed(() -> m_shooter.setRPM(3000))
+      .whenReleased(() -> m_shooter.setRPM(-1));
+
+      new JoystickButton(m_driverController, Button.kBumperRight.value)
+      .whileHeld(() -> m_shooter.setRPM(4400))
       .whenReleased(() -> m_shooter.setRPM(-1));
 
     new JoystickButton(m_driverController, Button.kX.value)
@@ -101,9 +101,12 @@ public class RobotContainer {
       .whileHeld(() -> m_intake.runIntake(.5))
       .whenReleased(() -> m_intake.stopIntake());
 
-      new JoystickButton(rightJoystick, 3)
-      .whileHeld(() -> m_intake.runIntake(-.5))
-      .whenReleased(() -> m_intake.stopIntake());
+    new JoystickButton(rightJoystick, 3)
+    .whileHeld(() -> m_intake.runIntake(-.5))
+    .whenReleased(() -> m_intake.stopIntake());
+
+    new JoystickButton(rightJoystick, 4)
+      .whenPressed(()-> m_shooter.yellowShot());
 
     new JoystickButton(rightJoystick, 7)
       .whenPressed(()-> m_shooter.LongShot());
