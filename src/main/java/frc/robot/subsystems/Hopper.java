@@ -69,7 +69,7 @@ public class Hopper extends SubsystemBase {
   }
 
   public double getDirection() {
-    return Math.IEEEremainder(pigeon.getFusedHeading(), 360);
+    return -1 * Math.IEEEremainder(pigeon.getFusedHeading(), 360);
   }
 
   @Override

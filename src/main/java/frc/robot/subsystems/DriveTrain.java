@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -27,8 +26,6 @@ public class DriveTrain extends SubsystemBase {
   private final WPI_TalonFX leftSlaveMotor;
 
   private final DifferentialDrive m_drive;
-
-  
 
 
   public DriveTrain() {
@@ -48,9 +45,9 @@ public class DriveTrain extends SubsystemBase {
     leftMasterMotor.configFactoryDefault();
     leftSlaveMotor.configFactoryDefault();
   //Set Electronics To Open Ramp Rate
-    leftMasterMotor.configOpenloopRamp(1.0);
+    leftMasterMotor.configOpenloopRamp(2.0);
 
-    rightMasterMotor.configOpenloopRamp(1.0);
+    rightMasterMotor.configOpenloopRamp(2.0);
 
   //Set Electronics To Follow Mode
     rightSlaveMotor.follow(rightMasterMotor);
@@ -58,9 +55,9 @@ public class DriveTrain extends SubsystemBase {
     leftSlaveMotor.follow(leftMasterMotor);
     
   //Set Electronics To Brake Mode
-    rightMasterMotor.setNeutralMode(NeutralMode.Coast);
+    rightMasterMotor.setNeutralMode(NeutralMode.Brake);
 
-    leftMasterMotor.setNeutralMode(NeutralMode.Coast);
+    leftMasterMotor.setNeutralMode(NeutralMode.Brake);
   
   //Set Electronics To Follow Control Mode
     rightMasterMotor.set(ControlMode.PercentOutput, 0.0);

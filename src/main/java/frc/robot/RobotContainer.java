@@ -12,13 +12,16 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.AlignToTarget;
 import frc.robot.commands.AutoDrive;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LimeLight;
 //import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.VelocityShooter;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -35,6 +38,7 @@ public class RobotContainer {
   public static final VelocityShooter m_shooter = new VelocityShooter();
   public static final Hopper m_hopper = new Hopper();
   public static final Compressor m_compressor = new Compressor();
+  public static final LimeLight m_limelight = new LimeLight();
   
   public static final XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
   public static final Joystick leftJoystick = new Joystick(OIConstants.kLeftJoystickPort);
@@ -67,7 +71,7 @@ public class RobotContainer {
 
     new JoystickButton(m_driverController, Button.kBumperLeft.value)
       .whenPressed(() -> m_shooter.setRPM(2000))
-      .whenReleased(() -> m_shooter.setRPM(-1));
+      .whenReleased(() -> m_shooter.setRPM(1000));
 
     new JoystickButton(m_driverController, Button.kBack.value)
       .whenPressed(() -> m_shooter.setRPM(2350))
@@ -113,6 +117,13 @@ public class RobotContainer {
 
     new JoystickButton(rightJoystick, 9)
       .whenPressed(()-> m_shooter.UnderGoal());
+
+    new JoystickButton(rightJoystick, 1)
+    .whenPressed(new AlignToTarget())
+    .whenReleased(() -> m_drivetrain.tankDrive(0.0, 0.0));
+
+    new JoystickButton(rightJoystick, 4)
+    .whenPressed(new AutoDrive(-2,.5));
   }
 
   /**
@@ -144,7 +155,7 @@ public class RobotContainer {
     switch (m_autoChooser.getSelected())
     {
       case "forward1":
-        return new AutoDrive(-1,.5)
+        return new AutoDrive(1,.5)
         .withTimeout(5);
       default:
         System.out.println("\nError selecting autonomous command:\nCommand selected: " + m_autoChooser.getSelected() + "\n");
