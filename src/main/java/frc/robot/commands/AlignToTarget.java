@@ -29,7 +29,7 @@ public class AlignToTarget extends CommandBase {
 
       setpoint = RobotContainer.m_limelight.getXAngle();
 
-      RobotContainer.m_drivetrain.tankDrive(-setpoint * .1, setpoint * .1);
+      RobotContainer.m_drivetrain.tankDriveVolts(-setpoint * .1, setpoint * .1);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -41,7 +41,7 @@ public class AlignToTarget extends CommandBase {
     // Called once after isFinished returns true
     @Override
     public void end(boolean interrupted) {
-      RobotContainer.m_drivetrain.tankDrive(0, 0);
+      RobotContainer.m_drivetrain.tankDriveVolts(0, 0);
     }
 
     // Called when another command which requires one or more of the same

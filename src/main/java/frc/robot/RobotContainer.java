@@ -4,23 +4,34 @@
 
 package frc.robot;
 
+import java.util.List;
+
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.controller.RamseteController;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AlignToTarget;
 import frc.robot.commands.AutoDrive;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.NewDrive;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LimeLight;
 //import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.VelocityShooter;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -32,7 +43,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  public static final DriveTrain m_drivetrain = new DriveTrain();
+  //public static final DriveTrain m_drivetrain = new DriveTrain();
+  public static final NewDrive m_drivetrain = new NewDrive();
   public static final Intake m_intake = new Intake();
   //public static final Shooter m_shooter = new Shooter();
   public static final VelocityShooter m_shooter = new VelocityShooter();
@@ -120,7 +132,7 @@ public class RobotContainer {
 
     new JoystickButton(rightJoystick, 1)
     .whenPressed(new AlignToTarget())
-    .whenReleased(() -> m_drivetrain.tankDrive(0.0, 0.0));
+    .whenReleased(() -> m_drivetrain.tankDriveVolts(0.0, 0.0));
 
     new JoystickButton(rightJoystick, 4)
     .whenPressed(new AutoDrive(-2,.5));
@@ -162,4 +174,49 @@ public class RobotContainer {
         return null;
     }
   }
+
+  public RamseteCommand createTrajectoryCommand(Pose2d startPose, List<Translation2d> translationList, Pose2d endPose, boolean isReversed, double maxSpeedMetersPerSecond, double maxAccelerationMetersPerSecondSquared) {
+    DifferentialDriveVoltageConstraint autoVoltageConstraint;
+    TrajectoryConfig config;
+  
+    // Create a voltage constraint to ensure we don't accelerate too fast
+    autoVoltageConstraint = new DifferentialDriveVoltageConstraint(m_drivetrain.getFeedforward(), DriveConstants.kDriveKinematics, 6);
+
+    // Create config for trajectory
+    config = new TrajectoryConfig(maxSpeedMetersPerSecond, maxAccelerationMetersPerSecondSquared)
+        // Add kinematics to ensure max speed is actually obeyed
+        .setKinematics(DriveConstants.kDriveKinematics)
+        // Apply the voltage constraint
+        .addConstraint(autoVoltageConstraint)
+        .setReversed(isReversed);
+
+    var initialTime = System.nanoTime();
+
+    // trajectory to follow. All units in meters.
+    var trajectory = TrajectoryGenerator.generateTrajectory(
+        startPose,
+        translationList,
+        endPose,
+        config);
+
+    RamseteCommand ramseteCommand =
+        new RamseteCommand(trajectory, 
+            m_drivetrain::getPose,
+            new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
+            m_drivetrain.getFeedforward(),
+            DriveConstants.kDriveKinematics,
+            m_drivetrain::getWheelSpeeds,
+            m_drivetrain.getLeftPidController(),
+            m_drivetrain.getRightPidController(),
+            m_drivetrain::tankDriveVolts,
+            m_drivetrain);
+
+    var dt = (System.nanoTime() - initialTime) / 1E6;
+    System.out.println("RamseteCommand generation time: " + dt + "ms");
+
+    // Run path following command, then stop at the end.
+    return ramseteCommand;
+  }
+
+  
 }

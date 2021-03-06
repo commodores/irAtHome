@@ -35,18 +35,18 @@ public class AutoDrive extends CommandBase {
     if(distance > 0){
       //drive forward
       double pTerm = DriveConstants.kDriveTrainGain * (currentHeading - RobotContainer.m_hopper.getDirection());
-      RobotContainer.m_drivetrain.tankDrive(-speed - pTerm, -speed + pTerm);
+      RobotContainer.m_drivetrain.tankDriveVolts(-speed - pTerm, -speed + pTerm);
     } else {
-      //drive reverse
+      // drive reverse
       double pTerm = DriveConstants.kDriveTrainGain * (currentHeading - RobotContainer.m_hopper.getDirection());
-      RobotContainer.m_drivetrain.tankDrive(speed - pTerm, speed + pTerm);
+      RobotContainer.m_drivetrain.tankDriveVolts(speed - pTerm, speed + pTerm);
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.m_drivetrain.tankDrive(0, 0);
+    RobotContainer.m_drivetrain.tankDriveVolts(0, 0);
   }
 
   // Returns true when the command should end.
@@ -54,10 +54,10 @@ public class AutoDrive extends CommandBase {
   public boolean isFinished() {
     if(distance > 0){
       //forward
-      return RobotContainer.m_drivetrain.getAverageDistance() > distance;
+      return RobotContainer.m_drivetrain.getAverageEncoderDistance() > distance;
     } else {
-      //reverse
-      return RobotContainer.m_drivetrain.getAverageDistance() < distance;
+      // reverse
+      return RobotContainer.m_drivetrain.getAverageEncoderDistance() < distance;
     }
   }
 }

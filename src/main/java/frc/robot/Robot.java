@@ -83,7 +83,8 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    RobotContainer.m_drivetrain.zeroSensors();
+    RobotContainer.m_drivetrain.zeroHeading();
+    RobotContainer.m_drivetrain.resetEncoders();
   }
 
   /** This function is called periodically during operator control. */

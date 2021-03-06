@@ -32,10 +32,10 @@ public class DriveTrain extends SubsystemBase {
 
   //DriveTrain Electronics
     rightMasterMotor = new WPI_TalonFX(DriveConstants.kRightMasterPort);
-    rightSlaveMotor = new WPI_TalonFX(DriveConstants.kRightSlave0Port);
+    rightSlaveMotor = new WPI_TalonFX(DriveConstants.kRightSlavePort);
 
     leftMasterMotor = new WPI_TalonFX(DriveConstants.kLeftMasterPort);
-    leftSlaveMotor = new WPI_TalonFX(DriveConstants.kLeftSlave0Port);
+    leftSlaveMotor = new WPI_TalonFX(DriveConstants.kLeftSlavePort);
 
 
   //Set Electronics To Default
@@ -111,11 +111,11 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public double getLeftDistance() {
-    return -1 * leftMasterMotor.getSelectedSensorPosition()*DriveConstants.kEncoderDistancePerPulse;
+    return leftMasterMotor.getSelectedSensorPosition() * DriveConstants.kDistancePerWheelRevolutionMeters * DriveConstants.kGearReduction / DriveConstants.kEncoderCPR;
   }
 
   public double getRightDistance() {
-    return rightMasterMotor.getSelectedSensorPosition()*DriveConstants.kEncoderDistancePerPulse;
+    return rightMasterMotor.getSelectedSensorPosition() * DriveConstants.kDistancePerWheelRevolutionMeters * DriveConstants.kGearReduction / DriveConstants.kEncoderCPR;
   }
 
   public double getAverageDistance() {
