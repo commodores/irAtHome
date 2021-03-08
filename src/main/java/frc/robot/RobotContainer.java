@@ -208,8 +208,7 @@ public class RobotContainer {
             // Add kinematics to ensure max speed is actually obeyed
             .setKinematics(DriveConstants.kDriveKinematics)
             // Apply the voltage constraint
-            //.addConstraint(autoVoltageConstraint)
-            ;
+            .addConstraint(autoVoltageConstraint);
 
     // Pathweaver Testing
 
