@@ -59,10 +59,10 @@ public class DriveTrain extends SubsystemBase {
     leftMasterMotor.configFactoryDefault();
     leftSlaveMotor.configFactoryDefault();
 
-    leftMasterMotor.setNeutralMode(NeutralMode.Coast);
-    leftSlaveMotor.setNeutralMode(NeutralMode.Coast);
-    rightMasterMotor.setNeutralMode(NeutralMode.Coast);
-    rightSlaveMotor.setNeutralMode(NeutralMode.Coast);
+    leftMasterMotor.setNeutralMode(NeutralMode.Brake);
+    leftSlaveMotor.setNeutralMode(NeutralMode.Brake);
+    rightMasterMotor.setNeutralMode(NeutralMode.Brake);
+    rightSlaveMotor.setNeutralMode(NeutralMode.Brake);
     
   
     leftMasterMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
@@ -72,7 +72,7 @@ public class DriveTrain extends SubsystemBase {
     right_falcons = new SpeedControllerGroup(rightMasterMotor, rightSlaveMotor);
 
     left_falcons.setInverted(true);
-    right_falcons.setInverted(true);
+    right_falcons.setInverted(false);
 
     m_drive = new DifferentialDrive(left_falcons, right_falcons);
 

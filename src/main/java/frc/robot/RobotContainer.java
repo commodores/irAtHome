@@ -109,11 +109,11 @@ public class RobotContainer {
       .whenReleased(() -> m_shooter.setRPM(-1));
 
     new JoystickButton(m_driverController, Button.kX.value)
-      .whenPressed(() -> m_hopper.runFeed(.55))
+      .whenPressed(() -> m_hopper.runFeed(.5))
       .whenReleased(() -> m_hopper.stopFeeder());
 
     new JoystickButton(m_driverController, Button.kY.value)
-      .whenPressed(() -> m_hopper.runFeed(-.55))
+      .whenPressed(() -> m_hopper.runFeed(-.5))
       .whenReleased(() -> m_hopper.stopFeeder());
 
     new JoystickButton(rightJoystick, 5)
@@ -237,7 +237,7 @@ public class RobotContainer {
     );
 
     RamseteCommand ramseteCommand = new RamseteCommand(
-        exampleTrajectory,
+        trajectory,
         m_drivetrain::getPose,
         new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
         new SimpleMotorFeedforward(DriveConstants.ksVolts,
