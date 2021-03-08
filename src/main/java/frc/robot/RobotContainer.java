@@ -210,7 +210,7 @@ public class RobotContainer {
             // Apply the voltage constraint
             .addConstraint(autoVoltageConstraint);
 
-    // Pathweaver Testing
+    /*/ Pathweaver Testing
 
     String trajectoryJSON = "paths/output/drivetocone.wpilib.json";
     Trajectory trajectory = new Trajectory();
@@ -219,7 +219,8 @@ public class RobotContainer {
       trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
     } catch (IOException ex) {
       DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
-}
+    }
+    */
 
     // An example trajectory to follow.  All units in meters.
     Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
@@ -236,8 +237,31 @@ public class RobotContainer {
         config
     );
 
+    Trajectory barrelRacing = TrajectoryGenerator.generateTrajectory(
+    new Pose2d(1.143, 1.905, new Rotation2d(0)), 
+    List.of(
+      new Translation2d(1.651,2.032),
+      new Translation2d(3.048,2.032), 
+      new Translation2d(4.064,1.905),
+      new Translation2d(4.318,1.524),
+      new Translation2d(3.302,1.524),
+      new Translation2d(4.064,1.905),
+      new Translation2d(5.842,2.159),
+      new Translation2d(6.858,3.048),
+      new Translation2d(6.604,3.683),
+      new Translation2d(5.588,3.302),
+      new Translation2d(5.842,2.159),
+      new Translation2d(6.858,1.016),
+      new Translation2d(8.001,1.270),
+      new Translation2d(8.255,1.651),
+      new Translation2d(6.858,2.032),
+      new Translation2d(5.842,2.159),
+      new Translation2d(4.064,2.540)),
+    new Pose2d(1.143, 1.905, new Rotation2d(Math.PI)), 
+    config);
+
     RamseteCommand ramseteCommand = new RamseteCommand(
-        trajectory,
+        exampleTrajectory,
         m_drivetrain::getPose,
         new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
         new SimpleMotorFeedforward(DriveConstants.ksVolts,
