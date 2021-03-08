@@ -30,23 +30,21 @@ public final class Constants {
         public static final int driveTimeout = 30;
 
         public static final int kEncoderCPR = 2048; //https://docs.ctre-phoenix.com/en/latest/ch14_MCSensor.html
-        public static final double kDistancePerWheelRevolutionMeters = 0.509;
-        public static final double kWheelDiameterMeters = 0.10;
+        public static final double kWheelDiameterMeters = 0.1016; //4 inches
         public static final double kGearReduction = 7;
-        public static final double kEncoderDistancePerPulseMeters =
-                (kDistancePerWheelRevolutionMeters * kGearReduction) / (double) kEncoderCPR;
-
-        public static final double kDriveTrainGain = .015;
+        public static final double kEncoderDistancePerPulse = ((kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR) / kGearReduction; 
+        public static final double kWheelDistancePerPulse = kEncoderDistancePerPulse/ kGearReduction; //DISTANCE PER PULSE OF WHEEL= (OUTER CIRCUMFERENCE OF WHEEL)/(ENCODER CPR*GEAR REDUCTION)
 
         public static final double ksVolts = 0.699;
         public static final double kvVoltSecondsPerMeter = 2.36;
         public static final double kaVoltSecondsSquaredPerMeter = 0.22;
         public static final double kPDriveVel = 2.24;   // 2.29
-        public static final double kDDriveVel = 0.0;
 
         public static final double kTrackwidthMeters = 0.59825;
         public static final DifferentialDriveKinematics kDriveKinematics =
             new DifferentialDriveKinematics(kTrackwidthMeters);
+
+        public static final double kDriveTrainGain = .015;
 
         public static final double kRamseteB = 2;
         public static final double kRamseteZeta = 0.7;

@@ -26,7 +26,7 @@ public class AutoDrive extends CommandBase {
   public void initialize() {
     //RobotContainer.m_drivetrain.zeroSensors();
     RobotContainer.m_drivetrain.resetEncoders();
-    currentHeading = RobotContainer.m_drivetrain.getHeading();
+    currentHeading = RobotContainer.m_drivetrain.getDirection();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -34,11 +34,11 @@ public class AutoDrive extends CommandBase {
   public void execute() {
     if(distance > 0){
       //drive forward
-      double pTerm = DriveConstants.kDriveTrainGain * (currentHeading - RobotContainer.m_drivetrain.getHeading());
+      double pTerm = DriveConstants.kDriveTrainGain * (currentHeading - RobotContainer.m_drivetrain.getDirection());
       RobotContainer.m_drivetrain.tankDriveVolts(-speed - pTerm, -speed + pTerm);
     } else {
       // drive reverse
-      double pTerm = DriveConstants.kDriveTrainGain * (currentHeading - RobotContainer.m_drivetrain.getHeading());
+      double pTerm = DriveConstants.kDriveTrainGain * (currentHeading - RobotContainer.m_drivetrain.getDirection());
       RobotContainer.m_drivetrain.tankDriveVolts(speed - pTerm, speed + pTerm);
     }
   }
@@ -54,10 +54,10 @@ public class AutoDrive extends CommandBase {
   public boolean isFinished() {
     if(distance > 0){
       //forward
-      return RobotContainer.m_drivetrain.getAverageEncoderDistance() > distance;
+      return RobotContainer.m_drivetrain.getAverageDistance() > distance;
     } else {
       // reverse
-      return RobotContainer.m_drivetrain.getAverageEncoderDistance() < distance;
+      return RobotContainer.m_drivetrain.getAverageDistance() < distance;
     }
   }
 }

@@ -20,7 +20,7 @@ public class AlignToTarget extends CommandBase {
     // Called just before this Command runs the first time
     @Override
     public void initialize() {
-      RobotContainer.m_drivetrain.zeroHeading();;
+      RobotContainer.m_drivetrain.resetDirection();
     }
 
     // Called repeatedly when this Command is scheduled to run

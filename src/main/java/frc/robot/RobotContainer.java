@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.controller.RamseteController;
@@ -32,8 +33,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AlignToTarget;
 import frc.robot.commands.AutoDrive;
 import frc.robot.commands.DriveManual;
-//import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.NewDrive;
+import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LimeLight;
@@ -52,7 +52,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   //public static final DriveTrain m_drivetrain = new DriveTrain();
-  public static final NewDrive m_drivetrain = new NewDrive();
+  public static final DriveTrain m_drivetrain = new DriveTrain();
   public static final Intake m_intake = new Intake();
   //public static final Shooter m_shooter = new Shooter();
   public static final VelocityShooter m_shooter = new VelocityShooter();
@@ -238,20 +238,23 @@ public class RobotContainer {
     );
 
     RamseteCommand ramseteCommand = new RamseteCommand(
-            exampleTrajectory, 
-            m_drivetrain::getPose,
-            new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
-            m_drivetrain.getFeedforward(),
-            DriveConstants.kDriveKinematics,
-            m_drivetrain::getWheelSpeeds,
-            m_drivetrain.getLeftPidController(),
-            m_drivetrain.getRightPidController(),
-            m_drivetrain::tankDriveVolts,
-            m_drivetrain
+        exampleTrajectory,
+        m_drivetrain::getPose,
+        new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
+        new SimpleMotorFeedforward(DriveConstants.ksVolts,
+                                   DriveConstants.kvVoltSecondsPerMeter,
+                                   DriveConstants.kaVoltSecondsSquaredPerMeter),
+        DriveConstants.kDriveKinematics,
+        m_drivetrain::getWheelSpeeds,
+        new PIDController(DriveConstants.kPDriveVel, 0, 0),
+        new PIDController(DriveConstants.kPDriveVel, 0, 0),
+        // RamseteCommand passes volts to the callback
+        m_drivetrain::tankDriveVolts,
+        m_drivetrain
     );
 
     // Reset odometry to the starting pose of the trajectory.
-    m_drivetrain.resetOdometry(exampleTrajectory.getInitialPose());
+    m_drivetrain.zeroSensors();
 
     // Run path following command, then stop at the end.
     return ramseteCommand.andThen(() -> m_drivetrain.tankDriveVolts(0, 0));
