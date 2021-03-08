@@ -7,11 +7,9 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.sensors.PigeonIMU;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.HopperConstants;
-import frc.robot.Constants.DriveConstants;
 
 public class Hopper extends SubsystemBase {
   /** Creates a new Hopper. */
@@ -19,7 +17,6 @@ public class Hopper extends SubsystemBase {
   private final WPI_TalonSRX leftHopper;
   private final WPI_TalonSRX rightHopper;
   private final WPI_TalonSRX feederMotor;
-  private PigeonIMU pigeon;
 
   public Hopper() {
 
