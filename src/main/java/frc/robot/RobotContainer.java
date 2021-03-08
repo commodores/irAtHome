@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.controller.RamseteController;
@@ -32,6 +31,7 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AlignToTarget;
 import frc.robot.commands.AutoDrive;
+import frc.robot.commands.DriveManual;
 //import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.NewDrive;
 import frc.robot.subsystems.Hopper;
@@ -70,6 +70,9 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
+    /* Initialize various systems on robotInit. */
+    this.initializeStartup();
 
     /* Initialize autonomous command chooser and display on the SmartDashboard. */
     this.initializeAutoChooser();
@@ -145,6 +148,11 @@ public class RobotContainer {
     new JoystickButton(rightJoystick, 4)
     .whenPressed(new AutoDrive(-2,.5));
   }
+  private void initializeStartup()
+  {
+    m_drivetrain.setDefaultCommand(
+      new DriveManual(m_drivetrain));
+  }
 
   /**
    * Set options for autonomous command chooser and display them for selection on the SmartDashboard.
@@ -200,7 +208,8 @@ public class RobotContainer {
             // Add kinematics to ensure max speed is actually obeyed
             .setKinematics(DriveConstants.kDriveKinematics)
             // Apply the voltage constraint
-            .addConstraint(autoVoltageConstraint);
+            //.addConstraint(autoVoltageConstraint)
+            ;
 
     // Pathweaver Testing
 
@@ -229,7 +238,7 @@ public class RobotContainer {
     );
 
     RamseteCommand ramseteCommand = new RamseteCommand(
-            trajectory, 
+            exampleTrajectory, 
             m_drivetrain::getPose,
             new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
             m_drivetrain.getFeedforward(),

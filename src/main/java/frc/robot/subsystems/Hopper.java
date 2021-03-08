@@ -27,8 +27,6 @@ public class Hopper extends SubsystemBase {
     rightHopper = new WPI_TalonSRX(HopperConstants.kHopperRightPort);
     feederMotor = new WPI_TalonSRX(HopperConstants.kFeederPort);
 
-    pigeon = new PigeonIMU(leftHopper);
-
     leftHopper.configFactoryDefault();
     rightHopper.configFactoryDefault();
     feederMotor.configFactoryDefault();
@@ -64,34 +62,6 @@ public class Hopper extends SubsystemBase {
   public void stopFeeder(){
     feederMotor.set(ControlMode.PercentOutput, 0.0);
   }
-
-  public void resetPigeon(){
-    pigeon.configFactoryDefault();
-  }
-  
-  public void resetDirection() {
-    pigeon.setFusedHeading(0);
-  }
-
-  public double getDirection() {
-    return -1 * Math.IEEEremainder(pigeon.getFusedHeading(), 360);
-  }
-
-  public double getFHeading(){
-    return pigeon.getFusedHeading();
-  }
-
-  /**
-  * Returns the turn rate of the robot.
-  *
-  * @return The turn rate of the robot, in degrees per second
-  */
- public double getTurnRate() {
-  double [] xyz_dps = new double [3];
-  // getRawGyro returns in degrees/second
-  pigeon.getRawGyro(xyz_dps);
-  return xyz_dps[2] * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
-}
 
 
   @Override

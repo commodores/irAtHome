@@ -5,17 +5,18 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DriveTrain;
+//import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.NewDrive;
 import frc.robot.RobotContainer;
 
 public class DriveManual extends CommandBase {
   /** Creates a new DriveManual. */
-  private final DriveTrain m_drivetrain;
+  private final NewDrive m_drivetrain;
 
-  public DriveManual(DriveTrain m_drivetrain) {
+  public DriveManual(NewDrive newDrive) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.m_drivetrain = m_drivetrain;
-    addRequirements(m_drivetrain);
+    this.m_drivetrain = newDrive;
+    addRequirements(newDrive);
   }
 
   // Called when the command is initially scheduled.
@@ -38,7 +39,7 @@ public class DriveManual extends CommandBase {
       rotation = 0;
     }
     
-    m_drivetrain.curvatureDrive(-speed* .6, -rotation* .5, quickTurn);
+    m_drivetrain.curvatureDrive(speed* .6, rotation* .5, quickTurn);
   }
 
   // Called once the command ends or is interrupted.

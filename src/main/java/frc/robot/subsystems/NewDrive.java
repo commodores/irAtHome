@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -13,6 +14,7 @@ import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.commands.DriveManual;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -28,6 +30,8 @@ public class NewDrive extends SubsystemBase {
   private WPI_TalonFX falcon2_leftFollow  = new WPI_TalonFX(DriveConstants.kLeftSlavePort);
   private WPI_TalonFX falcon3_rightLead   = new WPI_TalonFX(DriveConstants.kRightMasterPort);
   private WPI_TalonFX falcon4_rightFollow = new WPI_TalonFX(DriveConstants.kRightSlavePort);
+
+  private PigeonIMU pigeon = new PigeonIMU(DriveConstants.kPigeonPort);
   
   private boolean driveInvert = false;
   
@@ -40,29 +44,16 @@ public class NewDrive extends SubsystemBase {
  
   // Odometry class for tracking robot pose
   private final DifferentialDriveOdometry m_odometry;
-
-  // http://www.ctr-electronics.com/downloads/pdf/Falcon%20500%20User%20Guide.pdf
-  // Peak power: 140A
-  // Stall:      257A  (more than the battery can supply)
-  // Battery can at best supply around 250A
-  private SupplyCurrentLimitConfiguration m_limit =
-      new SupplyCurrentLimitConfiguration(true, 30, 20, 0.5);  
   
   public NewDrive() {
 
-    RobotContainer.m_hopper.resetPigeon();
+    pigeon.configFactoryDefault();
 
     m_drive = new DifferentialDrive(falcon1_leftLead, falcon3_rightLead);
     falcon1_leftLead.configFactoryDefault();
     falcon2_leftFollow.configFactoryDefault();
     falcon3_rightLead.configFactoryDefault();
     falcon4_rightFollow.configFactoryDefault();
-
-    // Current limiting
-    setCurrentLimit(m_limit);
-
-    // Voltage limits
-    setVoltageLimit(11);
 
     // set brake mode
     falcon1_leftLead.setNeutralMode(NeutralMode.Brake);
@@ -71,8 +62,8 @@ public class NewDrive extends SubsystemBase {
     falcon4_rightFollow.setNeutralMode(NeutralMode.Brake);
 
     // No need to invert Follow Motors
-    falcon1_leftLead.setInverted(false);
-    falcon3_rightLead.setInverted(true);
+    falcon1_leftLead.setInverted(true);
+    falcon3_rightLead.setInverted(false);
     falcon2_leftFollow.setInverted(InvertType.FollowMaster);
     falcon4_rightFollow.setInverted(InvertType.FollowMaster);
 
@@ -80,11 +71,7 @@ public class NewDrive extends SubsystemBase {
     falcon2_leftFollow.follow(falcon1_leftLead);
     falcon4_rightFollow.follow(falcon3_rightLead);
 
-    // NOTE: setSensorPhase() does nothing on TalonFX motors as the encoders 
-    // are integrated, and can cannot be out of phase with the motor. 
-    falcon1_leftLead.setSensorPhase(true);
-    falcon3_rightLead.setSensorPhase(true);
-
+    
     // default feedback sensor
     falcon1_leftLead.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, DriveConstants.driveTimeout);
     falcon3_rightLead.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, DriveConstants.driveTimeout);
@@ -92,8 +79,8 @@ public class NewDrive extends SubsystemBase {
     m_drive.setRightSideInverted(false);
 
     // TODO: only set open loop ramp AFTER auton, so not to conflict with path follow
-    falcon1_leftLead.configOpenloopRamp(0.2);
-    falcon3_rightLead.configOpenloopRamp(0.2);
+    falcon1_leftLead.configOpenloopRamp(.5);
+    falcon3_rightLead.configOpenloopRamp(.5);
 
     resetEncoders();
     m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
@@ -110,7 +97,7 @@ public class NewDrive extends SubsystemBase {
 
     // log drive train and data to Smartdashboard
     /* Display 9-axis Heading (requires magnetometer calibration to be useful) */
-    SmartDashboard.putNumber("IMU_FusedHeading", RobotContainer.m_hopper.getFHeading());
+    SmartDashboard.putNumber("IMU_FusedHeading", pigeon.getFusedHeading());
     // NOTE: call getFusedHeading(FusionStatus) to detect gyro errors
 
     // report the wheel speed, position, and pose
@@ -317,11 +304,13 @@ public class NewDrive extends SubsystemBase {
    m_drive.setMaxOutput(maxOutput);
  }
 
+ 
+ 
  /**
   * Zeroes the heading of the robot.
   */
  public void zeroHeading() {
-    RobotContainer.m_hopper.resetDirection();
+   pigeon.setFusedHeading(0);
  }
 
  /**
@@ -331,71 +320,27 @@ public class NewDrive extends SubsystemBase {
   */
  public double getHeading() {
    // m_gyro.getFusedHeading() returns degrees
-   return Math.IEEEremainder(RobotContainer.m_hopper.getFHeading(), 360) * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+   return Math.IEEEremainder(pigeon.getFusedHeading(), 360) * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
  }
 
+ /**
+  * Returns the turn rate of the robot.
+  *
+  * @return The turn rate of the robot, in degrees per second
+  */
+  public double getTurnRate() {
+    double [] xyz_dps = new double [3];
+    // getRawGyro returns in degrees/second
+    pigeon.getRawGyro(xyz_dps);
+    return xyz_dps[2] * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+  }
 
  /**
   * Enable current limiting.
   *
   * @param current limit
   */
- public void setVoltageLimit(double maxV) {
-   if (maxV > 12.0) {
-     maxV = 12.0;
-   }
-   if (maxV < 2.0) {
-     maxV = 2.0;
-   }
-   falcon1_leftLead.configVoltageCompSaturation(maxV);
-   falcon1_leftLead.enableVoltageCompensation(true);
-   falcon2_leftFollow.configVoltageCompSaturation(maxV);
-   falcon2_leftFollow.enableVoltageCompensation(true);
-   falcon3_rightLead.configVoltageCompSaturation(maxV);
-   falcon3_rightLead.enableVoltageCompensation(true);
-   falcon4_rightFollow.configVoltageCompSaturation(maxV);
-   falcon4_rightFollow.enableVoltageCompensation(true);
- }
 
- /**
-  * configOpenLoopRampRate() - Set minimum desired time to go from neutral to full throttle. 
-  *      A value of '0' will disable the ramp.
-  *  
-  * @param secondsFromNeutralToFull
-  */
- public void configOpenLoopRampRate(double secondsFromNeutralToFull) {
-   falcon1_leftLead.configOpenloopRamp(secondsFromNeutralToFull, DriveConstants.driveTimeout);
-   falcon2_leftFollow.configOpenloopRamp(secondsFromNeutralToFull, DriveConstants.driveTimeout);
-   falcon3_rightLead.configOpenloopRamp(secondsFromNeutralToFull, DriveConstants.driveTimeout);
-   falcon4_rightFollow.configOpenloopRamp(secondsFromNeutralToFull, DriveConstants.driveTimeout);
- }
-
- /**
-  * Enable current limiting.
-  *
-  * @param current limit
-  */
- public void setCurrentLimit(SupplyCurrentLimitConfiguration limit) {
-   falcon1_leftLead.configSupplyCurrentLimit(limit);
-   falcon2_leftFollow.configSupplyCurrentLimit(limit);
-   falcon2_leftFollow.configSupplyCurrentLimit(limit);
-   falcon4_rightFollow.configSupplyCurrentLimit(limit);
- }
-
- /**
-  * Enable default current limiting for drivetrain.
-  */
- public void enableCurrentLimit() {
-   setCurrentLimit(m_limit);
- }
-
- /**
-  * Disable current limiting for drivetrain.
-  */
- public void disableCurrentLimit() {
-   // not completely disabled, 4x80 amps is 240Amps, which is almost 100% of the battery output
-   setCurrentLimit(new SupplyCurrentLimitConfiguration(true, 80, 60, 1));
- }
 
  public boolean getDriveInvert() {
    return driveInvert;

@@ -25,6 +25,8 @@ public final class Constants {
         public static final int kRightMasterPort = 2;
         public static final int kRightSlavePort = 1;
 
+        public static final int kPigeonPort = 12;
+
         public static final int driveTimeout = 30;
 
         public static final int kEncoderCPR = 2048; //https://docs.ctre-phoenix.com/en/latest/ch14_MCSensor.html
@@ -49,8 +51,8 @@ public final class Constants {
         public static final double kRamseteB = 2;
         public static final double kRamseteZeta = 0.7;
 
-        public static final double kMaxSpeedMetersPerSecond = 2;
-        public static final double kMaxAccelerationMetersPerSecondSquared = 2;
+        public static final double kMaxSpeedMetersPerSecond = 1;
+        public static final double kMaxAccelerationMetersPerSecondSquared = 1;
 
         public static final boolean kGyroReversed = true;
 

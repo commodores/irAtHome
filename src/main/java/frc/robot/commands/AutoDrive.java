@@ -26,7 +26,7 @@ public class AutoDrive extends CommandBase {
   public void initialize() {
     //RobotContainer.m_drivetrain.zeroSensors();
     RobotContainer.m_drivetrain.resetEncoders();
-    currentHeading = RobotContainer.m_hopper.getDirection();
+    currentHeading = RobotContainer.m_drivetrain.getHeading();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -34,11 +34,11 @@ public class AutoDrive extends CommandBase {
   public void execute() {
     if(distance > 0){
       //drive forward
-      double pTerm = DriveConstants.kDriveTrainGain * (currentHeading - RobotContainer.m_hopper.getDirection());
+      double pTerm = DriveConstants.kDriveTrainGain * (currentHeading - RobotContainer.m_drivetrain.getHeading());
       RobotContainer.m_drivetrain.tankDriveVolts(-speed - pTerm, -speed + pTerm);
     } else {
       // drive reverse
-      double pTerm = DriveConstants.kDriveTrainGain * (currentHeading - RobotContainer.m_hopper.getDirection());
+      double pTerm = DriveConstants.kDriveTrainGain * (currentHeading - RobotContainer.m_drivetrain.getHeading());
       RobotContainer.m_drivetrain.tankDriveVolts(speed - pTerm, speed + pTerm);
     }
   }
