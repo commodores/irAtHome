@@ -72,11 +72,11 @@ public class DriveTrain extends SubsystemBase {
     right_falcons = new SpeedControllerGroup(rightMasterMotor, rightSlaveMotor);
 
     left_falcons.setInverted(true);
-    right_falcons.setInverted(false);
+    right_falcons.setInverted(true);
 
     m_drive = new DifferentialDrive(left_falcons, right_falcons);
 
-    m_drive.setRightSideInverted(false);
+    m_drive.setRightSideInverted(true);
 
     m_odometry = new DifferentialDriveOdometry(new Rotation2d(0));
 
@@ -105,7 +105,7 @@ public class DriveTrain extends SubsystemBase {
 
   public void tankDriveVolts(double leftVolts, double rightVolts) {
     left_falcons.setVoltage(leftVolts);
-    right_falcons.setVoltage(rightVolts);
+    right_falcons.setVoltage(-rightVolts);
     m_drive.feed();
   }  
 
