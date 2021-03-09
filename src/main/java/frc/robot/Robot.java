@@ -34,6 +34,8 @@ public class Robot extends TimedRobot {
     new Thread(()-> {
       UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
     }).start();
+
+    RobotContainer.m_drivetrain.zeroSensors();
   }
 
   /**
