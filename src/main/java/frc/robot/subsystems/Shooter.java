@@ -65,8 +65,8 @@ public class Shooter extends SubsystemBase {
   }
 
   public void LongShot(){
-    leftServo.setPosition(.6);
-    rightServo.setPosition(.6);
+    leftServo.setPosition(.63);
+    rightServo.setPosition(.63);
   }
 
   public double getAverageSpeed() {

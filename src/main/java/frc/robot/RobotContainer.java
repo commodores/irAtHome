@@ -94,7 +94,7 @@ public class RobotContainer {
 
     new JoystickButton(m_driverController, Button.kBumperLeft.value)
       .whenPressed(() -> m_shooter.setRPM(2000))
-      .whenReleased(() -> m_shooter.setRPM(1000));
+      .whenReleased(() -> m_shooter.setRPM(-1));
 
     new JoystickButton(m_driverController, Button.kBack.value)
       .whenPressed(() -> m_shooter.setRPM(2350))
@@ -109,11 +109,11 @@ public class RobotContainer {
       .whenReleased(() -> m_shooter.setRPM(-1));
 
     new JoystickButton(m_driverController, Button.kX.value)
-      .whenPressed(() -> m_hopper.runFeed(.5))
+      .whenPressed(() -> m_hopper.runFeed(.45))
       .whenReleased(() -> m_hopper.stopFeeder());
 
     new JoystickButton(m_driverController, Button.kY.value)
-      .whenPressed(() -> m_hopper.runFeed(-.5))
+      .whenPressed(() -> m_hopper.runFeed(-.45))
       .whenReleased(() -> m_hopper.stopFeeder());
 
     new JoystickButton(rightJoystick, 5)
@@ -238,30 +238,18 @@ public class RobotContainer {
     );
 
     Trajectory barrelRacing = TrajectoryGenerator.generateTrajectory(
-    new Pose2d(1.143, 1.905, new Rotation2d(0)), 
+    new Pose2d(0, 0, new Rotation2d(0)),  //new Pose2d(1.143, 1.905, new Rotation2d(0)), 
     List.of(
-      new Translation2d(1.651,2.032),
-      new Translation2d(3.048,2.032), 
-      new Translation2d(4.064,1.905),
-      new Translation2d(4.318,1.524),
-      new Translation2d(3.302,1.524),
-      new Translation2d(4.064,1.905),
-      new Translation2d(5.842,2.159),
-      new Translation2d(6.858,3.048),
-      new Translation2d(6.604,3.683),
-      new Translation2d(5.588,3.302),
-      new Translation2d(5.842,2.159),
-      new Translation2d(6.858,1.016),
-      new Translation2d(8.001,1.270),
-      new Translation2d(8.255,1.651),
-      new Translation2d(6.858,2.032),
-      new Translation2d(5.842,2.159),
-      new Translation2d(4.064,2.540)),
-    new Pose2d(1.143, 1.905, new Rotation2d(Math.PI)), 
+      new Translation2d(4, 0),
+      new Translation2d(5, -1),
+      new Translation2d(3.5, -2),
+      new Translation2d(3, -1),
+      new Translation2d(3, 0)),
+    new Pose2d(5, 0, new Rotation2d(0)), 
     config);
 
     RamseteCommand ramseteCommand = new RamseteCommand(
-        exampleTrajectory,
+        barrelRacing,
         m_drivetrain::getPose,
         new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
         new SimpleMotorFeedforward(DriveConstants.ksVolts,

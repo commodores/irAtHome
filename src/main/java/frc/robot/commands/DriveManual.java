@@ -39,7 +39,7 @@ public class DriveManual extends CommandBase {
       rotation = 0;
     }
     
-    m_drivetrain.curvatureDrive(speed* .6, rotation* .5, quickTurn);
+    m_drivetrain.curvatureDrive(speed* .6919 , rotation* .5, quickTurn);
   }
 
   // Called once the command ends or is interrupted.
