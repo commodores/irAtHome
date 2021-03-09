@@ -20,22 +20,44 @@ public class AlignToTarget extends CommandBase {
     // Called just before this Command runs the first time
     @Override
     public void initialize() {
-      RobotContainer.m_drivetrain.resetDirection();
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     public void execute() {
 
-      setpoint = RobotContainer.m_limelight.getXAngle();
-
-      RobotContainer.m_drivetrain.tankDriveVolts(-setpoint * .1, setpoint * .1);
+      if(RobotContainer.m_limelight.isTargetVisible()){
+        if(RobotContainer.m_limelight.getXAngle()>=5){
+          RobotContainer.m_drivetrain.tankDriveVolts(1, -1);
+        }
+        else if(RobotContainer.m_limelight.getXAngle()>=3){
+          RobotContainer.m_drivetrain.tankDriveVolts(1, -1);
+        }
+        else if(RobotContainer.m_limelight.getXAngle()>=.75){
+          RobotContainer.m_drivetrain.tankDriveVolts(.85, -.85);
+        }
+        else if(RobotContainer.m_limelight.getXAngle()<=-5){
+          RobotContainer.m_drivetrain.tankDriveVolts(-1, 1);
+        }
+        else if(RobotContainer.m_limelight.getXAngle()<=-3){
+          RobotContainer.m_drivetrain.tankDriveVolts(-1, 1);
+        }
+        else if(RobotContainer.m_limelight.getXAngle()<=-.75){
+          RobotContainer.m_drivetrain.tankDriveVolts(-.85, .85);
+        }
+        else {
+          RobotContainer.m_drivetrain.tankDriveVolts(0, 0);
+        }
+      } else {
+        RobotContainer.m_drivetrain.tankDriveVolts(0, 0);
+      }
+     
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     public boolean isFinished() {
-      return RobotContainer.m_limelight.getXAngle() < 1 && RobotContainer.m_limelight.getXAngle() > -1;
+      return RobotContainer.m_limelight.getXAngle() < .75 && RobotContainer.m_limelight.getXAngle() > -.75;
     }
 
     // Called once after isFinished returns true

@@ -29,6 +29,7 @@ public class LimeLight extends SubsystemBase {
         distance = (ShooterConstants.ktargetHeight - ShooterConstants.klimeLightHeight)
                 / (Math.tan(Math.toRadians(ShooterConstants.kCameraAngle + getYAngle())));
         SmartDashboard.putNumber("Distance to Target", distance);
+        SmartDashboard.putNumber("X Angle", xAngle);
     }
 
     public boolean isTargetVisible() {

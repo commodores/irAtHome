@@ -96,16 +96,16 @@ public class RobotContainer {
       .whenPressed(() -> m_shooter.setRPM(2000))
       .whenReleased(() -> m_shooter.setRPM(-1));
 
-    new JoystickButton(m_driverController, Button.kBack.value)
-      .whenPressed(() -> m_shooter.setRPM(2350))
-      .whenReleased(() -> m_shooter.setRPM(-1));
+    //new JoystickButton(m_driverController, Button.kBack.value)
+    //  .whenPressed(() -> m_shooter.setRPM(2350))
+    //  .whenReleased(() -> m_shooter.setRPM(-1));
 
-    new JoystickButton(m_driverController, Button.kStart.value)
-      .whenPressed(() -> m_shooter.setRPM(3000))
-      .whenReleased(() -> m_shooter.setRPM(-1));
+    //new JoystickButton(m_driverController, Button.kStart.value)
+    //  .whenPressed(() -> m_shooter.setRPM(3000))
+    //  .whenReleased(() -> m_shooter.setRPM(-1));
 
       new JoystickButton(m_driverController, Button.kBumperRight.value)
-      .whileHeld(() -> m_shooter.setRPM(4400))
+      .whileHeld(() -> m_shooter.setRPM(2150))
       .whenReleased(() -> m_shooter.setRPM(-1));
 
     new JoystickButton(m_driverController, Button.kX.value)
@@ -142,11 +142,13 @@ public class RobotContainer {
       .whenPressed(()-> m_shooter.UnderGoal());
 
     new JoystickButton(rightJoystick, 1)
-    .whenPressed(new AlignToTarget())
-    .whenReleased(() -> m_drivetrain.tankDriveVolts(0.0, 0.0));
+      .whenPressed(new AlignToTarget());
 
-    new JoystickButton(rightJoystick, 4)
-    .whenPressed(new AutoDrive(2));
+    new JoystickButton(m_driverController, Button.kBack.value)
+      .whenPressed(new AutoDrive(2.95));
+
+    new JoystickButton(m_driverController, Button.kStart.value)
+    .whenPressed(new AutoDrive(-2.95));
   }
   private void initializeStartup()
   {
