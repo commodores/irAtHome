@@ -5,5 +5,5 @@
   "maxAcceleration": 2.0,
   "wheelBase": 0.59825,
   "gameName": "Barrel Racing Path",
-  "outputDir": "../../Documents/Commodores/irAtHome/src/main/deploy/paths"
+  "outputDir": "../deploy/paths"
 }

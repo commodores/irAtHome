@@ -4,60 +4,101 @@
 
 package frc.robot.commands;
 
+import java.util.List;
+
+import edu.wpi.first.wpilibj.controller.RamseteController;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.DriveConstants;
+import edu.wpi.first.wpilibj.controller.PIDController;
 
-public class AutoDrive extends CommandBase {
+public class AutoDrive extends SequentialCommandGroup {
   private double distance;
-  private double speed;
-  private double currentHeading;
 
-  /** Creates a new AutoDrive. */
-  public AutoDrive(double getDistance, double getSpeed) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.m_drivetrain);
-    distance = getDistance;
-    speed = getSpeed;
-  }
+  // Create a voltage constraint to ensure we don't accelerate too fast
+  DifferentialDriveVoltageConstraint autoVoltageConstraint =
+  new DifferentialDriveVoltageConstraint(
+      new SimpleMotorFeedforward(DriveConstants.ksVolts,
+                                 DriveConstants.kvVoltSecondsPerMeter,
+                                 DriveConstants.kaVoltSecondsSquaredPerMeter),
+      DriveConstants.kDriveKinematics,
+      10);
+  // Create config for trajectory
+  TrajectoryConfig config =
+    new TrajectoryConfig(DriveConstants.kMaxSpeedMetersPerSecond,
+                        DriveConstants.kMaxAccelerationMetersPerSecondSquared)
+        // Add kinematics to ensure max speed is actually obeyed
+        .setKinematics(DriveConstants.kDriveKinematics)
+        // Apply the voltage constraint
+        .addConstraint(autoVoltageConstraint);
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    //RobotContainer.m_drivetrain.zeroSensors();
-    RobotContainer.m_drivetrain.resetEncoders();
-    currentHeading = RobotContainer.m_drivetrain.getDirection();
-  }
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    if(distance > 0){
-      //drive forward
-      double pTerm = DriveConstants.kDriveTrainGain * (currentHeading - RobotContainer.m_drivetrain.getDirection());
-      RobotContainer.m_drivetrain.tankDriveVolts(-speed - pTerm, -speed + pTerm);
-    } else {
-      // drive reverse
-      double pTerm = DriveConstants.kDriveTrainGain * (currentHeading - RobotContainer.m_drivetrain.getDirection());
-      RobotContainer.m_drivetrain.tankDriveVolts(speed - pTerm, speed + pTerm);
-    }
-  }
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-    RobotContainer.m_drivetrain.tankDriveVolts(0, 0);
-  }
+  RamseteCommand ramseteCommand;
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(distance > 0){
-      //forward
-      return RobotContainer.m_drivetrain.getAverageDistance() > distance;
-    } else {
-      // reverse
-      return RobotContainer.m_drivetrain.getAverageDistance() < distance;
-    }
+    return ramseteCommand.isFinished();
   }
+
+  /** Creates a new AutoDrive. */
+  public AutoDrive(double getDistance) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(RobotContainer.m_drivetrain);
+    distance = getDistance;
+
+    if(distance < 0){
+      config.setReversed(true);
+      }
+      
+    // An example trajectory to follow.  All units in meters.
+    Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
+        // Start at the origin facing the +X direction
+        new Pose2d(0, 0, new Rotation2d(0)),
+        // Pass through these two interior waypoints, making an 's' curve path
+        List.of(
+            //new Translation2d(1, 0),
+            //new Translation2d(2, 0)
+        ),
+        // End 3 meters straight ahead of where we started, facing forward
+        new Pose2d((distance<0)?-distance:distance, 0, new Rotation2d(0)),
+        // Pass config
+        config
+    );
+
+    RamseteCommand ramseteCommand = new RamseteCommand(
+        exampleTrajectory,
+        RobotContainer.m_drivetrain::getPose,
+        new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
+        new SimpleMotorFeedforward(DriveConstants.ksVolts,
+                                   DriveConstants.kvVoltSecondsPerMeter,
+                                   DriveConstants.kaVoltSecondsSquaredPerMeter),
+        DriveConstants.kDriveKinematics,
+        RobotContainer.m_drivetrain::getWheelSpeeds,
+        new PIDController(DriveConstants.kPDriveVel, 0, 0),
+        new PIDController(DriveConstants.kPDriveVel, 0, 0),
+        // RamseteCommand passes volts to the callback
+        RobotContainer.m_drivetrain::tankDriveVolts,
+        RobotContainer.m_drivetrain
+    );
+
+    // Reset odometry to the starting pose of the trajectory.
+    RobotContainer.m_drivetrain.zeroSensors();
+
+    // Run path following command, then stop at the end.
+    addCommands(
+      ramseteCommand.andThen(() -> RobotContainer.m_drivetrain.tankDriveVolts(0, 0))
+    );
+
+    
+  }
+
 }

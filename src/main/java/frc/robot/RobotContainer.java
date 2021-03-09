@@ -146,7 +146,7 @@ public class RobotContainer {
     .whenReleased(() -> m_drivetrain.tankDriveVolts(0.0, 0.0));
 
     new JoystickButton(rightJoystick, 4)
-    .whenPressed(new AutoDrive(-2,.5));
+    .whenPressed(new AutoDrive(2));
   }
   private void initializeStartup()
   {
@@ -180,96 +180,21 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    /*
+    
     switch (m_autoChooser.getSelected())
     {
       case "forward1":
-        return new AutoDrive(1,.5)
+        return new AutoDrive(1)
         .withTimeout(5);
       default:
         System.out.println("\nError selecting autonomous command:\nCommand selected: " + m_autoChooser.getSelected() + "\n");
         return null;
     }
-    */
-
-    // Create a voltage constraint to ensure we don't accelerate too fast
-    var autoVoltageConstraint =
-        new DifferentialDriveVoltageConstraint(
-            new SimpleMotorFeedforward(DriveConstants.ksVolts,
-                                       DriveConstants.kvVoltSecondsPerMeter,
-                                       DriveConstants.kaVoltSecondsSquaredPerMeter),
-            DriveConstants.kDriveKinematics,
-            10);
-
-    // Create config for trajectory
-    TrajectoryConfig config =
-        new TrajectoryConfig(DriveConstants.kMaxSpeedMetersPerSecond,
-                            DriveConstants.kMaxAccelerationMetersPerSecondSquared)
-            // Add kinematics to ensure max speed is actually obeyed
-            .setKinematics(DriveConstants.kDriveKinematics)
-            // Apply the voltage constraint
-            .addConstraint(autoVoltageConstraint);
-
-    /*/ Pathweaver Testing
-
-    String trajectoryJSON = "paths/output/drivetocone.wpilib.json";
-    Trajectory trajectory = new Trajectory();
-    try {
-      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-    } catch (IOException ex) {
-      DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
-    }
-    */
-
-    // An example trajectory to follow.  All units in meters.
-    Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-        // Start at the origin facing the +X direction
-        new Pose2d(0, 0, new Rotation2d(0)),
-        // Pass through these two interior waypoints, making an 's' curve path
-        List.of(
-            new Translation2d(1, 1),
-            new Translation2d(2, -1)
-        ),
-        // End 3 meters straight ahead of where we started, facing forward
-        new Pose2d(3, 0, new Rotation2d(0)),
-        // Pass config
-        config
-    );
-
-    Trajectory barrelRacing = TrajectoryGenerator.generateTrajectory(
-    new Pose2d(0, 0, new Rotation2d(0)),  //new Pose2d(1.143, 1.905, new Rotation2d(0)), 
-    List.of(
-      new Translation2d(4, 0),
-      new Translation2d(5, -1),
-      new Translation2d(3.5, -2),
-      new Translation2d(3, -1),
-      new Translation2d(3, 0)),
-    new Pose2d(5, 0, new Rotation2d(0)), 
-    config);
-
-    RamseteCommand ramseteCommand = new RamseteCommand(
-        barrelRacing,
-        m_drivetrain::getPose,
-        new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
-        new SimpleMotorFeedforward(DriveConstants.ksVolts,
-                                   DriveConstants.kvVoltSecondsPerMeter,
-                                   DriveConstants.kaVoltSecondsSquaredPerMeter),
-        DriveConstants.kDriveKinematics,
-        m_drivetrain::getWheelSpeeds,
-        new PIDController(DriveConstants.kPDriveVel, 0, 0),
-        new PIDController(DriveConstants.kPDriveVel, 0, 0),
-        // RamseteCommand passes volts to the callback
-        m_drivetrain::tankDriveVolts,
-        m_drivetrain
-    );
-
-    // Reset odometry to the starting pose of the trajectory.
-    m_drivetrain.zeroSensors();
-
-    // Run path following command, then stop at the end.
-    return ramseteCommand.andThen(() -> m_drivetrain.tankDriveVolts(0, 0));
+    
   }
-
-
 }
+    
+    
+
+
+
