@@ -33,6 +33,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AlignToTarget;
 import frc.robot.commands.AutoDrive;
 import frc.robot.commands.DriveManual;
+import frc.robot.commands.FwdTrajectory;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
@@ -65,6 +66,23 @@ public class RobotContainer {
   public static final Joystick rightJoystick = new Joystick(OIConstants.kRightJoystickPort);
 
   private final SendableChooser<String> m_autoChooser = new SendableChooser<>();
+
+  // Create a voltage constraint to ensure we don't accelerate too fast
+  DifferentialDriveVoltageConstraint autoVoltageConstraint =
+  new DifferentialDriveVoltageConstraint(
+      new SimpleMotorFeedforward(DriveConstants.ksVolts,
+                                DriveConstants.kvVoltSecondsPerMeter,
+                                DriveConstants.kaVoltSecondsSquaredPerMeter),
+      DriveConstants.kDriveKinematics,
+      10);
+  // Create config for trajectory
+  TrajectoryConfig config =
+    new TrajectoryConfig(DriveConstants.kMaxSpeedMetersPerSecond,
+                        DriveConstants.kMaxAccelerationMetersPerSecondSquared)
+        // Add kinematics to ensure max speed is actually obeyed
+        .setKinematics(DriveConstants.kDriveKinematics)
+        // Apply the voltage constraint
+        .addConstraint(autoVoltageConstraint);
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -150,6 +168,7 @@ public class RobotContainer {
     new JoystickButton(m_driverController, Button.kStart.value)
     .whenPressed(new AutoDrive(-2.95));
   }
+
   private void initializeStartup()
   {
     m_drivetrain.setDefaultCommand(
@@ -176,6 +195,23 @@ public class RobotContainer {
     SmartDashboard.putData("Autonomous Command", m_autoChooser);
   }  
   
+  public Trajectory getMoveFwd(){
+    Trajectory moveFwd = TrajectoryGenerator.generateTrajectory(
+      // Start at the origin facing the +X direction
+      new Pose2d(0, 0, new Rotation2d(0)),
+      // Pass through these two interior waypoints, making an 's' curve path
+      List.of(
+          //new Translation2d(1, 0),
+          //new Translation2d(2, 0)
+      ),
+      // End 3 meters straight ahead of where we started, facing forward
+      new Pose2d(3, 0, new Rotation2d(0)),
+      // Pass config
+      config
+    );
+    return moveFwd;
+  }
+  
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
@@ -186,7 +222,7 @@ public class RobotContainer {
     switch (m_autoChooser.getSelected())
     {
       case "forward1":
-        return new AutoDrive(1)
+        return new FwdTrajectory(getMoveFwd())
         .withTimeout(5);
       default:
         System.out.println("\nError selecting autonomous command:\nCommand selected: " + m_autoChooser.getSelected() + "\n");
