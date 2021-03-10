@@ -111,7 +111,7 @@ public class RobotContainer {
       .whenPressed(() -> m_intake.retractIntake());
 
     new JoystickButton(m_driverController, Button.kBumperLeft.value)
-      .whenPressed(() -> m_shooter.setRPM(2000))
+      .whenPressed(() -> m_shooter.setRPM(1900))
       .whenReleased(() -> m_shooter.setRPM(-1));
 
     //new JoystickButton(m_driverController, Button.kBack.value)
@@ -123,7 +123,7 @@ public class RobotContainer {
     //  .whenReleased(() -> m_shooter.setRPM(-1));
 
       new JoystickButton(m_driverController, Button.kBumperRight.value)
-      .whileHeld(() -> m_shooter.setRPM(2150))
+      .whileHeld(() -> m_shooter.setRPM(2000))
       .whenReleased(() -> m_shooter.setRPM(-1));
 
     new JoystickButton(m_driverController, Button.kX.value)
@@ -133,6 +133,9 @@ public class RobotContainer {
     new JoystickButton(m_driverController, Button.kY.value)
       .whenPressed(() -> m_hopper.runFeed(-.45))
       .whenReleased(() -> m_hopper.stopFeeder());
+
+    new JoystickButton(rightJoystick, 4)
+      .whenPressed(()  -> m_shooter.blueAlt());
 
     new JoystickButton(rightJoystick, 5)
       .whenPressed(() -> m_hopper.runHopper(.5))
@@ -184,32 +187,44 @@ public class RobotContainer {
   private void initializeAutoChooser()
   {
     /* Add options (which autonomous commands can be selected) to chooser. */
-    m_autoChooser.setDefaultOption("Just Choot 'em'", "simpleShoot");
-    m_autoChooser.addOption("Drive forward off line", "forward1");
-    m_autoChooser.addOption("Drive reverse off line", "reverse1");
-    m_autoChooser.addOption("6 Balls is nuts!!!", "sixBall");
-    //m_autoChooser.addOption("Three Ball", "threeBall");
-    //m_autoChooser.addOption("Six Ball", "sixBall");
+    m_autoChooser.setDefaultOption("Do Nothing", "doNothing");
+    m_autoChooser.addOption("Slalom", "slalom");
 
     /* Display chooser on SmartDashboard for operators to select which autonomous command to run during the auto period. */
     SmartDashboard.putData("Autonomous Command", m_autoChooser);
   }  
   
-  public Trajectory getMoveFwd(){
-    Trajectory moveFwd = TrajectoryGenerator.generateTrajectory(
+  public Trajectory getSlalom(){
+    Trajectory slalom = TrajectoryGenerator.generateTrajectory(
       // Start at the origin facing the +X direction
       new Pose2d(0, 0, new Rotation2d(0)),
       // Pass through these two interior waypoints, making an 's' curve path
       List.of(
-          //new Translation2d(1, 0),
-          //new Translation2d(2, 0)
+          new Translation2d(.75, .25),
+          new Translation2d(1, 1),
+          new Translation2d(1.75, 1.75),
+          new Translation2d(4.75, 1.75),
+          new Translation2d(5.5, 1.25),
+          new Translation2d(6, .5),
+          new Translation2d(6.75, 0),
+          new Translation2d(7.5, .85),
+          new Translation2d(6.75, 1.5),
+          new Translation2d(6, 1),
+          new Translation2d(5.5, -.25),
+          new Translation2d(4.75, -.5),
+          new Translation2d(1.75, -.5),
+          new Translation2d(1.25, -.25),
+          new Translation2d(.75, .25),
+          new Translation2d(.5, .5),
+          new Translation2d(.25, .75)
+
       ),
       // End 3 meters straight ahead of where we started, facing forward
-      new Pose2d(3, 0, new Rotation2d(0)),
+      new Pose2d(0, 1, new Rotation2d(180)),
       // Pass config
       config
     );
-    return moveFwd;
+    return slalom;
   }
   
   /**
@@ -221,9 +236,8 @@ public class RobotContainer {
     
     switch (m_autoChooser.getSelected())
     {
-      case "forward1":
-        return new FwdTrajectory(getMoveFwd())
-        .withTimeout(5);
+      case "slalom":
+        return new FwdTrajectory(getSlalom());
       default:
         System.out.println("\nError selecting autonomous command:\nCommand selected: " + m_autoChooser.getSelected() + "\n");
         return null;

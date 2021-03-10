@@ -108,7 +108,7 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void tankDriveVolts(double leftVolts, double rightVolts) {
-    left_falcons.setVoltage(leftVolts*.98);
+    left_falcons.setVoltage(leftVolts);
     right_falcons.setVoltage(-rightVolts);
     m_drive.feed();
   }  
