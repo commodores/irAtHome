@@ -36,7 +36,7 @@ import frc.robot.commands.AlignToTarget;
 import frc.robot.commands.AutoDrive;
 import frc.robot.commands.BlueZone;
 import frc.robot.commands.DriveManual;
-import frc.robot.commands.FwdTrajectory;
+import frc.robot.commands.RunTrajectory;
 import frc.robot.commands.GreenZone;
 import frc.robot.commands.KillSwitch;
 import frc.robot.commands.QuickShot;
@@ -50,6 +50,7 @@ import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.VelocityShooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -89,6 +90,16 @@ public class RobotContainer {
                         DriveConstants.kMaxAccelerationMetersPerSecondSquared)
         // Add kinematics to ensure max speed is actually obeyed
         .setKinematics(DriveConstants.kDriveKinematics)
+        // Apply the voltage constraint
+        .addConstraint(autoVoltageConstraint);
+
+  // Create config for trajectory
+  TrajectoryConfig configBackwards =
+    new TrajectoryConfig(DriveConstants.kMaxSpeedMetersPerSecond,
+                        DriveConstants.kMaxAccelerationMetersPerSecondSquared)
+        // Add kinematics to ensure max speed is actually obeyed
+        .setKinematics(DriveConstants.kDriveKinematics)
+        .setReversed(true)
         // Apply the voltage constraint
         .addConstraint(autoVoltageConstraint);
   
@@ -206,12 +217,13 @@ public class RobotContainer {
     m_autoChooser.setDefaultOption("Do Nothing", "doNothing");
     m_autoChooser.addOption("Slalom", "slalom");
     m_autoChooser.addOption("Barrel Racing", "barrel");
+    m_autoChooser.addOption("Bounce Path", "bounce");
 
     /* Display chooser on SmartDashboard for operators to select which autonomous command to run during the auto period. */
     SmartDashboard.putData("Autonomous Command", m_autoChooser);
   }  
   
-  public Trajectory getSlalom(){
+  public Trajectory getSlalomTest(){
     Trajectory slalom = TrajectoryGenerator.generateTrajectory(
       // Start at the origin facing the +X direction
       new Pose2d(0, 0, new Rotation2d(0)),
@@ -244,7 +256,7 @@ public class RobotContainer {
     return slalom;
   }
 
-  public Trajectory getSlalomTest(){
+  public Trajectory getSlalom(){
     Trajectory slalom = TrajectoryGenerator.generateTrajectory(
       // Start
       new Pose2d(Units.feetToMeters(3.5), Units.feetToMeters(-5), new Rotation2d(0)),
@@ -259,7 +271,7 @@ public class RobotContainer {
           new Translation2d(Units.feetToMeters(19.98), Units.feetToMeters(-5.1)),
           new Translation2d(Units.feetToMeters(9.96), Units.feetToMeters(-5.01))
       ),
-      new Pose2d(Units.feetToMeters(5.34), Units.feetToMeters(-.33), new Rotation2d(Math.PI / 2)),
+      new Pose2d(Units.feetToMeters(5.34), Units.feetToMeters(-.33), new Rotation2d(Math.PI)),
       config
     );
     return slalom;
@@ -291,6 +303,54 @@ public class RobotContainer {
     config);
     return barrel;
   }
+
+  public Trajectory getBounce1(){
+    Trajectory bounce1 = TrajectoryGenerator.generateTrajectory(
+      // Start
+      new Pose2d(Units.feetToMeters(2.5), Units.feetToMeters(0), new Rotation2d(0)), 
+      List.of(
+        new Translation2d(Units.feetToMeters(5),Units.feetToMeters(0))
+      ),
+    new Pose2d(Units.feetToMeters(7.5), Units.feetToMeters(0), new Rotation2d(0)), 
+    config);
+    return bounce1;
+  }
+
+  public Trajectory getBounce2(){
+    Trajectory bounce2 = TrajectoryGenerator.generateTrajectory(
+      // Start
+      new Pose2d(Units.feetToMeters(7.5), Units.feetToMeters(0), new Rotation2d(180)), 
+      List.of(
+        new Translation2d(Units.feetToMeters(5),Units.feetToMeters(0))
+      ),
+    new Pose2d(Units.feetToMeters(2.5), Units.feetToMeters(0), new Rotation2d(180)), 
+    configBackwards);
+    return bounce2;
+  }
+
+  public Trajectory getBounce3(){
+    Trajectory bounce3 = TrajectoryGenerator.generateTrajectory(
+      // Start
+      new Pose2d(Units.feetToMeters(2.5), Units.feetToMeters(0), new Rotation2d(0)), 
+      List.of(
+        new Translation2d(Units.feetToMeters(5),Units.feetToMeters(0))
+      ),
+    new Pose2d(Units.feetToMeters(7.5), Units.feetToMeters(0), new Rotation2d(0)), 
+    config);
+    return bounce3;
+  }
+
+  public Trajectory getBounce4(){
+    Trajectory bounce4 = TrajectoryGenerator.generateTrajectory(
+      // Start
+      new Pose2d(Units.feetToMeters(7.5), Units.feetToMeters(0), new Rotation2d(180)), 
+      List.of(
+        new Translation2d(Units.feetToMeters(5),Units.feetToMeters(0))
+      ),
+    new Pose2d(Units.feetToMeters(2.5), Units.feetToMeters(0), new Rotation2d(180)), 
+    configBackwards);
+    return bounce4;
+  }
   
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -303,10 +363,13 @@ public class RobotContainer {
     {
       case "slalom":
         RobotContainer.m_drivetrain.setPos(Units.feetToMeters(3.5), Units.feetToMeters(-5));
-        return new FwdTrajectory(getSlalomTest());
+        return new RunTrajectory(getSlalom());
       case "barrel":
         RobotContainer.m_drivetrain.setPos(Units.feetToMeters(2.5), 0);
-        return new FwdTrajectory(getBarrelRacing());
+        return new RunTrajectory(getBarrelRacing());
+      case "bounce":
+        RobotContainer.m_drivetrain.setPos(Units.feetToMeters(2.5), 0);
+        return new SequentialCommandGroup(new RunTrajectory(getBounce1()), new RunTrajectory(getBounce2()), new RunTrajectory(getBounce3()), new RunTrajectory(getBounce4()));
       default:
         System.out.println("\nError selecting autonomous command:\nCommand selected: " + m_autoChooser.getSelected() + "\n");
         return null;
