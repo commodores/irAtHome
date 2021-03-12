@@ -38,7 +38,7 @@ public final class Constants {
         public static final double ksVolts = 0.699;
         public static final double kvVoltSecondsPerMeter = 2.36;
         public static final double kaVoltSecondsSquaredPerMeter = 0.22;
-        public static final double kPDriveVel = 2.24; //2.24;   // 2.29
+        public static final double kPDriveVel = 1.5; //2.24;   // 2.29
 
         public static final double kTrackwidthMeters = 0.59825;
         public static final DifferentialDriveKinematics kDriveKinematics =
@@ -49,8 +49,8 @@ public final class Constants {
         public static final double kRamseteB = 2;
         public static final double kRamseteZeta = 0.7;
 
-        public static final double kMaxSpeedMetersPerSecond = 1;
-        public static final double kMaxAccelerationMetersPerSecondSquared = .8;
+        public static final double kMaxSpeedMetersPerSecond = 1.5;
+        public static final double kMaxAccelerationMetersPerSecondSquared = 2;
 
         public static final boolean kGyroReversed = true;
 

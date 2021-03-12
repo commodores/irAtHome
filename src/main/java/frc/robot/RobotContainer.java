@@ -268,27 +268,26 @@ public class RobotContainer {
   public Trajectory getBarrelRacing(){
     Trajectory barrel = TrajectoryGenerator.generateTrajectory(
       // Start
-      new Pose2d(1.143, 1.905, new Rotation2d(0)), 
+      new Pose2d(Units.feetToMeters(2.5), Units.feetToMeters(0), new Rotation2d(0)), 
       List.of(
-        new Translation2d(1.651,2.032),
-        new Translation2d(3.048,2.032), 
-        new Translation2d(4.064,1.905),
-        new Translation2d(4.318,1.524),
-        new Translation2d(3.302,1.524),
-        new Translation2d(4.064,1.905),
-        new Translation2d(5.842,2.159),
-        new Translation2d(6.858,3.048),
-        new Translation2d(6.604,3.683),
-        new Translation2d(5.588,3.302),
-        new Translation2d(5.842,2.159),
-        new Translation2d(6.858,1.016),
-        new Translation2d(8.001,1.270),
-        new Translation2d(8.255,1.651),
-        new Translation2d(6.858,2.032),
-        new Translation2d(5.842,2.159),
-        new Translation2d(4.064,2.540)
+        new Translation2d(Units.feetToMeters(12.5),Units.feetToMeters(0)),
+        new Translation2d(Units.feetToMeters(16),Units.feetToMeters(-3)),
+        new Translation2d(Units.feetToMeters(13),Units.feetToMeters(-5.5)),
+        new Translation2d(Units.feetToMeters(10),Units.feetToMeters(-4)),
+        new Translation2d(Units.feetToMeters(10),Units.feetToMeters(-1)),
+        new Translation2d(Units.feetToMeters(18),Units.feetToMeters(-2)),
+        new Translation2d(Units.feetToMeters(23),Units.feetToMeters(2.5)),
+        new Translation2d(Units.feetToMeters(20),Units.feetToMeters(4)),
+        new Translation2d(Units.feetToMeters(17.5),Units.feetToMeters(4)),
+        new Translation2d(Units.feetToMeters(16),Units.feetToMeters(2.5)),
+        new Translation2d(Units.feetToMeters(18),Units.feetToMeters(-2)),
+        new Translation2d(Units.feetToMeters(22.5),Units.feetToMeters(-6)),
+        new Translation2d(Units.feetToMeters(27),Units.feetToMeters(-6)),
+        new Translation2d(Units.feetToMeters(28.5),Units.feetToMeters(-3)),
+        new Translation2d(Units.feetToMeters(23),Units.feetToMeters(-3))
+
       ),
-    new Pose2d(1.143, 1.905, new Rotation2d(Math.PI)), 
+    new Pose2d(Units.feetToMeters(2.5), Units.feetToMeters(-3), new Rotation2d(Math.PI)), 
     config);
     return barrel;
   }
@@ -306,7 +305,7 @@ public class RobotContainer {
         RobotContainer.m_drivetrain.setPos(Units.feetToMeters(3.5), Units.feetToMeters(-5));
         return new FwdTrajectory(getSlalomTest());
       case "barrel":
-        RobotContainer.m_drivetrain.setPos(1.143, 1.905);
+        RobotContainer.m_drivetrain.setPos(Units.feetToMeters(2.5), 0);
         return new FwdTrajectory(getBarrelRacing());
       default:
         System.out.println("\nError selecting autonomous command:\nCommand selected: " + m_autoChooser.getSelected() + "\n");
