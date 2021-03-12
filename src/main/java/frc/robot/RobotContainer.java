@@ -4,20 +4,13 @@
 
 package frc.robot;
 
-import java.io.IOException;
-import java.nio.file.Path;
 import java.util.List;
 
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.Ultrasonic.Unit;
 import edu.wpi.first.wpilibj.XboxController.Button;
-import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
@@ -27,7 +20,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.util.Units;
 import frc.robot.Constants.DriveConstants;
@@ -46,10 +38,8 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LimeLight;
-//import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.VelocityShooter;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -223,39 +213,6 @@ public class RobotContainer {
     SmartDashboard.putData("Autonomous Command", m_autoChooser);
   }  
   
-  public Trajectory getSlalomTest(){
-    Trajectory slalom = TrajectoryGenerator.generateTrajectory(
-      // Start at the origin facing the +X direction
-      new Pose2d(0, 0, new Rotation2d(0)),
-      // Pass through these two interior waypoints, making an 's' curve path
-      List.of(
-          new Translation2d(.75, .25),
-          new Translation2d(1, 1),
-          new Translation2d(1.75, 1.75),
-          new Translation2d(4.75, 1.75),
-          new Translation2d(5.5, 1.25),
-          new Translation2d(6, .5),
-          new Translation2d(6.75, 0),
-          new Translation2d(7.5, .85),
-          new Translation2d(6.75, 1.5),
-          new Translation2d(6, 1),
-          new Translation2d(5.5, -.25),
-          new Translation2d(4.75, -.5),
-          new Translation2d(1.75, -.5),
-          new Translation2d(1.25, -.25)
-          //new Translation2d(.65, .65)
-          //new Translation2d(.25, .65)
-          //new Translation2d(.25, .75)
-
-      ),
-      // End 3 meters straight ahead of where we started, facing forward
-      new Pose2d(.75, .65, new Rotation2d(m_drivetrain.getDirection())),
-      // Pass config
-      config
-    );
-    return slalom;
-  }
-
   public Trajectory getSlalom(){
     Trajectory slalom = TrajectoryGenerator.generateTrajectory(
       // Start
@@ -377,8 +334,3 @@ public class RobotContainer {
     
   }
 }
-    
-    
-
-
-
