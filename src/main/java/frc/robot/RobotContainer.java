@@ -276,11 +276,11 @@ public class RobotContainer {
   public Trajectory getBounce2(){
     Trajectory bounce2 = TrajectoryGenerator.generateTrajectory(
       // Start
-      new Pose2d(Units.feetToMeters(7.5), Units.feetToMeters(0), new Rotation2d(180)), 
+      new Pose2d(Units.feetToMeters(7.5), Units.feetToMeters(0), new Rotation2d(0)), 
       List.of(
         new Translation2d(Units.feetToMeters(5),Units.feetToMeters(0))
       ),
-    new Pose2d(Units.feetToMeters(2.5), Units.feetToMeters(0), new Rotation2d(180)), 
+    new Pose2d(Units.feetToMeters(2.5), Units.feetToMeters(0), new Rotation2d(0)), 
     configBackwards);
     return bounce2;
   }
@@ -300,11 +300,11 @@ public class RobotContainer {
   public Trajectory getBounce4(){
     Trajectory bounce4 = TrajectoryGenerator.generateTrajectory(
       // Start
-      new Pose2d(Units.feetToMeters(7.5), Units.feetToMeters(0), new Rotation2d(180)), 
+      new Pose2d(Units.feetToMeters(7.5), Units.feetToMeters(0), new Rotation2d(0)), 
       List.of(
         new Translation2d(Units.feetToMeters(5),Units.feetToMeters(0))
       ),
-    new Pose2d(Units.feetToMeters(2.5), Units.feetToMeters(0), new Rotation2d(180)), 
+    new Pose2d(Units.feetToMeters(2.5), Units.feetToMeters(0), new Rotation2d(0)), 
     configBackwards);
     return bounce4;
   }
