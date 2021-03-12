@@ -205,6 +205,7 @@ public class RobotContainer {
     /* Add options (which autonomous commands can be selected) to chooser. */
     m_autoChooser.setDefaultOption("Do Nothing", "doNothing");
     m_autoChooser.addOption("Slalom", "slalom");
+    m_autoChooser.addOption("Barrel Racing", "barrel");
 
     /* Display chooser on SmartDashboard for operators to select which autonomous command to run during the auto period. */
     SmartDashboard.putData("Autonomous Command", m_autoChooser);
@@ -247,7 +248,6 @@ public class RobotContainer {
     Trajectory slalom = TrajectoryGenerator.generateTrajectory(
       // Start
       new Pose2d(Units.feetToMeters(3.5), Units.feetToMeters(-5), new Rotation2d(0)),
-      // Pass through
       List.of(
           new Translation2d(Units.feetToMeters(7.56), Units.feetToMeters(-1.53)),
           new Translation2d(Units.feetToMeters(12.78), Units.feetToMeters(.33)),
@@ -259,12 +259,38 @@ public class RobotContainer {
           new Translation2d(Units.feetToMeters(19.98), Units.feetToMeters(-5.1)),
           new Translation2d(Units.feetToMeters(9.96), Units.feetToMeters(-5.01))
       ),
-      // End
       new Pose2d(Units.feetToMeters(5.34), Units.feetToMeters(-.33), new Rotation2d(Math.PI / 2)),
-      // Pass config
       config
     );
     return slalom;
+  }
+
+  public Trajectory getBarrelRacing(){
+    Trajectory barrel = TrajectoryGenerator.generateTrajectory(
+      // Start
+      new Pose2d(1.143, 1.905, new Rotation2d(0)), 
+      List.of(
+        new Translation2d(1.651,2.032),
+        new Translation2d(3.048,2.032), 
+        new Translation2d(4.064,1.905),
+        new Translation2d(4.318,1.524),
+        new Translation2d(3.302,1.524),
+        new Translation2d(4.064,1.905),
+        new Translation2d(5.842,2.159),
+        new Translation2d(6.858,3.048),
+        new Translation2d(6.604,3.683),
+        new Translation2d(5.588,3.302),
+        new Translation2d(5.842,2.159),
+        new Translation2d(6.858,1.016),
+        new Translation2d(8.001,1.270),
+        new Translation2d(8.255,1.651),
+        new Translation2d(6.858,2.032),
+        new Translation2d(5.842,2.159),
+        new Translation2d(4.064,2.540)
+      ),
+    new Pose2d(1.143, 1.905, new Rotation2d(Math.PI)), 
+    config);
+    return barrel;
   }
   
   /**
@@ -279,6 +305,9 @@ public class RobotContainer {
       case "slalom":
         RobotContainer.m_drivetrain.setPos(Units.feetToMeters(3.5), Units.feetToMeters(-5));
         return new FwdTrajectory(getSlalomTest());
+      case "barrel":
+        RobotContainer.m_drivetrain.setPos(1.143, 1.905);
+        return new FwdTrajectory(getBarrelRacing());
       default:
         System.out.println("\nError selecting autonomous command:\nCommand selected: " + m_autoChooser.getSelected() + "\n");
         return null;
