@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.Ultrasonic.Unit;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
@@ -28,12 +29,19 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
+import edu.wpi.first.wpilibj.util.Units;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AlignToTarget;
 import frc.robot.commands.AutoDrive;
+import frc.robot.commands.BlueZone;
 import frc.robot.commands.DriveManual;
 import frc.robot.commands.FwdTrajectory;
+import frc.robot.commands.GreenZone;
+import frc.robot.commands.KillSwitch;
+import frc.robot.commands.QuickShot;
+import frc.robot.commands.RedZone;
+import frc.robot.commands.YellowZone;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
@@ -174,6 +182,14 @@ public class RobotContainer {
 
   private void initializeStartup()
   {
+
+    SmartDashboard.putData("Green Zone", new GreenZone());
+    SmartDashboard.putData("Yellow Zone", new YellowZone());
+    SmartDashboard.putData("Blue Zone", new BlueZone());
+    SmartDashboard.putData("Red Zone", new RedZone());
+    SmartDashboard.putData("Quick Shot", new QuickShot());
+    SmartDashboard.putData("Kill Switch", new KillSwitch().withTimeout(.0001));
+
     m_drivetrain.setDefaultCommand(
       new DriveManual(m_drivetrain));
   }
@@ -213,14 +229,38 @@ public class RobotContainer {
           new Translation2d(5.5, -.25),
           new Translation2d(4.75, -.5),
           new Translation2d(1.75, -.5),
-          new Translation2d(1.25, -.25),
-          new Translation2d(.75, .25),
-          new Translation2d(.5, .5),
-          new Translation2d(.25, .75)
+          new Translation2d(1.25, -.25)
+          //new Translation2d(.65, .65)
+          //new Translation2d(.25, .65)
+          //new Translation2d(.25, .75)
 
       ),
       // End 3 meters straight ahead of where we started, facing forward
-      new Pose2d(0, 1, new Rotation2d(180)),
+      new Pose2d(.75, .65, new Rotation2d(m_drivetrain.getDirection())),
+      // Pass config
+      config
+    );
+    return slalom;
+  }
+
+  public Trajectory getSlalomTest(){
+    Trajectory slalom = TrajectoryGenerator.generateTrajectory(
+      // Start
+      new Pose2d(Units.feetToMeters(3.5), Units.feetToMeters(-5), new Rotation2d(0)),
+      // Pass through
+      List.of(
+          new Translation2d(Units.feetToMeters(7.56), Units.feetToMeters(-1.53)),
+          new Translation2d(Units.feetToMeters(12.78), Units.feetToMeters(.33)),
+          new Translation2d(Units.feetToMeters(18.54), Units.feetToMeters(.42)),
+          new Translation2d(Units.feetToMeters(22.44), Units.feetToMeters(-2.55)),
+          new Translation2d(Units.feetToMeters(25.35), Units.feetToMeters(-3.66)),
+          new Translation2d(Units.feetToMeters(29.49), Units.feetToMeters(.66)),
+          new Translation2d(Units.feetToMeters(23.52), Units.feetToMeters(1.83)),
+          new Translation2d(Units.feetToMeters(19.98), Units.feetToMeters(-5.1)),
+          new Translation2d(Units.feetToMeters(9.96), Units.feetToMeters(-5.01))
+      ),
+      // End
+      new Pose2d(Units.feetToMeters(5.34), Units.feetToMeters(-.33), new Rotation2d(Math.PI / 2)),
       // Pass config
       config
     );
@@ -237,7 +277,8 @@ public class RobotContainer {
     switch (m_autoChooser.getSelected())
     {
       case "slalom":
-        return new FwdTrajectory(getSlalom());
+        RobotContainer.m_drivetrain.setPos(Units.feetToMeters(3.5), Units.feetToMeters(-5));
+        return new FwdTrajectory(getSlalomTest());
       default:
         System.out.println("\nError selecting autonomous command:\nCommand selected: " + m_autoChooser.getSelected() + "\n");
         return null;

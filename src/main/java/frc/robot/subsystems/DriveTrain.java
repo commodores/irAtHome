@@ -129,11 +129,7 @@ public class DriveTrain extends SubsystemBase {
   public void zeroSensors() {
     resetEncoders();
     resetDirection();
-
-    m_odometry.resetPosition(
-      new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(0)),
-      Rotation2d.fromDegrees(0)
-    );
+    resetPose();    
   }
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
@@ -176,6 +172,20 @@ public class DriveTrain extends SubsystemBase {
 
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
+  }
+
+  public void setPos(double xloc, double yloc) {
+    m_odometry.resetPosition(
+      new Pose2d(xloc, yloc, Rotation2d.fromDegrees(0)),
+      Rotation2d.fromDegrees(0)
+    );
+  }
+
+  public void resetPose() {
+    m_odometry.resetPosition(
+      new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(0)),
+      Rotation2d.fromDegrees(0)
+    );
   }
 
   public void setMaxOutput(double maxOutput) {

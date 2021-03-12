@@ -51,7 +51,6 @@ public class FwdTrajectory extends CommandBase {
 
   @Override
     public void initialize() {
-        RobotContainer.m_drivetrain.zeroSensors();
         ramsete.initialize();
     }
 

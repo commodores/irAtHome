@@ -33,7 +33,7 @@ public class AlignToTarget extends CommandBase {
         else if(RobotContainer.m_limelight.getXAngle()>=3){
           RobotContainer.m_drivetrain.tankDriveVolts(1, -1);
         }
-        else if(RobotContainer.m_limelight.getXAngle()>=.75){
+        else if(RobotContainer.m_limelight.getXAngle()>=.5){
           RobotContainer.m_drivetrain.tankDriveVolts(.85, -.85);
         }
         else if(RobotContainer.m_limelight.getXAngle()<=-5){
@@ -42,7 +42,7 @@ public class AlignToTarget extends CommandBase {
         else if(RobotContainer.m_limelight.getXAngle()<=-3){
           RobotContainer.m_drivetrain.tankDriveVolts(-1, 1);
         }
-        else if(RobotContainer.m_limelight.getXAngle()<=-.75){
+        else if(RobotContainer.m_limelight.getXAngle()<=-.5){
           RobotContainer.m_drivetrain.tankDriveVolts(-.85, .85);
         }
         else {
@@ -57,7 +57,7 @@ public class AlignToTarget extends CommandBase {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     public boolean isFinished() {
-      return RobotContainer.m_limelight.getXAngle() < .75 && RobotContainer.m_limelight.getXAngle() > -.75;
+      return RobotContainer.m_limelight.getXAngle() < .5 && RobotContainer.m_limelight.getXAngle() > -.5;
     }
 
     // Called once after isFinished returns true
