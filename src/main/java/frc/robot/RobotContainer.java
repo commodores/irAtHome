@@ -218,17 +218,24 @@ public class RobotContainer {
       // Start
       new Pose2d(Units.feetToMeters(3.5), Units.feetToMeters(-5), new Rotation2d(0)),
       List.of(
-          new Translation2d(Units.feetToMeters(7.56), Units.feetToMeters(-1.53)),
-          new Translation2d(Units.feetToMeters(12.78), Units.feetToMeters(.33)),
-          new Translation2d(Units.feetToMeters(18.54), Units.feetToMeters(.42)),
-          new Translation2d(Units.feetToMeters(22.44), Units.feetToMeters(-2.55)),
-          new Translation2d(Units.feetToMeters(25.35), Units.feetToMeters(-3.66)),
-          new Translation2d(Units.feetToMeters(29.49), Units.feetToMeters(.66)),
-          new Translation2d(Units.feetToMeters(23.52), Units.feetToMeters(1.83)),
-          new Translation2d(Units.feetToMeters(19.98), Units.feetToMeters(-5.1)),
-          new Translation2d(Units.feetToMeters(9.96), Units.feetToMeters(-5.01))
+          new Translation2d(Units.feetToMeters(7.5), Units.feetToMeters(-2.5)),
+          new Translation2d(Units.feetToMeters(10), Units.feetToMeters(-.5)),
+          new Translation2d(Units.feetToMeters(13), Units.feetToMeters(.5)),
+          new Translation2d(Units.feetToMeters(17), Units.feetToMeters(.5)),
+          new Translation2d(Units.feetToMeters(20), Units.feetToMeters(-.5)),
+          new Translation2d(Units.feetToMeters(22.5), Units.feetToMeters(-2.5)),
+          new Translation2d(Units.feetToMeters(25), Units.feetToMeters(-5.5)),
+          new Translation2d(Units.feetToMeters(29), Units.feetToMeters(-2.5)),
+          new Translation2d(Units.feetToMeters(26), Units.feetToMeters(.5)),
+          new Translation2d(Units.feetToMeters(22.5), Units.feetToMeters(-2.5)),
+          new Translation2d(Units.feetToMeters(20), Units.feetToMeters(-6.5)),
+          new Translation2d(Units.feetToMeters(17), Units.feetToMeters(-7)),
+          new Translation2d(Units.feetToMeters(13), Units.feetToMeters(-7)),
+          new Translation2d(Units.feetToMeters(9), Units.feetToMeters(-6.5))
+          //new Translation2d(Units.feetToMeters(7.5), Units.feetToMeters(-2.5))
+
       ),
-      new Pose2d(Units.feetToMeters(5.34), Units.feetToMeters(-.33), new Rotation2d(Math.PI)),
+      new Pose2d(Units.feetToMeters(5), Units.feetToMeters(2.5), new Rotation2d(Math.PI / 2)),
       config
     );
     return slalom;
@@ -243,13 +250,13 @@ public class RobotContainer {
         new Translation2d(Units.feetToMeters(16),Units.feetToMeters(-3)),
         new Translation2d(Units.feetToMeters(13),Units.feetToMeters(-5.5)),
         new Translation2d(Units.feetToMeters(10),Units.feetToMeters(-4)),
-        new Translation2d(Units.feetToMeters(10),Units.feetToMeters(-1)),
+        new Translation2d(Units.feetToMeters(10),Units.feetToMeters(.5)),
         new Translation2d(Units.feetToMeters(18),Units.feetToMeters(-2)),
-        new Translation2d(Units.feetToMeters(23),Units.feetToMeters(2.5)),
+        new Translation2d(Units.feetToMeters(24),Units.feetToMeters(2.5)),
         new Translation2d(Units.feetToMeters(20),Units.feetToMeters(4)),
         new Translation2d(Units.feetToMeters(17.5),Units.feetToMeters(4)),
-        new Translation2d(Units.feetToMeters(16),Units.feetToMeters(2.5)),
-        new Translation2d(Units.feetToMeters(18),Units.feetToMeters(-2)),
+        new Translation2d(Units.feetToMeters(15),Units.feetToMeters(1.5)),
+        new Translation2d(Units.feetToMeters(17),Units.feetToMeters(-2)),
         new Translation2d(Units.feetToMeters(22.5),Units.feetToMeters(-6)),
         new Translation2d(Units.feetToMeters(27),Units.feetToMeters(-6)),
         new Translation2d(Units.feetToMeters(28.5),Units.feetToMeters(-3)),
