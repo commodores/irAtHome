@@ -29,7 +29,7 @@ public class DriveManual extends CommandBase {
 
     double speed = RobotContainer.m_driverController.getRawAxis(3) - RobotContainer.m_driverController.getRawAxis(2);
     double rotation = RobotContainer.m_driverController.getRawAxis(0);
-    boolean quickTurn = speed > -0.05 && speed < 0.05;
+    boolean quickTurn = speed > -0.08 && speed < 0.08;
 
     if( speed > -0.1 && speed < 0.1){
       speed = 0;
@@ -39,7 +39,7 @@ public class DriveManual extends CommandBase {
       rotation = 0;
     }
     
-    m_drivetrain.curvatureDrive(speed* .6919 , rotation* .5, quickTurn);
+    m_drivetrain.curvatureDrive(speed * .6 , rotation * .5, quickTurn);
   }
 
   // Called once the command ends or is interrupted.
