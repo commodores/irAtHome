@@ -36,6 +36,7 @@ public class Robot extends TimedRobot {
     }).start();
 
     RobotContainer.m_drivetrain.zeroSensors();
+    RobotContainer.m_shooter.LongShot();
   }
 
   /**

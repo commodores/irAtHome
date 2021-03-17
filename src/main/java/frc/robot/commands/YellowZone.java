@@ -21,8 +21,8 @@ public class YellowZone extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.m_shooter.whiteLineExtend();
-    RobotContainer.m_shooter.setRPM(2000);
+    RobotContainer.m_shooter.blueAlt();
+    RobotContainer.m_shooter.setRPM(1890);
   }
 
   // Called once the command ends or is interrupted.

@@ -22,7 +22,7 @@ public class BlueZone extends CommandBase {
   @Override
   public void execute() {
     RobotContainer.m_shooter.whiteLineExtend();;
-    RobotContainer.m_shooter.setRPM(1900);
+    RobotContainer.m_shooter.setRPM(1780);
   }
 
   // Called once the command ends or is interrupted.
