@@ -22,7 +22,7 @@ public class GreenZone extends CommandBase {
   @Override
   public void execute() {
     RobotContainer.m_shooter.GreenZone2();
-    RobotContainer.m_shooter.setRPM(1400);
+    RobotContainer.m_shooter.setRPM(1550);
   }
 
   // Called once the command ends or is interrupted.

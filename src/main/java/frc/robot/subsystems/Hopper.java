@@ -34,7 +34,7 @@ public class Hopper extends SubsystemBase {
 
     rightHopper.setInverted(false);
 
-    leftHopper.follow(rightHopper);
+    //leftHopper.follow(rightHopper);
 
     rightHopper.set(ControlMode.PercentOutput, 0.0);
 
@@ -45,10 +45,12 @@ public class Hopper extends SubsystemBase {
   //Commands For Hopper
   public void runHopper(double speed){
     rightHopper.set(ControlMode.PercentOutput, speed);
+    leftHopper.set(ControlMode.PercentOutput, speed * .75);
   }
 
   public void stopHopper(){
     rightHopper.set(ControlMode.PercentOutput, 0.0);
+    leftHopper.set(ControlMode.PercentOutput, 0.0);
   }
  
   //Commands For Feeder

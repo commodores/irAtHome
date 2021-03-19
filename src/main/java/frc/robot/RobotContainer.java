@@ -120,7 +120,7 @@ public class RobotContainer {
       .whenPressed(() -> m_intake.retractIntake());
 
     new JoystickButton(m_driverController, Button.kBumperLeft.value)
-      .whenPressed(() -> m_shooter.setRPM(1900))
+      .whenPressed(() -> m_shooter.setRPM(1780))
       .whenReleased(() -> m_shooter.setRPM(-1));
 
     //new JoystickButton(m_driverController, Button.kBack.value)
@@ -175,7 +175,7 @@ public class RobotContainer {
       .whenPressed(new AlignToTarget());
 
     new JoystickButton(m_driverController, Button.kBack.value)
-      .whenPressed(new AutoDrive(2.95));
+    .whenPressed(new AlignToTarget());
 
     new JoystickButton(m_driverController, Button.kStart.value)
     .whenPressed(new AutoDrive(-2.95));

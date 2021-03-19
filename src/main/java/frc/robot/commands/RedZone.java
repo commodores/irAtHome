@@ -22,7 +22,7 @@ public class RedZone extends CommandBase {
   @Override
   public void execute() {
     RobotContainer.m_shooter.LongShot();
-    RobotContainer.m_shooter.setRPM(1990);
+    RobotContainer.m_shooter.setRPM(2050);
   }
 
   // Called once the command ends or is interrupted.
