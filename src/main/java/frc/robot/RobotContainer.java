@@ -120,7 +120,7 @@ public class RobotContainer {
       .whenPressed(() -> m_intake.retractIntake());
 
     new JoystickButton(m_driverController, Button.kBumperLeft.value)
-      .whenPressed(() -> m_shooter.setRPM(1780))
+      .whenPressed(() -> m_shooter.setRPM(1800))
       .whenReleased(() -> m_shooter.setRPM(-1));
 
     //new JoystickButton(m_driverController, Button.kBack.value)
@@ -177,8 +177,7 @@ public class RobotContainer {
     new JoystickButton(m_driverController, Button.kBack.value)
     .whenPressed(new AlignToTarget());
 
-    new JoystickButton(m_driverController, Button.kStart.value)
-    .whenPressed(new AutoDrive(-2.95));
+    
   }
 
   private void initializeStartup()
@@ -231,7 +230,7 @@ public class RobotContainer {
           new Translation2d(Units.feetToMeters(20), Units.feetToMeters(-6.5)),
           new Translation2d(Units.feetToMeters(17), Units.feetToMeters(-7)),
           new Translation2d(Units.feetToMeters(13), Units.feetToMeters(-7)),
-          new Translation2d(Units.feetToMeters(9), Units.feetToMeters(-6.5))
+          new Translation2d(Units.feetToMeters(9), Units.feetToMeters(-6.25))
           //new Translation2d(Units.feetToMeters(7.5), Units.feetToMeters(-2.5))
 
       ),

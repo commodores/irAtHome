@@ -45,7 +45,7 @@ public class Hopper extends SubsystemBase {
   //Commands For Hopper
   public void runHopper(double speed){
     rightHopper.set(ControlMode.PercentOutput, speed);
-    leftHopper.set(ControlMode.PercentOutput, speed * .75);
+    leftHopper.set(ControlMode.PercentOutput, speed );
   }
 
   public void stopHopper(){
