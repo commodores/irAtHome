@@ -230,8 +230,7 @@ public class RobotContainer {
           new Translation2d(Units.feetToMeters(20), Units.feetToMeters(-6.5)),
           new Translation2d(Units.feetToMeters(17), Units.feetToMeters(-7)),
           new Translation2d(Units.feetToMeters(13), Units.feetToMeters(-7)),
-          new Translation2d(Units.feetToMeters(9), Units.feetToMeters(-6.25))
-          //new Translation2d(Units.feetToMeters(7.5), Units.feetToMeters(-2.5))
+          new Translation2d(Units.feetToMeters(7.5), Units.feetToMeters(-2.5))
 
       ),
       new Pose2d(Units.feetToMeters(5), Units.feetToMeters(2.5), new Rotation2d(Math.PI / 2)),
@@ -248,20 +247,21 @@ public class RobotContainer {
         
         new Translation2d(Units.feetToMeters(12.5),Units.feetToMeters(0)),//2
         new Translation2d(Units.feetToMeters(15.5),Units.feetToMeters(-3)),//3
-        new Translation2d(Units.feetToMeters(12.5),Units.feetToMeters(-5.5)),//4
-        new Translation2d(Units.feetToMeters(10),Units.feetToMeters(-5)),//5
-        new Translation2d(Units.feetToMeters(12.5),Units.feetToMeters(-.5)),//6
-        new Translation2d(Units.feetToMeters(20),Units.feetToMeters(-1)),//7
+        new Translation2d(Units.feetToMeters(12),Units.feetToMeters(-5.5)),//4
+        new Translation2d(Units.feetToMeters(9),Units.feetToMeters(-4)),//5
+        new Translation2d(Units.feetToMeters(12),Units.feetToMeters(0)),//6
+        new Translation2d(Units.feetToMeters(20),Units.feetToMeters(0)),//7
         new Translation2d(Units.feetToMeters(23),Units.feetToMeters(2)),//8
         new Translation2d(Units.feetToMeters(20),Units.feetToMeters(5)),//9
-        new Translation2d(Units.feetToMeters(16),Units.feetToMeters(1)),//10
+        new Translation2d(Units.feetToMeters(17),Units.feetToMeters(1)),//10
         new Translation2d(Units.feetToMeters(22),Units.feetToMeters(-5)),//11
-        new Translation2d(Units.feetToMeters(26),Units.feetToMeters(-6)),//12
-        new Translation2d(Units.feetToMeters(27.5),Units.feetToMeters(-3)),//13
-        new Translation2d(Units.feetToMeters(24),Units.feetToMeters(-.25))//14
+        new Translation2d(Units.feetToMeters(26),Units.feetToMeters(-6.5)),//12
+        new Translation2d(Units.feetToMeters(29),Units.feetToMeters(-4)),//13
+        new Translation2d(Units.feetToMeters(24),Units.feetToMeters(-.5))//14
+        
 
       ),
-    new Pose2d(Units.feetToMeters(2.5), Units.feetToMeters(-.5), new Rotation2d(Math.PI)), 
+    new Pose2d(Units.feetToMeters(0), Units.feetToMeters(-1), new Rotation2d(Math.PI)), 
     config);
     return barrel;
   }
