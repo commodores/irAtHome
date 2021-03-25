@@ -139,18 +139,18 @@ public class VelocityShooter extends SubsystemBase {
       }  
     
     public void blueAlt() {
-    leftServo.setPosition(.57);
-    rightServo.setPosition(.57);
+        leftServo.setPosition(.57);
+        rightServo.setPosition(.57);
     }
 
     public void whiteLineExtend(){
-    leftServo.setPosition(.55);
-    rightServo.setPosition(.55);
+        leftServo.setPosition(.55);
+        rightServo.setPosition(.55);
     }
 
     public void LongShot(){
-    leftServo.setPosition(.635);
-    rightServo.setPosition(.635);
+        leftServo.setPosition(.63);
+        rightServo.setPosition(.63);
     }
 
     public void GreenZone2(){

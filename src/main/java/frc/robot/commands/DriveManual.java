@@ -35,11 +35,13 @@ public class DriveManual extends CommandBase {
       speed = 0;
     }
 
-    if( rotation > -0.25 && rotation < 0.25){
+    if( rotation > -0.1 && rotation < 0.1){
       rotation = 0;
     }
     
-    m_drivetrain.curvatureDrive(speed * .9 , rotation * .7, quickTurn);
+    m_drivetrain.curvatureDrive(speed * .7, rotation * .3, true);
+
+    //m_drivetrain.arcadeDrive(speed, rotation);
   }
 
   // Called once the command ends or is interrupted.

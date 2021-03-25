@@ -38,7 +38,7 @@ public final class Constants {
         public static final double ksVolts = 0.699;
         public static final double kvVoltSecondsPerMeter = 2.36;
         public static final double kaVoltSecondsSquaredPerMeter = 0.22;
-        public static final double kPDriveVel = 1.12; //2.24;   // 2.29
+        public static final double kPDriveVel = .5; //2.24;   // 2.29
 
         public static final double kTrackwidthMeters = 0.5541772;//CAD //.5715 Tape //0.59825 From Char Tool
         public static final DifferentialDriveKinematics kDriveKinematics =
@@ -49,7 +49,7 @@ public final class Constants {
         public static final double kRamseteB = 2;
         public static final double kRamseteZeta = 0.7;
 
-        public static final double kMaxSpeedMetersPerSecond = 2.75; //3 Slalom
+        public static final double kMaxSpeedMetersPerSecond = 3; //3 Slalom
         public static final double kMaxAccelerationMetersPerSecondSquared = 1.75; //2 Slalom 
 
         public static final boolean kGyroReversed = true;
@@ -68,7 +68,7 @@ public final class Constants {
         public static final double kShooterVoltageRampRate = 0.2;
 
 
-        public static final double kShooterP = 0.09;
+        public static final double kShooterP = 0.1;
         public static final double kShooterI = 0.0;
         public static final double kShooterD = 0.0;
         public static final double kShooterF = 0.0665;

@@ -120,7 +120,7 @@ public class RobotContainer {
       .whenPressed(() -> m_intake.retractIntake());
 
     new JoystickButton(m_driverController, Button.kBumperLeft.value)
-      .whenPressed(() -> m_shooter.setRPM(1800))
+      .whenPressed(() -> m_shooter.setRPM(1850))
       .whenReleased(() -> m_shooter.setRPM(-1));
 
     //new JoystickButton(m_driverController, Button.kBack.value)
@@ -136,26 +136,26 @@ public class RobotContainer {
       .whenReleased(() -> m_shooter.setRPM(-1));
 
     new JoystickButton(m_driverController, Button.kX.value)
-      .whenPressed(() -> m_hopper.runFeed(.8))
+      .whenPressed(() -> m_hopper.runFeed(.75))
       .whenReleased(() -> m_hopper.stopFeeder());
 
     new JoystickButton(m_driverController, Button.kY.value)
-      .whenPressed(() -> m_hopper.runFeed(-.45))
+      .whenPressed(() -> m_hopper.runFeed(-.6))
       .whenReleased(() -> m_hopper.stopFeeder());
 
     new JoystickButton(rightJoystick, 4)
       .whenPressed(()  -> m_shooter.blueAlt());
 
     new JoystickButton(rightJoystick, 5)
-      .whenPressed(() -> m_hopper.runHopper(.5))
+      .whenPressed(() -> m_hopper.runHopper(1))
       .whenReleased(() -> m_hopper.stopHopper());
 
     new JoystickButton(rightJoystick, 6)
-      .whenPressed(() -> m_hopper.runHopper(-.5))
+      .whenPressed(() -> m_hopper.runHopper(-1))
       .whenReleased(() -> m_hopper.stopHopper());
 
     new JoystickButton(rightJoystick, 2)
-      .whileHeld(() -> m_intake.runIntake(.5))
+      .whileHeld(() -> m_intake.runIntake(.8))
       .whenReleased(() -> m_intake.stopIntake());
 
     new JoystickButton(rightJoystick, 3)
@@ -248,20 +248,20 @@ public class RobotContainer {
         new Translation2d(Units.feetToMeters(12.5),Units.feetToMeters(0)),//2
         new Translation2d(Units.feetToMeters(15.5),Units.feetToMeters(-3)),//3
         new Translation2d(Units.feetToMeters(12),Units.feetToMeters(-5.5)),//4
-        new Translation2d(Units.feetToMeters(9),Units.feetToMeters(-4)),//5
-        new Translation2d(Units.feetToMeters(12),Units.feetToMeters(0)),//6
-        new Translation2d(Units.feetToMeters(20),Units.feetToMeters(0)),//7
-        new Translation2d(Units.feetToMeters(23),Units.feetToMeters(2)),//8
-        new Translation2d(Units.feetToMeters(20),Units.feetToMeters(5)),//9
-        new Translation2d(Units.feetToMeters(17),Units.feetToMeters(1)),//10
+        new Translation2d(Units.feetToMeters(8),Units.feetToMeters(-2)),//5
+        new Translation2d(Units.feetToMeters(12),Units.feetToMeters(.5)),//6
+        new Translation2d(Units.feetToMeters(19),Units.feetToMeters(0)),//7
+        new Translation2d(Units.feetToMeters(22),Units.feetToMeters(3.5)),//8
+        new Translation2d(Units.feetToMeters(18),Units.feetToMeters(6)),//9
+        new Translation2d(Units.feetToMeters(16),Units.feetToMeters(1.5)),//10
         new Translation2d(Units.feetToMeters(22),Units.feetToMeters(-5)),//11
         new Translation2d(Units.feetToMeters(26),Units.feetToMeters(-6.5)),//12
-        new Translation2d(Units.feetToMeters(29),Units.feetToMeters(-4)),//13
+        new Translation2d(Units.feetToMeters(28),Units.feetToMeters(-4)),//13
         new Translation2d(Units.feetToMeters(24),Units.feetToMeters(-.5))//14
         
 
       ),
-    new Pose2d(Units.feetToMeters(0), Units.feetToMeters(-1), new Rotation2d(Math.PI)), 
+    new Pose2d(Units.feetToMeters(-1), Units.feetToMeters(-.5), new Rotation2d(Math.PI)), 
     config);
     return barrel;
   }
@@ -271,9 +271,9 @@ public class RobotContainer {
       // Start
       new Pose2d(Units.feetToMeters(2.5), Units.feetToMeters(0), new Rotation2d(0)), 
       List.of(
-        new Translation2d(Units.feetToMeters(5),Units.feetToMeters(2.5))
+        new Translation2d(Units.feetToMeters(6),Units.feetToMeters(1))
       ),
-    new Pose2d(Units.feetToMeters(5.5), Units.feetToMeters(5.5), new Rotation2d(90)), 
+    new Pose2d(Units.feetToMeters(7.5), Units.feetToMeters(3.5), new Rotation2d(-80)), 
     config);
     return bounce1;
   }
@@ -281,11 +281,13 @@ public class RobotContainer {
   public Trajectory getBounce2(){
     Trajectory bounce2 = TrajectoryGenerator.generateTrajectory(
       // Start
-      new Pose2d(Units.feetToMeters(5.5), Units.feetToMeters(5.5), new Rotation2d(90)), 
+      new Pose2d(Units.feetToMeters(7.5), Units.feetToMeters(3.5), new Rotation2d(-80)), 
       List.of(
-        new Translation2d(Units.feetToMeters(8),Units.feetToMeters(0))
+        new Translation2d(Units.feetToMeters(10),Units.feetToMeters(-2)),
+        new Translation2d(Units.feetToMeters(12.5), Units.feetToMeters(-5)),
+        new Translation2d(Units.feetToMeters(15),Units.feetToMeters(-2))
       ),
-    new Pose2d(Units.feetToMeters(12.5), Units.feetToMeters(-5), new Rotation2d(0)), 
+    new Pose2d(Units.feetToMeters(15), Units.feetToMeters(5), new Rotation2d(80)), 
     configBackwards);
     return bounce2;
   }
@@ -293,11 +295,13 @@ public class RobotContainer {
   public Trajectory getBounce3(){
     Trajectory bounce3 = TrajectoryGenerator.generateTrajectory(
       // Start
-      new Pose2d(Units.feetToMeters(2.5), Units.feetToMeters(0), new Rotation2d(0)), 
+      new Pose2d(Units.feetToMeters(15), Units.feetToMeters(5), new Rotation2d(80)), 
       List.of(
-        new Translation2d(Units.feetToMeters(5),Units.feetToMeters(0))
+        new Translation2d(Units.feetToMeters(15),Units.feetToMeters(-2)),
+        new Translation2d(Units.feetToMeters(19),Units.feetToMeters(-3.5)),
+        new Translation2d(Units.feetToMeters(22),Units.feetToMeters(-2))
       ),
-    new Pose2d(Units.feetToMeters(7.5), Units.feetToMeters(0), new Rotation2d(0)), 
+    new Pose2d(Units.feetToMeters(22.5), Units.feetToMeters(7), new Rotation2d(-80)), 
     config);
     return bounce3;
   }
@@ -305,11 +309,11 @@ public class RobotContainer {
   public Trajectory getBounce4(){
     Trajectory bounce4 = TrajectoryGenerator.generateTrajectory(
       // Start
-      new Pose2d(Units.feetToMeters(7.5), Units.feetToMeters(0), new Rotation2d(0)), 
+      new Pose2d(Units.feetToMeters(22.5), Units.feetToMeters(7), new Rotation2d(90)), 
       List.of(
-        new Translation2d(Units.feetToMeters(5),Units.feetToMeters(0))
+        //new Translation2d(Units.feetToMeters(22.5),Units.feetToMeters(3))
       ),
-    new Pose2d(Units.feetToMeters(2.5), Units.feetToMeters(0), new Rotation2d(0)), 
+    new Pose2d(Units.feetToMeters(30), Units.feetToMeters(5), new Rotation2d(180)), 
     configBackwards);
     return bounce4;
   }
