@@ -159,7 +159,7 @@ public class RobotContainer {
       .whenReleased(() -> m_intake.stopIntake());
 
     new JoystickButton(rightJoystick, 3)
-    .whileHeld(() -> m_intake.runIntake(-.5))
+    .whileHeld(() -> m_intake.runIntake(-.8))
     .whenReleased(() -> m_intake.stopIntake());
 
     new JoystickButton(rightJoystick, 7)
