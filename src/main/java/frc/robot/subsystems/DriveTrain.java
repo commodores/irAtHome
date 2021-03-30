@@ -74,8 +74,8 @@ public class DriveTrain extends SubsystemBase {
     left_falcons.setInverted(true);
     right_falcons.setInverted(true);
 
-    leftMasterMotor.configOpenloopRamp(2);
-    rightMasterMotor.configOpenloopRamp(2);
+    //leftMasterMotor.configOpenloopRamp(2);
+    //rightMasterMotor.configOpenloopRamp(2);
 
     m_drive = new DifferentialDrive(left_falcons, right_falcons);
 
