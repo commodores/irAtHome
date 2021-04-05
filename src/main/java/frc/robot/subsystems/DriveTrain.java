@@ -41,8 +41,8 @@ public class DriveTrain extends SubsystemBase {
 
   private DifferentialDriveOdometry m_odometry;
 
-  private SlewRateLimiter m_speedSlew = new SlewRateLimiter(6);
-  private SlewRateLimiter m_turnSlew = new SlewRateLimiter(6);
+  private SlewRateLimiter m_speedSlew = new SlewRateLimiter(1);
+  private SlewRateLimiter m_turnSlew = new SlewRateLimiter(1);
 
 
 
@@ -71,20 +71,20 @@ public class DriveTrain extends SubsystemBase {
     rightSlaveMotor.setNeutralMode(NeutralMode.Brake);
 
 
-    leftMasterMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 55, 20));
-    leftSlaveMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 55, 20));
-    rightMasterMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 55, 20));
-    rightSlaveMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 55, 20));
+    leftMasterMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 60, 55, 20));
+    leftSlaveMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 60, 55, 20));
+    rightMasterMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 60, 55, 20));
+    rightSlaveMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 60, 55, 20));
 
-    //leftMasterMotor.configVoltageCompSaturation(12);
-    //leftSlaveMotor.configVoltageCompSaturation(12);
-    //rightMasterMotor.configVoltageCompSaturation(12);
-    //rightSlaveMotor.configVoltageCompSaturation(12);
+    leftMasterMotor.configVoltageCompSaturation(12);
+    leftSlaveMotor.configVoltageCompSaturation(12);
+    rightMasterMotor.configVoltageCompSaturation(12);
+    rightSlaveMotor.configVoltageCompSaturation(12);
 
-    //leftMasterMotor.enableVoltageCompensation(true);
-    //leftSlaveMotor.enableVoltageCompensation(true);
-    //rightMasterMotor.enableVoltageCompensation(true);
-    //rightSlaveMotor.enableVoltageCompensation(true);
+    leftMasterMotor.enableVoltageCompensation(true);
+    leftSlaveMotor.enableVoltageCompensation(true);
+    rightMasterMotor.enableVoltageCompensation(true);
+    rightSlaveMotor.enableVoltageCompensation(true);
     
   
     leftMasterMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
@@ -96,8 +96,8 @@ public class DriveTrain extends SubsystemBase {
     left_falcons.setInverted(true);
     right_falcons.setInverted(true);
 
-    leftMasterMotor.configOpenloopRamp(.1);
-    rightMasterMotor.configOpenloopRamp(.1);
+    leftMasterMotor.configOpenloopRamp(.2);
+    rightMasterMotor.configOpenloopRamp(.2);
 
     m_drive = new DifferentialDrive(left_falcons, right_falcons);
 
@@ -141,6 +141,10 @@ public class DriveTrain extends SubsystemBase {
 
   public void curvatureDrive(double speed, double rotation, boolean quickturn){
     m_drive.curvatureDrive(m_speedSlew.calculate(speed), m_turnSlew.calculate(rotation), quickturn);
+  }
+
+  public void arcadeMode(double speed, double rotation){
+    m_drive.arcadeDrive(m_speedSlew.calculate(speed), m_turnSlew.calculate(rotation));
   }
 
   public void resetEncoders() {

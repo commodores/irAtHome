@@ -35,15 +35,17 @@ public class DriveManual extends CommandBase {
     double rotation = RobotContainer.m_driverController.getRawAxis(0);
     boolean quickTurn = speed > -0.1 && speed < 0.1;
 
-    if( speed > -0.1 && speed < 0.1){
-      speed = 0;
-    }
+    //if( speed > -0.1 && speed < 0.1){
+    //  speed = 0;
+    //}
 
-    if( rotation > -0.1 && rotation < 0.1){
-      rotation = 0;
-    }
+    //if( rotation > -0.1 && rotation < 0.1){
+    //  rotation = 0;
+    //}
     
     m_drivetrain.curvatureDrive(speed, rotation, true);
+
+    //m_drivetrain.arcadeDrive(speed, rotation*.5);
 
   }
 
