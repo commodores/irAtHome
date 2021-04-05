@@ -28,31 +28,23 @@ public class DriveManual extends CommandBase {
   @Override
   public void execute() {
 
-    SlewRateLimiter xFilter = new SlewRateLimiter(0.5);
-    SlewRateLimiter ltFilter = new SlewRateLimiter(0.5);
-    SlewRateLimiter rtFilter = new SlewRateLimiter(0.5);
-
-    double leftTrigger = ltFilter.calculate(RobotContainer.m_driverController.getRawAxis(2));
-    double rightTrigger = rtFilter.calculate(RobotContainer.m_driverController.getRawAxis(3));
-
+    double leftTrigger = RobotContainer.m_driverController.getRawAxis(2);
+    double rightTrigger = RobotContainer.m_driverController.getRawAxis(3);
 
     double speed = rightTrigger - leftTrigger;
-    double rotation = xFilter.calculate(RobotContainer.m_driverController.getRawAxis(0));
+    double rotation = RobotContainer.m_driverController.getRawAxis(0);
     boolean quickTurn = speed > -0.1 && speed < 0.1;
 
-    //if( speed > -0.1 && speed < 0.1){
-    //  speed = 0;
-    //}
+    if( speed > -0.1 && speed < 0.1){
+      speed = 0;
+    }
 
-    //if( rotation > -0.1 && rotation < 0.1){
-    //  rotation = 0;
-    //}
-
-
+    if( rotation > -0.1 && rotation < 0.1){
+      rotation = 0;
+    }
     
     m_drivetrain.curvatureDrive(speed, rotation, true);
 
-    //m_drivetrain.arcadeDrive(speed, rotation);
   }
 
   // Called once the command ends or is interrupted.

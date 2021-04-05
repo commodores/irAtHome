@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
+import edu.wpi.first.wpilibj.SlewRateLimiter;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
@@ -16,6 +17,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
@@ -38,6 +40,10 @@ public class DriveTrain extends SubsystemBase {
   private final DifferentialDrive m_drive;
 
   private DifferentialDriveOdometry m_odometry;
+
+  private SlewRateLimiter m_speedSlew = new SlewRateLimiter(6);
+  private SlewRateLimiter m_turnSlew = new SlewRateLimiter(6);
+
 
 
   public DriveTrain() {
@@ -63,6 +69,22 @@ public class DriveTrain extends SubsystemBase {
     leftSlaveMotor.setNeutralMode(NeutralMode.Brake);
     rightMasterMotor.setNeutralMode(NeutralMode.Brake);
     rightSlaveMotor.setNeutralMode(NeutralMode.Brake);
+
+
+    leftMasterMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 55, 20));
+    leftSlaveMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 55, 20));
+    rightMasterMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 55, 20));
+    rightSlaveMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 55, 20));
+
+    //leftMasterMotor.configVoltageCompSaturation(12);
+    //leftSlaveMotor.configVoltageCompSaturation(12);
+    //rightMasterMotor.configVoltageCompSaturation(12);
+    //rightSlaveMotor.configVoltageCompSaturation(12);
+
+    //leftMasterMotor.enableVoltageCompensation(true);
+    //leftSlaveMotor.enableVoltageCompensation(true);
+    //rightMasterMotor.enableVoltageCompensation(true);
+    //rightSlaveMotor.enableVoltageCompensation(true);
     
   
     leftMasterMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
@@ -74,12 +96,16 @@ public class DriveTrain extends SubsystemBase {
     left_falcons.setInverted(true);
     right_falcons.setInverted(true);
 
-    //leftMasterMotor.configOpenloopRamp(2);
-    //rightMasterMotor.configOpenloopRamp(2);
+    leftMasterMotor.configOpenloopRamp(.1);
+    rightMasterMotor.configOpenloopRamp(.1);
 
     m_drive = new DifferentialDrive(left_falcons, right_falcons);
 
     m_drive.setRightSideInverted(true);
+
+    m_drive.setDeadband(.05);
+
+
 
 
     m_odometry = new DifferentialDriveOdometry(new Rotation2d(0));
@@ -114,7 +140,7 @@ public class DriveTrain extends SubsystemBase {
   }  
 
   public void curvatureDrive(double speed, double rotation, boolean quickturn){
-    m_drive.curvatureDrive(speed, rotation, quickturn);
+    m_drive.curvatureDrive(m_speedSlew.calculate(speed), m_turnSlew.calculate(rotation), quickturn);
   }
 
   public void resetEncoders() {
