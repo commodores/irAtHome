@@ -40,8 +40,8 @@ public class DriveTrain extends SubsystemBase {
 
   private DifferentialDriveOdometry m_odometry;
 
-  private SlewRateLimiter m_speedSlew = new SlewRateLimiter(2);
-  private SlewRateLimiter m_turnSlew = new SlewRateLimiter(2);
+  private SlewRateLimiter m_speedSlew = new SlewRateLimiter(6);
+  private SlewRateLimiter m_turnSlew = new SlewRateLimiter(6);
 
 
 
@@ -72,9 +72,6 @@ public class DriveTrain extends SubsystemBase {
     leftMasterMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     rightMasterMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 
-    left_falcons.setInverted(true);
-    right_falcons.setInverted(true);
-
     leftMasterMotor.configStatorCurrentLimit(DriveConstants.TALON_CURRENT_LIMIT);
     leftSlaveMotor.configStatorCurrentLimit(DriveConstants.TALON_CURRENT_LIMIT);
     rightMasterMotor.configStatorCurrentLimit(DriveConstants.TALON_CURRENT_LIMIT);
@@ -82,6 +79,9 @@ public class DriveTrain extends SubsystemBase {
 
     left_falcons = new SpeedControllerGroup(leftMasterMotor, leftSlaveMotor);
     right_falcons = new SpeedControllerGroup(rightMasterMotor, rightSlaveMotor);
+
+    left_falcons.setInverted(true);
+    right_falcons.setInverted(true);
 
     //leftMasterMotor.configOpenloopRamp(.2);
     //rightMasterMotor.configOpenloopRamp(.2);
@@ -124,7 +124,8 @@ public class DriveTrain extends SubsystemBase {
   }  
 
   public void curvatureDrive(double speed, double rotation, boolean quickturn){
-    m_drive.curvatureDrive(m_speedSlew.calculate(speed), m_turnSlew.calculate(rotation), quickturn);
+    //m_drive.curvatureDrive(m_speedSlew.calculate(speed), m_turnSlew.calculate(rotation), quickturn);
+    m_drive.curvatureDrive(m_speedSlew.calculate(speed), rotation, quickturn);
   }
 
   public void arcadeMode(double speed, double rotation){
