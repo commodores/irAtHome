@@ -17,7 +17,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
@@ -41,8 +40,8 @@ public class DriveTrain extends SubsystemBase {
 
   private DifferentialDriveOdometry m_odometry;
 
-  private SlewRateLimiter m_speedSlew = new SlewRateLimiter(1);
-  private SlewRateLimiter m_turnSlew = new SlewRateLimiter(1);
+  private SlewRateLimiter m_speedSlew = new SlewRateLimiter(2);
+  private SlewRateLimiter m_turnSlew = new SlewRateLimiter(2);
 
 
 
@@ -68,45 +67,30 @@ public class DriveTrain extends SubsystemBase {
     leftMasterMotor.setNeutralMode(NeutralMode.Brake);
     leftSlaveMotor.setNeutralMode(NeutralMode.Brake);
     rightMasterMotor.setNeutralMode(NeutralMode.Brake);
-    rightSlaveMotor.setNeutralMode(NeutralMode.Brake);
-
-
-    leftMasterMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 60, 55, 20));
-    leftSlaveMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 60, 55, 20));
-    rightMasterMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 60, 55, 20));
-    rightSlaveMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 60, 55, 20));
-
-    leftMasterMotor.configVoltageCompSaturation(12);
-    leftSlaveMotor.configVoltageCompSaturation(12);
-    rightMasterMotor.configVoltageCompSaturation(12);
-    rightSlaveMotor.configVoltageCompSaturation(12);
-
-    leftMasterMotor.enableVoltageCompensation(true);
-    leftSlaveMotor.enableVoltageCompensation(true);
-    rightMasterMotor.enableVoltageCompensation(true);
-    rightSlaveMotor.enableVoltageCompensation(true);
-    
+    rightSlaveMotor.setNeutralMode(NeutralMode.Brake);    
   
     leftMasterMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     rightMasterMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 
-    left_falcons = new SpeedControllerGroup(leftMasterMotor, leftSlaveMotor);
-    right_falcons = new SpeedControllerGroup(rightMasterMotor, rightSlaveMotor);
-
     left_falcons.setInverted(true);
     right_falcons.setInverted(true);
 
-    leftMasterMotor.configOpenloopRamp(.2);
-    rightMasterMotor.configOpenloopRamp(.2);
+    leftMasterMotor.configStatorCurrentLimit(DriveConstants.TALON_CURRENT_LIMIT);
+    leftSlaveMotor.configStatorCurrentLimit(DriveConstants.TALON_CURRENT_LIMIT);
+    rightMasterMotor.configStatorCurrentLimit(DriveConstants.TALON_CURRENT_LIMIT);
+    rightSlaveMotor.configStatorCurrentLimit(DriveConstants.TALON_CURRENT_LIMIT);   
+
+    left_falcons = new SpeedControllerGroup(leftMasterMotor, leftSlaveMotor);
+    right_falcons = new SpeedControllerGroup(rightMasterMotor, rightSlaveMotor);
+
+    //leftMasterMotor.configOpenloopRamp(.2);
+    //rightMasterMotor.configOpenloopRamp(.2);
 
     m_drive = new DifferentialDrive(left_falcons, right_falcons);
 
     m_drive.setRightSideInverted(true);
 
     m_drive.setDeadband(.05);
-
-
-
 
     m_odometry = new DifferentialDriveOdometry(new Rotation2d(0));
 
