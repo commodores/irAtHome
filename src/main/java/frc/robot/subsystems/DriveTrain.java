@@ -90,7 +90,7 @@ public class DriveTrain extends SubsystemBase {
 
     m_drive.setRightSideInverted(true);
 
-    m_drive.setDeadband(.05);
+    //m_drive.setDeadband(.05);
 
     m_odometry = new DifferentialDriveOdometry(new Rotation2d(0));
 
@@ -125,12 +125,10 @@ public class DriveTrain extends SubsystemBase {
 
   public void curvatureDrive(double speed, double rotation, boolean quickturn){
     //m_drive.curvatureDrive(m_speedSlew.calculate(speed), m_turnSlew.calculate(rotation), quickturn);
-    m_drive.curvatureDrive(m_speedSlew.calculate(speed), rotation, quickturn);
+    m_drive.curvatureDrive(m_speedSlew.calculate(speed), rotation*.8, quickturn);
   }
 
-  public void arcadeMode(double speed, double rotation){
-    m_drive.arcadeDrive(m_speedSlew.calculate(speed), m_turnSlew.calculate(rotation));
-  }
+  
 
   public void resetEncoders() {
     leftMasterMotor.setSelectedSensorPosition(0);

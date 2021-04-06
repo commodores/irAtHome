@@ -149,8 +149,8 @@ public class VelocityShooter extends SubsystemBase {
     }
 
     public void LongShot(){
-        leftServo.setPosition(.63);
-        rightServo.setPosition(.63);
+        leftServo.setPosition(.6);
+        rightServo.setPosition(.6);
     }
 
     public void GreenZone2(){
