@@ -25,7 +25,6 @@ import edu.wpi.first.wpilibj.util.Units;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AlignToTarget;
-import frc.robot.commands.AutoDrive;
 import frc.robot.commands.BlueZone;
 import frc.robot.commands.DriveManual;
 import frc.robot.commands.RunTrajectory;
@@ -113,27 +112,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
-    new JoystickButton(m_driverController, Button.kA.value)
-      .whenPressed(() -> m_intake.extendIntake());
-
-    new JoystickButton(m_driverController, Button.kB.value)
-      .whenPressed(() -> m_intake.retractIntake());
-
-    new JoystickButton(m_driverController, Button.kBumperLeft.value)
-      .whenPressed(() -> m_shooter.setRPM(1850))
-      .whenReleased(() -> m_shooter.setRPM(-1));
-
-    //new JoystickButton(m_driverController, Button.kBack.value)
-    //  .whenPressed(() -> m_shooter.setRPM(2350))
-    //  .whenReleased(() -> m_shooter.setRPM(-1));
-
-    //new JoystickButton(m_driverController, Button.kStart.value)
-    //  .whenPressed(() -> m_shooter.setRPM(3000))
-    //  .whenReleased(() -> m_shooter.setRPM(-1));
-
-      new JoystickButton(m_driverController, Button.kBumperRight.value)
-      .whileHeld(() -> m_shooter.setRPM(2000))
-      .whenReleased(() -> m_shooter.setRPM(-1));
+    //Shooter
 
     new JoystickButton(m_driverController, Button.kX.value)
       .whenPressed(() -> m_hopper.runFeed(.75))
@@ -143,24 +122,19 @@ public class RobotContainer {
       .whenPressed(() -> m_hopper.runFeed(-.6))
       .whenReleased(() -> m_hopper.stopFeeder());
 
+    new JoystickButton(m_driverController, Button.kBumperLeft.value)
+      .whenPressed(() -> m_shooter.setRPM(1850))
+      .whenReleased(() -> m_shooter.setRPM(-1));
+
+    new JoystickButton(m_driverController, Button.kBumperRight.value)
+      .whileHeld(() -> m_shooter.setRPM(2000))
+      .whenReleased(() -> m_shooter.setRPM(-1));
+
+    
+    //Hood
+    
     new JoystickButton(rightJoystick, 4)
       .whenPressed(()  -> m_shooter.blueAlt());
-
-    new JoystickButton(rightJoystick, 5)
-      .whenPressed(() -> m_hopper.runHopper(1))
-      .whenReleased(() -> m_hopper.stopHopper());
-
-    new JoystickButton(rightJoystick, 6)
-      .whenPressed(() -> m_hopper.runHopper(-1))
-      .whenReleased(() -> m_hopper.stopHopper());
-
-    new JoystickButton(rightJoystick, 2)
-      .whileHeld(() -> m_intake.runIntake(.8))
-      .whenReleased(() -> m_intake.stopIntake());
-
-    new JoystickButton(rightJoystick, 3)
-    .whileHeld(() -> m_intake.runIntake(-.8))
-    .whenReleased(() -> m_intake.stopIntake());
 
     new JoystickButton(rightJoystick, 7)
       .whenPressed(()-> m_shooter.LongShot());
@@ -171,13 +145,44 @@ public class RobotContainer {
     new JoystickButton(rightJoystick, 9)
       .whenPressed(()-> m_shooter.UnderGoal());
 
+    
+    //Limelight
+    
     new JoystickButton(rightJoystick, 1)
       .whenPressed(new AlignToTarget());
 
     new JoystickButton(m_driverController, Button.kBack.value)
     .whenPressed(new AlignToTarget());
 
+
+    //Intake
+
+    new JoystickButton(rightJoystick, 2)
+      .whileHeld(() -> m_intake.runIntake(.8))
+      .whenReleased(() -> m_intake.stopIntake());
+
+    new JoystickButton(rightJoystick, 3)
+    .whileHeld(() -> m_intake.runIntake(-.8))
+    .whenReleased(() -> m_intake.stopIntake());
+
+    new JoystickButton(m_driverController, Button.kA.value)
+      .whenPressed(() -> m_intake.extendIntake());
+
+    new JoystickButton(m_driverController, Button.kB.value)
+      .whenPressed(() -> m_intake.retractIntake());
+
+
+    //Hopper
+
+    new JoystickButton(rightJoystick, 5)
+      .whenPressed(() -> m_hopper.runHopper(1))
+      .whenReleased(() -> m_hopper.stopHopper());
+
+    new JoystickButton(rightJoystick, 6)
+      .whenPressed(() -> m_hopper.runHopper(-1))
+      .whenReleased(() -> m_hopper.stopHopper());
     
+      
   }
 
   private void initializeStartup()
