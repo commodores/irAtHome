@@ -33,6 +33,7 @@ import frc.robot.commands.KillSwitch;
 import frc.robot.commands.QuickShot;
 import frc.robot.commands.RedZone;
 import frc.robot.commands.YellowZone;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
@@ -52,6 +53,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   //public static final DriveTrain m_drivetrain = new DriveTrain();
   public static final DriveTrain m_drivetrain = new DriveTrain();
+  public static final Climber m_Climber = new Climber();
   public static final Intake m_intake = new Intake();
   //public static final Shooter m_shooter = new Shooter();
   public static final VelocityShooter m_shooter = new VelocityShooter();

@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
@@ -37,6 +38,8 @@ public class VelocityShooter extends SubsystemBase {
 
     private final Servo leftServo;
     private final Servo rightServo;
+
+    private final Solenoid shooterSolenoid;
 
     public double rpmOutput;
     public double rpmTolerance = 50.0;
@@ -136,6 +139,7 @@ public class VelocityShooter extends SubsystemBase {
     public void UnderGoal() {
         leftServo.setPosition(.29);
         rightServo.setPosition(.29);
+        shooterSolenoid.set(false);
       }  
     
     public void blueAlt() {
@@ -151,6 +155,7 @@ public class VelocityShooter extends SubsystemBase {
     public void LongShot(){
         leftServo.setPosition(.6);
         rightServo.setPosition(.6);
+        shooterSolenoid.set(true);
     }
 
     public void GreenZone2(){

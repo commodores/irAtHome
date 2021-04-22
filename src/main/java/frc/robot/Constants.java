@@ -68,6 +68,8 @@ public final class Constants {
         public static final int kLeftServo = 0;
         public static final int kRightServo = 1;
 
+        public static final int kShooterSolenoidPort = 1;
+
         public static final double kShooterVoltageRampRate = 0.2;
 
 
@@ -83,6 +85,9 @@ public final class Constants {
         public static final double klimeLightHeight = 18.5;//inches
         public static final double ktargetHeight = 89.75;//inches
         public static final double kCameraAngle = 25;
+    }
+    public static final class ClimberConstants{
+        public static final int kClimberPort = 14;
     }
 
     public static final class OIConstants{
