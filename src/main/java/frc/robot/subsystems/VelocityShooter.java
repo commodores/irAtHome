@@ -36,10 +36,7 @@ public class VelocityShooter extends SubsystemBase {
             new TalonFX(ShooterConstants.kRightShooterPort),
     };
 
-    private final Servo leftServo;
-    private final Servo rightServo;
-
-    private final Solenoid shooterSolenoid;
+    private final Solenoid hoodSolenoid;
 
     public double rpmOutput;
     public double rpmTolerance = 50.0;
@@ -52,8 +49,7 @@ public class VelocityShooter extends SubsystemBase {
 
     public VelocityShooter() {
 
-        leftServo = new Servo(ShooterConstants.kLeftServo);
-        rightServo = new Servo(ShooterConstants.kRightServo);
+        hoodSolenoid = new Solenoid(ShooterConstants.kHoodSolendoidPort);
 
         // Setup shooter motors (Falcons)
         for (TalonFX shooterMotor : shooterMotors) {
@@ -128,44 +124,20 @@ public class VelocityShooter extends SubsystemBase {
     public double RPMtoFalconUnits(double RPM) {
         return (RPM / 600.0) * 2048.0;
     }
+
+    public void hoodUp(){
+        hoodSolenoid.set(true);
+    }
+
+    public void hoodDown(){
+        hoodSolenoid.set(false);
+    }
     
     @Override
     public void periodic() {
         updateRPMSetpoint();
         SmartDashboard.putNumber("Shooter Encoder", shooterMotors[0].getSelectedSensorVelocity());
         SmartDashboard.putNumber("Shooter RPM", falconUnitsToRPM(shooterMotors[0].getSelectedSensorVelocity()));
-    }
-
-    public void UnderGoal() {
-        leftServo.setPosition(.29);
-        rightServo.setPosition(.29);
-        shooterSolenoid.set(false);
-      }  
-    
-    public void blueAlt() {
-        leftServo.setPosition(.57);
-        rightServo.setPosition(.57);
-    }
-
-    public void whiteLineExtend(){
-        leftServo.setPosition(.55);
-        rightServo.setPosition(.55);
-    }
-
-    public void LongShot(){
-        leftServo.setPosition(.6);
-        rightServo.setPosition(.6);
-        shooterSolenoid.set(true);
-    }
-
-    public void GreenZone2(){
-        leftServo.setPosition(.36);
-        rightServo.setPosition(.36);
-    }
-
-    public void KillServos(){
-        leftServo.setPosition(.75);
-        rightServo.setPosition(.75);
     }
 
 }

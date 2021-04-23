@@ -65,8 +65,7 @@ public final class Constants {
         public static final int kRightShooterPort = 5;
         public static final int kLeftShooterPort = 6;
 
-        public static final int kLeftServo = 0;
-        public static final int kRightServo = 1;
+        public static final int kHoodSolendoidPort = 1;
 
         public static final int kShooterSolenoidPort = 1;
 

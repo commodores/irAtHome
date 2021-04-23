@@ -135,17 +135,11 @@ public class RobotContainer {
     
     //Hood
     
-    new JoystickButton(rightJoystick, 4)
-      .whenPressed(()  -> m_shooter.blueAlt());
-
     new JoystickButton(rightJoystick, 7)
-      .whenPressed(()-> m_shooter.LongShot());
-
-    new JoystickButton(rightJoystick, 8)
-      .whenPressed(() -> m_shooter.whiteLineExtend());
+      .whenPressed(()-> m_shooter.hoodUp());
 
     new JoystickButton(rightJoystick, 9)
-      .whenPressed(()-> m_shooter.UnderGoal());
+      .whenPressed(()-> m_shooter.hoodDown());
 
     
     //Limelight
