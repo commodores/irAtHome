@@ -31,9 +31,9 @@ public class ClimberManual extends CommandBase {
   @Override
   public void execute() {
     if (RobotContainer.rightJoystick.getRawAxis(1) > 0.5){
-      m_Climber.ClimberUp();
+      m_Climber.runClimber(.75);
     } else if (RobotContainer.rightJoystick.getRawAxis(1) < -0.5){
-      m_Climber.ClimberDown();
+      m_Climber.runClimber(-.75);
     }else {
       m_Climber.StopClimber();
     }

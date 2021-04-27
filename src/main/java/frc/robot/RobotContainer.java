@@ -125,7 +125,7 @@ public class RobotContainer {
       .whenReleased(() -> m_hopper.stopFeeder());
 
     new JoystickButton(m_driverController, Button.kBumperLeft.value)
-      .whenPressed(() -> m_shooter.setRPM(1850))
+      .whenPressed(() -> m_shooter.setRPM(1775))
       .whenReleased(() -> m_shooter.setRPM(-1));
 
     new JoystickButton(m_driverController, Button.kBumperRight.value)
@@ -154,11 +154,11 @@ public class RobotContainer {
     //Intake
 
     new JoystickButton(rightJoystick, 2)
-      .whileHeld(() -> m_intake.runIntake(.8))
+      .whileHeld(() -> m_intake.runIntake(1))
       .whenReleased(() -> m_intake.stopIntake());
 
     new JoystickButton(rightJoystick, 3)
-    .whileHeld(() -> m_intake.runIntake(-.8))
+    .whileHeld(() -> m_intake.runIntake(-1))
     .whenReleased(() -> m_intake.stopIntake());
 
     new JoystickButton(m_driverController, Button.kA.value)
@@ -177,6 +177,10 @@ public class RobotContainer {
     new JoystickButton(rightJoystick, 6)
       .whenPressed(() -> m_hopper.runHopper(-1))
       .whenReleased(() -> m_hopper.stopHopper());
+
+    //Climber
+
+    
     
       
   }

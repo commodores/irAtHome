@@ -65,9 +65,9 @@ public final class Constants {
         public static final int kRightShooterPort = 5;
         public static final int kLeftShooterPort = 6;
 
-        public static final int kHoodSolendoidPort = 1;
+        public static final int kHoodSolendoidPort = 0;
 
-        public static final int kShooterSolenoidPort = 1;
+        public static final int kShooterSolenoidPort = 0;
 
         public static final double kShooterVoltageRampRate = 0.2;
 
@@ -104,7 +104,7 @@ public final class Constants {
     public static final class IntakeConstants{
         public static final int kLeftIntakePort = 11;
         public static final int kRightIntakePort =10;
-        public static final int kIntakeSolenoidPort = 0;
+        public static final int kIntakeSolenoidPort = 1;
     }
     
     public static final class CompressorConstant{

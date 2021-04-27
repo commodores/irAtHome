@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.commands.ClimberManual;
 
 
 public class Climber extends SubsystemBase {
@@ -24,6 +25,8 @@ public class Climber extends SubsystemBase {
     ClimberMotor.configFactoryDefault();
     ClimberMotor.setNeutralMode(NeutralMode.Brake);
     ClimberMotor.set(ControlMode.PercentOutput, 0.0);
+
+    setDefaultCommand(new ClimberManual(this));
 
   }
 
