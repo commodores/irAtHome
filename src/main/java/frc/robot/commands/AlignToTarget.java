@@ -8,7 +8,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
 public class AlignToTarget extends CommandBase {
-  double setpoint = 0;
+  double Kp = 0.009;
+  double min_command = 1;
 
     public AlignToTarget() {
         // Use requires() here to declare subsystem dependencies
@@ -26,31 +27,21 @@ public class AlignToTarget extends CommandBase {
     @Override
     public void execute() {
 
-      if(RobotContainer.m_limelight.isTargetVisible()){
-        if(RobotContainer.m_limelight.getXAngle()>=5){
-          RobotContainer.m_drivetrain.tankDriveVolts(1.65, -1.65);
-        }
-        else if(RobotContainer.m_limelight.getXAngle()>=3){
-          RobotContainer.m_drivetrain.tankDriveVolts(1.3, -1.3);
-        }
-        else if(RobotContainer.m_limelight.getXAngle()>=.5){
-          RobotContainer.m_drivetrain.tankDriveVolts(1, -1);
-        }
-        else if(RobotContainer.m_limelight.getXAngle()<=-5){
-          RobotContainer.m_drivetrain.tankDriveVolts(-1.65, 1.65);
-        }
-        else if(RobotContainer.m_limelight.getXAngle()<=-3){
-          RobotContainer.m_drivetrain.tankDriveVolts(-1.3, 1.3);
-        }
-        else if(RobotContainer.m_limelight.getXAngle()<=-.5){
-          RobotContainer.m_drivetrain.tankDriveVolts(-1, 1);
-        }
-        else {
-          RobotContainer.m_drivetrain.tankDriveVolts(0, 0);
-        }
-      } else {
-        RobotContainer.m_drivetrain.tankDriveVolts(0, 0);
+      double heading_error = -RobotContainer.m_limelight.getXAngle();
+      double steering_adjust = 0.0;
+      
+      if (RobotContainer.m_limelight.getXAngle() > 1.0)
+      {
+              steering_adjust = Kp*heading_error - min_command;
       }
+      else if (RobotContainer.m_limelight.getXAngle() < 1.0)
+      {
+              steering_adjust = Kp*heading_error + min_command;
+      }
+      double left_command = -steering_adjust;
+      double right_command = steering_adjust;
+
+      RobotContainer.m_drivetrain.tankDriveVolts(left_command, right_command);
      
     }
 

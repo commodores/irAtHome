@@ -39,7 +39,7 @@ public class VelocityShooter extends SubsystemBase {
     private final Solenoid hoodSolenoid;
 
     public double rpmOutput;
-    public double rpmTolerance = 50.0;
+    public double rpmTolerance = 2.0;
 
     private double setpoint;
 
@@ -136,7 +136,6 @@ public class VelocityShooter extends SubsystemBase {
     @Override
     public void periodic() {
         updateRPMSetpoint();
-        SmartDashboard.putNumber("Shooter Encoder", shooterMotors[0].getSelectedSensorVelocity());
         SmartDashboard.putNumber("Shooter RPM", falconUnitsToRPM(shooterMotors[0].getSelectedSensorVelocity()));
     }
 

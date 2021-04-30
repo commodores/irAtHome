@@ -26,6 +26,7 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AlignToTarget;
 import frc.robot.commands.BlueZone;
+import frc.robot.commands.CalculatedShot;
 import frc.robot.commands.DriveManual;
 import frc.robot.commands.RunTrajectory;
 import frc.robot.commands.GreenZone;
@@ -117,11 +118,11 @@ public class RobotContainer {
     //Shooter
 
     new JoystickButton(m_driverController, Button.kX.value)
-      .whenPressed(() -> m_hopper.runFeed(.75))
+      .whenPressed(() -> m_hopper.runFeed(.25))
       .whenReleased(() -> m_hopper.stopFeeder());
 
     new JoystickButton(m_driverController, Button.kY.value)
-      .whenPressed(() -> m_hopper.runFeed(-.6))
+      .whenPressed(() -> m_hopper.runFeed(-.25))
       .whenReleased(() -> m_hopper.stopFeeder());
 
     new JoystickButton(m_driverController, Button.kBumperLeft.value)
@@ -129,8 +130,7 @@ public class RobotContainer {
       .whenReleased(() -> m_shooter.setRPM(-1));
 
     new JoystickButton(m_driverController, Button.kBumperRight.value)
-      .whileHeld(() -> m_shooter.setRPM(2000))
-      .whenReleased(() -> m_shooter.setRPM(-1));
+      .whileHeld(new CalculatedShot());
 
     
     //Hood
@@ -187,13 +187,6 @@ public class RobotContainer {
 
   private void initializeStartup()
   {
-
-    SmartDashboard.putData("Green Zone", new GreenZone());
-    SmartDashboard.putData("Yellow Zone", new YellowZone());
-    SmartDashboard.putData("Blue Zone", new BlueZone());
-    SmartDashboard.putData("Red Zone", new RedZone());
-    SmartDashboard.putData("Quick Shot", new QuickShot());
-    SmartDashboard.putData("Kill Switch", new KillSwitch().withTimeout(.0001));
 
     m_drivetrain.setDefaultCommand(
       new DriveManual(m_drivetrain));

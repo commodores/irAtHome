@@ -108,9 +108,9 @@ public class DriveTrain extends SubsystemBase {
       getRightDistance()
     );
 
-    SmartDashboard.putNumber("Left Encoder", getLeftDistance());
-    SmartDashboard.putNumber("Right Encoder", getRightDistance());
-    SmartDashboard.putNumber("Heading", getDirection());
+    //SmartDashboard.putNumber("Left Encoder", getLeftDistance());
+    //SmartDashboard.putNumber("Right Encoder", getRightDistance());
+    //SmartDashboard.putNumber("Heading", getDirection());
   }
 
   public void arcadeDrive(double fwd, double rot) {
