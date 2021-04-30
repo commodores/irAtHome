@@ -125,7 +125,7 @@ public class RobotContainer {
       .whenReleased(() -> m_hopper.stopFeeder());
 
     new JoystickButton(m_driverController, Button.kBumperLeft.value)
-      .whenPressed(() -> m_shooter.setRPM(1775))
+      .whenPressed(() -> m_shooter.setRPM(1820))
       .whenReleased(() -> m_shooter.setRPM(-1));
 
     new JoystickButton(m_driverController, Button.kBumperRight.value)

@@ -72,7 +72,7 @@ public final class Constants {
         public static final double kShooterVoltageRampRate = 0.2;
 
 
-        public static final double kShooterP = 0.01;
+        public static final double kShooterP = 0.05;
         public static final double kShooterI = 0.0;
         public static final double kShooterD = 0.0;
         public static final double kShooterF = 0.0665;

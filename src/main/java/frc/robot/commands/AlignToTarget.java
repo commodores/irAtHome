@@ -28,22 +28,22 @@ public class AlignToTarget extends CommandBase {
 
       if(RobotContainer.m_limelight.isTargetVisible()){
         if(RobotContainer.m_limelight.getXAngle()>=5){
-          RobotContainer.m_drivetrain.tankDriveVolts(1, -1);
+          RobotContainer.m_drivetrain.tankDriveVolts(1.65, -1.65);
         }
         else if(RobotContainer.m_limelight.getXAngle()>=3){
-          RobotContainer.m_drivetrain.tankDriveVolts(1, -1);
+          RobotContainer.m_drivetrain.tankDriveVolts(1.3, -1.3);
         }
         else if(RobotContainer.m_limelight.getXAngle()>=.5){
-          RobotContainer.m_drivetrain.tankDriveVolts(.85, -.85);
+          RobotContainer.m_drivetrain.tankDriveVolts(1, -1);
         }
         else if(RobotContainer.m_limelight.getXAngle()<=-5){
-          RobotContainer.m_drivetrain.tankDriveVolts(-1, 1);
+          RobotContainer.m_drivetrain.tankDriveVolts(-1.65, 1.65);
         }
         else if(RobotContainer.m_limelight.getXAngle()<=-3){
-          RobotContainer.m_drivetrain.tankDriveVolts(-1, 1);
+          RobotContainer.m_drivetrain.tankDriveVolts(-1.3, 1.3);
         }
         else if(RobotContainer.m_limelight.getXAngle()<=-.5){
-          RobotContainer.m_drivetrain.tankDriveVolts(-.85, .85);
+          RobotContainer.m_drivetrain.tankDriveVolts(-1, 1);
         }
         else {
           RobotContainer.m_drivetrain.tankDriveVolts(0, 0);
