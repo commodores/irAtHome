@@ -9,7 +9,8 @@ import frc.robot.RobotContainer;
 
 public class CalculatedShot extends CommandBase {
 
-  double distance;
+  double distance, minOutput, maxOutput, minDistance, maxDistance, slope;
+
   /** Creates a new CalculatedShot. */
   public CalculatedShot() {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -21,16 +22,22 @@ public class CalculatedShot extends CommandBase {
   @Override
   public void initialize() {
     distance = RobotContainer.m_limelight.getDistance();
+    minOutput = 1700;
+    maxOutput = 2200;
+    minDistance = 100;
+    maxDistance = 200;
+    slope = (maxOutput - minOutput) / (maxDistance - minDistance);
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(distance>190){
-      RobotContainer.m_shooter.setRPM(2025);
-    } else {
-      RobotContainer.m_shooter.setRPM(1825);
-    }
+
+    double setSpeed = minOutput + Math.round(slope * (distance - minDistance));
+
+    RobotContainer.m_shooter.setRPM(setSpeed);
+
   }
 
   // Called once the command ends or is interrupted.
