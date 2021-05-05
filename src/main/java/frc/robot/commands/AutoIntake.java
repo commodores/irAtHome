@@ -22,7 +22,7 @@ public class AutoIntake extends CommandBase {
   @Override
   public void execute() {
     RobotContainer.m_intake.extendIntake();
-    RobotContainer.m_intake.runIntake(-.8);
+    RobotContainer.m_intake.runIntake(-1);
   }
 
   // Called once the command ends or is interrupted.
