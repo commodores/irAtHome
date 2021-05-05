@@ -5,23 +5,27 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
+import frc.robot.subsystems.LimeLight;
+import frc.robot.subsystems.VelocityShooter;
 
 public class CalculatedShot extends CommandBase {
+
+  LimeLight m_LimeLight;
+  VelocityShooter m_Shooter;
 
   double distance, minOutput, maxOutput, minDistance, maxDistance, slope;
 
   /** Creates a new CalculatedShot. */
   public CalculatedShot() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.m_limelight);
-    addRequirements(RobotContainer.m_shooter);
+    addRequirements(m_LimeLight);
+    addRequirements(m_Shooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    distance = RobotContainer.m_limelight.getDistance();
+    distance = m_LimeLight.getDistance();
     minOutput = 1950;
     maxOutput = 2100;
     minDistance = 140;
@@ -36,14 +40,14 @@ public class CalculatedShot extends CommandBase {
 
     double setSpeed = minOutput + Math.round(slope * (distance - minDistance));
 
-    RobotContainer.m_shooter.setRPM(setSpeed);
+    m_Shooter.setRPM(setSpeed);
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.m_shooter.setRPM(-1);
+    m_Shooter.setRPM(-1);
   }
 
   // Returns true when the command should end.
