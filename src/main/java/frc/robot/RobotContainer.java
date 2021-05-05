@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.Ultrasonic.Unit;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
@@ -29,6 +30,8 @@ import frc.robot.commands.BlueZone;
 import frc.robot.commands.CalculatedShot;
 import frc.robot.commands.DriveManual;
 import frc.robot.commands.RunTrajectory;
+import frc.robot.commands.SimpleShoot;
+import frc.robot.commands.SixBallAuto;
 import frc.robot.commands.GreenZone;
 import frc.robot.commands.KillSwitch;
 import frc.robot.commands.QuickShot;
@@ -36,6 +39,7 @@ import frc.robot.commands.RedZone;
 import frc.robot.commands.YellowZone;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LimeLight;
@@ -57,14 +61,14 @@ public class RobotContainer {
   public static final Climber m_Climber = new Climber();
   public static final Intake m_intake = new Intake();
   //public static final Shooter m_shooter = new Shooter();
+  public static final Feeder m_feeder = new Feeder();
   public static final VelocityShooter m_shooter = new VelocityShooter();
   public static final Hopper m_hopper = new Hopper();
   public static final Compressor m_compressor = new Compressor();
   public static final LimeLight m_limelight = new LimeLight();
   
   public static final XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
-  public static final Joystick leftJoystick = new Joystick(OIConstants.kLeftJoystickPort);
-  public static final Joystick rightJoystick = new Joystick(OIConstants.kRightJoystickPort);
+  public static final XboxController m_driver2Controller = new XboxController(OIConstants.kDriverController2Port);
 
   private final SendableChooser<String> m_autoChooser = new SendableChooser<>();
 
@@ -118,15 +122,15 @@ public class RobotContainer {
     //Shooter
 
     new JoystickButton(m_driverController, Button.kX.value)
-      .whenPressed(() -> m_hopper.runFeed(.25))
-      .whenReleased(() -> m_hopper.stopFeeder());
+      .whenPressed(() -> m_feeder.runFeed(.55))
+      .whenReleased(() -> m_feeder.stopFeeder());
 
     new JoystickButton(m_driverController, Button.kY.value)
-      .whenPressed(() -> m_hopper.runFeed(-.25))
-      .whenReleased(() -> m_hopper.stopFeeder());
+      .whenPressed(() -> m_feeder.runFeed(-.35))
+      .whenReleased(() -> m_feeder.stopFeeder());
 
     new JoystickButton(m_driverController, Button.kBumperLeft.value)
-      .whenPressed(() -> m_shooter.setRPM(1820))
+      .whenPressed(() -> m_shooter.setRPM(2125))
       .whenReleased(() -> m_shooter.setRPM(-1));
 
     new JoystickButton(m_driverController, Button.kBumperRight.value)
@@ -135,17 +139,14 @@ public class RobotContainer {
     
     //Hood
     
-    new JoystickButton(rightJoystick, 7)
+    new JoystickButton(m_driver2Controller, Button.kBumperLeft.value)
       .whenPressed(()-> m_shooter.hoodUp());
 
-    new JoystickButton(rightJoystick, 9)
+    new JoystickButton(m_driver2Controller, Button.kBumperRight.value)
       .whenPressed(()-> m_shooter.hoodDown());
 
     
     //Limelight
-    
-    new JoystickButton(rightJoystick, 1)
-      .whenPressed(new AlignToTarget());
 
     new JoystickButton(m_driverController, Button.kBack.value)
     .whenPressed(new AlignToTarget());
@@ -153,12 +154,12 @@ public class RobotContainer {
 
     //Intake
 
-    new JoystickButton(rightJoystick, 2)
-      .whileHeld(() -> m_intake.runIntake(1))
+    new JoystickButton(m_driver2Controller, Button.kA.value)
+      .whileHeld(() -> m_intake.runIntake(-1))
       .whenReleased(() -> m_intake.stopIntake());
 
-    new JoystickButton(rightJoystick, 3)
-    .whileHeld(() -> m_intake.runIntake(-1))
+    new JoystickButton(m_driver2Controller, Button.kB.value)
+    .whileHeld(() -> m_intake.runIntake(1))
     .whenReleased(() -> m_intake.stopIntake());
 
     new JoystickButton(m_driverController, Button.kA.value)
@@ -170,12 +171,12 @@ public class RobotContainer {
 
     //Hopper
 
-    new JoystickButton(rightJoystick, 5)
-      .whenPressed(() -> m_hopper.runHopper(1))
+    new JoystickButton(m_driver2Controller, Button.kX.value)
+      .whenPressed(() -> m_hopper.runHopper(.35))
       .whenReleased(() -> m_hopper.stopHopper());
 
-    new JoystickButton(rightJoystick, 6)
-      .whenPressed(() -> m_hopper.runHopper(-1))
+    new JoystickButton(m_driver2Controller, Button.kY.value)
+      .whenPressed(() -> m_hopper.runHopper(-.35))
       .whenReleased(() -> m_hopper.stopHopper());
 
     //Climber
@@ -202,119 +203,31 @@ public class RobotContainer {
   {
     /* Add options (which autonomous commands can be selected) to chooser. */
     m_autoChooser.setDefaultOption("Do Nothing", "doNothing");
-    m_autoChooser.addOption("Slalom", "slalom");
-    m_autoChooser.addOption("Barrel Racing", "barrel");
-    m_autoChooser.addOption("Bounce Path", "bounce");
+    m_autoChooser.addOption("3 Ball Auto", "threeball");
+    m_autoChooser.addOption("6 Ball Auto", "sixball");
 
     /* Display chooser on SmartDashboard for operators to select which autonomous command to run during the auto period. */
     SmartDashboard.putData("Autonomous Command", m_autoChooser);
   }  
   
-  public Trajectory getSlalom(){
-    Trajectory slalom = TrajectoryGenerator.generateTrajectory(
+  public Trajectory getSixBallTrench(){
+    Trajectory sixBallTrench = TrajectoryGenerator.generateTrajectory(
       // Start
-      new Pose2d(Units.feetToMeters(3.5), Units.feetToMeters(-5), new Rotation2d(0)),
+      new Pose2d(0, 0, new Rotation2d(0)),
       List.of(
-          new Translation2d(Units.feetToMeters(7.5), Units.feetToMeters(-2.5)),
-          new Translation2d(Units.feetToMeters(10), Units.feetToMeters(-.5)),
-          new Translation2d(Units.feetToMeters(13), Units.feetToMeters(.5)),
-          new Translation2d(Units.feetToMeters(17), Units.feetToMeters(.5)),
-          new Translation2d(Units.feetToMeters(20), Units.feetToMeters(-.5)),
-          new Translation2d(Units.feetToMeters(22.5), Units.feetToMeters(-2.5)),
-          new Translation2d(Units.feetToMeters(25), Units.feetToMeters(-5.5)),
-          new Translation2d(Units.feetToMeters(29), Units.feetToMeters(-2.5)),
-          new Translation2d(Units.feetToMeters(26), Units.feetToMeters(.5)),
-          new Translation2d(Units.feetToMeters(22.5), Units.feetToMeters(-2.5)),
-          new Translation2d(Units.feetToMeters(20), Units.feetToMeters(-6.5)),
-          new Translation2d(Units.feetToMeters(17), Units.feetToMeters(-7)),
-          new Translation2d(Units.feetToMeters(13), Units.feetToMeters(-7)),
-          new Translation2d(Units.feetToMeters(7.5), Units.feetToMeters(-2.5))
+          new Translation2d(1, -.75),
+          new Translation2d(0, -1.75)
+          //new Translation2d(Units.feetToMeters(-5), Units.feetToMeters(-2)),
+          
 
       ),
-      new Pose2d(Units.feetToMeters(5), Units.feetToMeters(2.5), new Rotation2d(Math.PI / 2)),
+      new Pose2d(-4.5, -1.75, new Rotation2d(0)),
       config
     );
-    return slalom;
+    return sixBallTrench;
   }
 
-  public Trajectory getBarrelRacing(){
-    Trajectory barrel = TrajectoryGenerator.generateTrajectory(
-      // Start
-      new Pose2d(Units.feetToMeters(2.5), Units.feetToMeters(0), new Rotation2d(0)), 
-      List.of(
-        
-        new Translation2d(Units.feetToMeters(12.5),Units.feetToMeters(0)),//2
-        new Translation2d(Units.feetToMeters(15.5),Units.feetToMeters(-3)),//3
-        new Translation2d(Units.feetToMeters(12),Units.feetToMeters(-5.5)),//4
-        new Translation2d(Units.feetToMeters(8),Units.feetToMeters(-2)),//5
-        new Translation2d(Units.feetToMeters(12),Units.feetToMeters(.5)),//6
-        new Translation2d(Units.feetToMeters(19),Units.feetToMeters(0)),//7
-        new Translation2d(Units.feetToMeters(22),Units.feetToMeters(3.5)),//8
-        new Translation2d(Units.feetToMeters(18),Units.feetToMeters(6)),//9
-        new Translation2d(Units.feetToMeters(16),Units.feetToMeters(1.5)),//10
-        new Translation2d(Units.feetToMeters(22),Units.feetToMeters(-5)),//11
-        new Translation2d(Units.feetToMeters(26),Units.feetToMeters(-6.5)),//12
-        new Translation2d(Units.feetToMeters(28),Units.feetToMeters(-4)),//13
-        new Translation2d(Units.feetToMeters(24),Units.feetToMeters(-.5))//14
-        
-
-      ),
-    new Pose2d(Units.feetToMeters(-1), Units.feetToMeters(-.5), new Rotation2d(Math.PI)), 
-    config);
-    return barrel;
-  }
-
-  public Trajectory getBounce1(){
-    Trajectory bounce1 = TrajectoryGenerator.generateTrajectory(
-      // Start
-      new Pose2d(Units.feetToMeters(2.5), Units.feetToMeters(0), new Rotation2d(0)), 
-      List.of(
-        new Translation2d(Units.feetToMeters(6),Units.feetToMeters(1))
-      ),
-    new Pose2d(Units.feetToMeters(7.5), Units.feetToMeters(3.5), new Rotation2d(-80)), 
-    config);
-    return bounce1;
-  }
-
-  public Trajectory getBounce2(){
-    Trajectory bounce2 = TrajectoryGenerator.generateTrajectory(
-      // Start
-      new Pose2d(Units.feetToMeters(7.5), Units.feetToMeters(3.5), new Rotation2d(-80)), 
-      List.of(
-        new Translation2d(Units.feetToMeters(10),Units.feetToMeters(-2)),
-        new Translation2d(Units.feetToMeters(12.5), Units.feetToMeters(-5)),
-        new Translation2d(Units.feetToMeters(15),Units.feetToMeters(-2))
-      ),
-    new Pose2d(Units.feetToMeters(15), Units.feetToMeters(5), new Rotation2d(80)), 
-    configBackwards);
-    return bounce2;
-  }
-
-  public Trajectory getBounce3(){
-    Trajectory bounce3 = TrajectoryGenerator.generateTrajectory(
-      // Start
-      new Pose2d(Units.feetToMeters(15), Units.feetToMeters(5), new Rotation2d(80)), 
-      List.of(
-        new Translation2d(Units.feetToMeters(15),Units.feetToMeters(-2)),
-        new Translation2d(Units.feetToMeters(19),Units.feetToMeters(-3.5)),
-        new Translation2d(Units.feetToMeters(22),Units.feetToMeters(-2))
-      ),
-    new Pose2d(Units.feetToMeters(22.5), Units.feetToMeters(7), new Rotation2d(-80)), 
-    config);
-    return bounce3;
-  }
-
-  public Trajectory getBounce4(){
-    Trajectory bounce4 = TrajectoryGenerator.generateTrajectory(
-      // Start
-      new Pose2d(Units.feetToMeters(22.5), Units.feetToMeters(7), new Rotation2d(90)), 
-      List.of(
-        //new Translation2d(Units.feetToMeters(22.5),Units.feetToMeters(3))
-      ),
-    new Pose2d(Units.feetToMeters(30), Units.feetToMeters(5), new Rotation2d(180)), 
-    configBackwards);
-    return bounce4;
-  }
+  
   
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -325,15 +238,13 @@ public class RobotContainer {
     
     switch (m_autoChooser.getSelected())
     {
-      case "slalom":
-        RobotContainer.m_drivetrain.setPos(Units.feetToMeters(3.5), Units.feetToMeters(-5));
-        return new RunTrajectory(getSlalom());
-      case "barrel":
-        RobotContainer.m_drivetrain.setPos(Units.feetToMeters(2.5), 0);
-        return new RunTrajectory(getBarrelRacing());
-      case "bounce":
-        RobotContainer.m_drivetrain.setPos(Units.feetToMeters(2.5), 0);
-        return new SequentialCommandGroup(new RunTrajectory(getBounce1()), new RunTrajectory(getBounce2()), new RunTrajectory(getBounce3()), new RunTrajectory(getBounce4()));
+      case "threeball":
+        return new SimpleShoot();
+        //RobotContainer.m_drivetrain.setPos(Units.feetToMeters(3.5), Units.feetToMeters(-5));
+        //return new RunTrajectory(getSlalom());
+      case "sixball" :
+        return new SixBallAuto();
+    
       default:
         System.out.println("\nError selecting autonomous command:\nCommand selected: " + m_autoChooser.getSelected() + "\n");
         return null;

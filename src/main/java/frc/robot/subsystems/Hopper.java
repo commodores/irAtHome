@@ -16,21 +16,21 @@ public class Hopper extends SubsystemBase {
 
   private final WPI_TalonSRX leftHopper;
   private final WPI_TalonSRX rightHopper;
-  private final WPI_TalonSRX feederMotor;
+  
 
   public Hopper() {
 
     leftHopper = new WPI_TalonSRX(HopperConstants.kHopperLeftPort);
     rightHopper = new WPI_TalonSRX(HopperConstants.kHopperRightPort);
-    feederMotor = new WPI_TalonSRX(HopperConstants.kFeederPort);
+    
 
     leftHopper.configFactoryDefault();
     rightHopper.configFactoryDefault();
-    feederMotor.configFactoryDefault();
+    
 
     leftHopper.setNeutralMode(NeutralMode.Coast);
     rightHopper.setNeutralMode(NeutralMode.Coast);
-    feederMotor.setNeutralMode(NeutralMode.Coast);
+    
 
     rightHopper.setInverted(false);
 
@@ -38,7 +38,7 @@ public class Hopper extends SubsystemBase {
 
     rightHopper.set(ControlMode.PercentOutput, 0.0);
 
-    feederMotor.set(ControlMode.PercentOutput, 0.0);
+    
 
   }
 
@@ -53,14 +53,7 @@ public class Hopper extends SubsystemBase {
     leftHopper.set(ControlMode.PercentOutput, 0.0);
   }
  
-  //Commands For Feeder
-  public void runFeed(double speed){
-    feederMotor.set(ControlMode.PercentOutput, speed);
-  }
-
-  public void stopFeeder(){
-    feederMotor.set(ControlMode.PercentOutput, 0.0);
-  }
+  
 
 
   @Override

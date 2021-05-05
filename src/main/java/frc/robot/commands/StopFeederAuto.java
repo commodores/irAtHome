@@ -5,36 +5,23 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.subsystems.*;
 import frc.robot.RobotContainer;
 
-public class ClimberManual extends CommandBase {
-  /** Creates a new ClimberManual. */
-
-  
-  
-  private final Climber m_Climber;
-  public ClimberManual(Climber Climber) {
+public class StopFeederAuto extends CommandBase {
+  /** Creates a new StopFeederAuto. */
+  public StopFeederAuto() {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.m_Climber = Climber;
-    addRequirements(Climber);
+    addRequirements(RobotContainer.m_feeder);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (RobotContainer.m_driver2Controller.getRawAxis(2) > 0.5){
-      m_Climber.runClimber(1);
-    } else {
-      m_Climber.StopClimber();
-    }
+    RobotContainer.m_feeder.stopFeeder();
   }
 
   // Called once the command ends or is interrupted.

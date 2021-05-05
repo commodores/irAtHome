@@ -51,8 +51,8 @@ public final class Constants {
         public static final double kRamseteB = 2;
         public static final double kRamseteZeta = 0.7;
 
-        public static final double kMaxSpeedMetersPerSecond = 3; //3 Slalom
-        public static final double kMaxAccelerationMetersPerSecondSquared = 1.75; //2 Slalom 
+        public static final double kMaxSpeedMetersPerSecond = 2; //3 Slalom
+        public static final double kMaxAccelerationMetersPerSecondSquared = 1.5; //2 Slalom 
 
         public static final boolean kGyroReversed = true;
 
@@ -72,7 +72,7 @@ public final class Constants {
         public static final double kShooterVoltageRampRate = 0.2;
 
 
-        public static final double kShooterP = 0.05;
+        public static final double kShooterP = 0.04;
         public static final double kShooterI = 0.0;
         public static final double kShooterD = 0.0;
         public static final double kShooterF = 0.0665;
@@ -91,8 +91,7 @@ public final class Constants {
 
     public static final class OIConstants{
         public static final int kDriverControllerPort = 0;
-        public static final int kLeftJoystickPort = 1;
-        public static final int kRightJoystickPort = 2;
+       public static final int kDriverController2Port = 1;
     }
     
     public static final class HopperConstants{
