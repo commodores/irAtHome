@@ -52,7 +52,7 @@ public final class Constants {
         public static final double kRamseteZeta = 0.7;
 
         public static final double kMaxSpeedMetersPerSecond = 2; //3 Slalom
-        public static final double kMaxAccelerationMetersPerSecondSquared = 1.5; //2 Slalom 
+        public static final double kMaxAccelerationMetersPerSecondSquared = 1.75; //2 Slalom 
 
         public static final boolean kGyroReversed = true;
 

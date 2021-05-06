@@ -21,7 +21,6 @@ import frc.robot.Constants.DriveConstants;
 import java.util.List;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.trajectory.Trajectory;
 
 public class RunTrajectory extends CommandBase {
 private final RamseteCommand ramsete;
@@ -63,7 +62,7 @@ public Trajectory getSixBallTrench(){
             
 
         ),
-        new Pose2d(-4.4, -1.5, new Rotation2d(120)),
+        new Pose2d(-4.4, -1.5, new Rotation2d(Math.PI)),
         config
     );
     return sixBallTrench;
