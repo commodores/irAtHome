@@ -22,7 +22,7 @@ public class StopIntake extends CommandBase {
   @Override
   public void execute() {
     RobotContainer.m_intake.stopIntake();
-    RobotContainer.m_intake.retractIntake();
+    
   }
 
   // Called once the command ends or is interrupted.

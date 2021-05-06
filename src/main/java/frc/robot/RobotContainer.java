@@ -28,7 +28,9 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AlignToTarget;
 import frc.robot.commands.BlueZone;
 import frc.robot.commands.CalculatedShot;
+import frc.robot.commands.DefenseTrench;
 import frc.robot.commands.DriveManual;
+import frc.robot.commands.FiveBallAuto;
 import frc.robot.commands.RunTrajectory;
 import frc.robot.commands.SimpleShoot;
 import frc.robot.commands.SixBallAuto;
@@ -205,9 +207,11 @@ public class RobotContainer {
     m_autoChooser.setDefaultOption("Do Nothing", "doNothing");
     m_autoChooser.addOption("3 Ball Auto", "threeball");
     m_autoChooser.addOption("6 Ball Auto", "sixball");
+    m_autoChooser.addOption("5 Ball Auto", "SecondAuto");
 
     /* Display chooser on SmartDashboard for operators to select which autonomous command to run during the auto period. */
     SmartDashboard.putData("Autonomous Command", m_autoChooser);
+    
   }  
   
   public Trajectory getSixBallTrench(){
@@ -244,6 +248,9 @@ public class RobotContainer {
         //return new RunTrajectory(getSlalom());
       case "sixball" :
         return new SixBallAuto();
+      
+      case "SecondAuto" :
+        return new DefenseTrench();
     
       default:
         System.out.println("\nError selecting autonomous command:\nCommand selected: " + m_autoChooser.getSelected() + "\n");

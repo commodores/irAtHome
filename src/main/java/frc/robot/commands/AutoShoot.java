@@ -24,7 +24,7 @@ public class AutoShoot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.m_shooter.setRPM(2100);
+    RobotContainer.m_shooter.setRPM(2000);
   }
 
   // Called once the command ends or is interrupted.

@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
@@ -23,8 +25,8 @@ import java.util.List;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 
-public class RunTrajectory extends CommandBase {
-private final RamseteCommand ramsete;
+public class FiveBallAuto extends CommandBase {
+  private final RamseteCommand ramsete;
 
 DifferentialDriveVoltageConstraint autoVoltageConstraint = 
         new DifferentialDriveVoltageConstraint(
@@ -52,29 +54,28 @@ TrajectoryConfig configBackwards =
         // Apply the voltage constraint
         .addConstraint(autoVoltageConstraint);
 
-public Trajectory getSixBallTrench(){
-    Trajectory sixBallTrench = TrajectoryGenerator.generateTrajectory(
+public Trajectory getFiveBallTrench(){
+    Trajectory fiveBallTrench = TrajectoryGenerator.generateTrajectory(
         // Start
         new Pose2d(0, 0, new Rotation2d(0)),
         List.of(
-            new Translation2d(1, -.75),
-            new Translation2d(0, -1.75)
-            //new Translation2d(-3.3, -1.75)
+            new Translation2d(1, 1),
+            new Translation2d(0, 3)
             
 
         ),
-        new Pose2d(-4.4, -1.5, new Rotation2d(Math.PI)),
+        new Pose2d(-2.8, 3.1, new Rotation2d(Math.PI)),
         config
     );
-    return sixBallTrench;
+    return fiveBallTrench;
     }
 
   /** Creates a new AutoDrive. */
-  public RunTrajectory() {
+  public FiveBallAuto() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.m_drivetrain);
 
-    Trajectory trajectory = getSixBallTrench();
+    Trajectory trajectory = getFiveBallTrench();
 
     
     

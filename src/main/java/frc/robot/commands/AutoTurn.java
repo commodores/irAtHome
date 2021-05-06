@@ -33,9 +33,9 @@ public class AutoTurn extends CommandBase {
   @Override
   public void execute() {
     if(degrees > 0){
-      RobotContainer.m_drivetrain.tankDriveVolts(3.0, -3.0);
+      RobotContainer.m_drivetrain.tankDriveVolts(6.0, -6.0);
     } else {
-      RobotContainer.m_drivetrain.tankDriveVolts(-3.0, 3.0);
+      RobotContainer.m_drivetrain.tankDriveVolts(-6.0, 6.0);
     }
   }
 

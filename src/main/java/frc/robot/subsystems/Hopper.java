@@ -53,6 +53,11 @@ public class Hopper extends SubsystemBase {
     leftHopper.set(ControlMode.PercentOutput, 0.0);
   }
  
+  public void runAutoHopper(double speed){
+    rightHopper.set(ControlMode.PercentOutput, -speed);
+    leftHopper.set(ControlMode.PercentOutput, speed * .5);
+
+  }
   
 
 
