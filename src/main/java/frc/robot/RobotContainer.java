@@ -26,11 +26,6 @@ import frc.robot.commands.AlignToTarget;
 import frc.robot.commands.CalculatedShot;
 import frc.robot.commands.DefenseTrench;
 import frc.robot.commands.DriveManual;
-<<<<<<< HEAD
-import frc.robot.commands.FiveBallAuto;
-import frc.robot.commands.RunTrajectory;
-=======
->>>>>>> fa7843ad33fbfbc090897a4e3ad9494d6f2b8bd9
 import frc.robot.commands.SimpleShoot;
 import frc.robot.commands.SixBallAuto;
 import frc.robot.subsystems.Climber;
