@@ -5,15 +5,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Feeder;
+import frc.robot.RobotContainer;
 
 public class AutoFeeder extends CommandBase {
 
-  Feeder m_Feeder;
   /** Creates a new AutoFeeder. */
   public AutoFeeder() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_Feeder);
+    addRequirements(RobotContainer.m_feeder);
   }
 
   // Called when the command is initially scheduled.
@@ -23,17 +22,13 @@ public class AutoFeeder extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-<<<<<<< HEAD
     RobotContainer.m_feeder.runFeed(.65);
-=======
-    m_Feeder.runFeed(.5);
->>>>>>> fa7843ad33fbfbc090897a4e3ad9494d6f2b8bd9
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_Feeder.stopFeeder();
+    RobotContainer.m_feeder.stopFeeder();
   }
 
   // Returns true when the command should end.
