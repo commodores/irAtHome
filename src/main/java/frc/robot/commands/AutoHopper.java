@@ -21,7 +21,11 @@ public class AutoHopper extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+<<<<<<< HEAD
     RobotContainer.m_hopper.runAutoHopper(.60);
+=======
+    RobotContainer.m_hopper.runHopper(.15);
+>>>>>>> fa7843ad33fbfbc090897a4e3ad9494d6f2b8bd9
   }
 
   // Called once the command ends or is interrupted.

@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.RobotContainer;
@@ -27,10 +26,12 @@ public class AutoDrive extends CommandBase {
   private double yValue;
   private final RamseteCommand ramsete;
 
+  DriveTrain m_DriveTrain;
+
   /** Creates a new AutoDrive. */
   public AutoDrive(double getDistance) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.m_drivetrain);
+    addRequirements(m_DriveTrain);
     distance = getDistance;
     yValue = 0;
 
@@ -53,7 +54,6 @@ public class AutoDrive extends CommandBase {
 
       if(distance < 0){
         config.setReversed(true);
-        //yValue = yValue * -1;
       }
       
       // An example trajectory to follow.  All units in meters.
@@ -87,18 +87,11 @@ public class AutoDrive extends CommandBase {
         RobotContainer.m_drivetrain
       );
 
-      // Reset odometry to the starting pose of the trajectory.
-      //RobotContainer.m_drivetrain.zeroSensors();
-
-      // Run path following command, then stop at the end.
-      
-      //ramseteCommand.andThen(() -> RobotContainer.m_drivetrain.tankDriveVolts(0, 0));
-
   }
 
   @Override
     public void initialize() {
-        RobotContainer.m_drivetrain.zeroSensors();
+        m_DriveTrain.zeroSensors();
         ramsete.initialize();
     }
 

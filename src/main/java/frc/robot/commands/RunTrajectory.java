@@ -21,7 +21,6 @@ import frc.robot.Constants.DriveConstants;
 import java.util.List;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.trajectory.Trajectory;
 
 public class RunTrajectory extends CommandBase {
 private final RamseteCommand ramsete;
