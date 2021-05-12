@@ -54,7 +54,7 @@ public class VelocityShooter extends SubsystemBase {
         for (TalonFX shooterMotor : shooterMotors) {
             shooterMotor.configFactoryDefault();
             shooterMotor.setNeutralMode(NeutralMode.Coast);
-            shooterMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0));
+            shooterMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 0, 0));
             shooterMotor.configVoltageCompSaturation(10);
             shooterMotor.enableVoltageCompensation(true);
         }
@@ -68,7 +68,7 @@ public class VelocityShooter extends SubsystemBase {
         shooterMotors[0].config_IntegralZone(0, kI_Zone);
         shooterMotors[0].config_kD(0, kD);
         shooterMotors[0].configAllowableClosedloopError(0, kAllowableError);
-        shooterMotors[0].configClosedloopRamp(0.2);
+        shooterMotors[0].configClosedloopRamp(0);
         shooterMotors[1].configClosedloopRamp(0);
         shooterMotors[1].configOpenloopRamp(0);
     }

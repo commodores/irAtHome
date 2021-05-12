@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj.controller.PIDController;
 
 public class AutoDrive extends CommandBase {
@@ -26,12 +25,11 @@ public class AutoDrive extends CommandBase {
   private double yValue;
   private final RamseteCommand ramsete;
 
-  DriveTrain m_DriveTrain;
 
   /** Creates a new AutoDrive. */
   public AutoDrive(double getDistance) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_DriveTrain);
+    addRequirements(RobotContainer.m_drivetrain);
     distance = getDistance;
     yValue = 0;
 
@@ -91,7 +89,7 @@ public class AutoDrive extends CommandBase {
 
   @Override
     public void initialize() {
-        m_DriveTrain.zeroSensors();
+        RobotContainer.m_drivetrain.zeroSensors();
         ramsete.initialize();
     }
 

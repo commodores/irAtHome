@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -22,7 +23,10 @@ public class Feeder extends SubsystemBase {
 
     feederMotor.configFactoryDefault();
 
-    feederMotor.setNeutralMode(NeutralMode.Coast);
+    feederMotor.setNeutralMode(NeutralMode.Brake);
+    feederMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 20, 0, 0));
+    feederMotor.configVoltageCompSaturation(8);
+    feederMotor.enableVoltageCompensation(true);
 
     feederMotor.set(ControlMode.PercentOutput, 0.0);
 

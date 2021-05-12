@@ -112,7 +112,7 @@ public class RobotContainer {
     //Shooter
 
     new JoystickButton(m_driverController, Button.kX.value)
-      .whenPressed(() -> m_feeder.runFeed(.55))
+      .whenPressed(() -> m_feeder.runFeed(1))
       .whenReleased(() -> m_feeder.stopFeeder());
 
     new JoystickButton(m_driverController, Button.kY.value)
@@ -120,11 +120,16 @@ public class RobotContainer {
       .whenReleased(() -> m_feeder.stopFeeder());
 
     new JoystickButton(m_driverController, Button.kBumperLeft.value)
-      .whenPressed(() -> m_shooter.setRPM(2125))
+      .whenPressed(() -> m_shooter.setRPM(1975))
       .whenReleased(() -> m_shooter.setRPM(-1));
 
     new JoystickButton(m_driverController, Button.kBumperRight.value)
-      .whileHeld(new CalculatedShot());
+      .whenPressed(() -> m_shooter.setRPM(2030))
+      .whenReleased(() -> m_shooter.setRPM(-1));
+
+    new JoystickButton(m_driverController, Button.kStart.value)
+      .whenPressed(() -> m_shooter.setRPM(2260))
+      .whenReleased(() -> m_shooter.setRPM(-1));
 
     
     //Hood
