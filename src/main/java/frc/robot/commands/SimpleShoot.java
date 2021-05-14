@@ -17,17 +17,17 @@ public class SimpleShoot extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     super(
       new AlignToTarget(),
-      new AutoShoot().withTimeout(1),
+      new AutoShoot().withTimeout(3.5),
       new ParallelCommandGroup(
         new AutoShoot(),
-        new AutoFeeder()).withTimeout(2),
+        new AutoFeeder()).withTimeout(3),
       new StopFeederAuto().withTimeout(.1),
-      new AutoHopper().withTimeout(.5),
+      new AutoHopper().withTimeout(1),
       new StopHopperAuto().withTimeout(.1),
-      new AutoShoot().withTimeout(1.5),
+      new AutoShoot().withTimeout(2),
       new ParallelCommandGroup(
         new AutoShoot(),
-        new AutoFeeder()).withTimeout(2),
+        new AutoFeeder()).withTimeout(3),
       new StopShooterAuto().withTimeout(.1),
       new StopFeederAuto().withTimeout(.1),
       new AutoDrive(-1).withTimeout(3)

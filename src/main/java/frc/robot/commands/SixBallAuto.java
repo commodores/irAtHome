@@ -23,8 +23,8 @@ public class SixBallAuto extends SequentialCommandGroup {
 
     
     super(
-      new AlignToTarget().withTimeout(.5),
-      new AutoShoot().withTimeout(2),
+      new AlignToTarget(),
+      new AutoShoot().withTimeout(2.5),
       new ParallelCommandGroup(
         new AutoShoot(),
         new AutoHopper(),
@@ -33,20 +33,19 @@ public class SixBallAuto extends SequentialCommandGroup {
       new StopHopperAuto().withTimeout(.1),
       new ParallelCommandGroup(
         new AutoIntake(),
-        new RunTrajectory()).withTimeout(5.5),
+        new RunTrajectory()).withTimeout(6),
       new StopIntake().withTimeout(.1),
       new AutoTurn(118),
-      new AlignToTarget(),
-      new AutoShoot().withTimeout(1.5),
-      //new CalculatedShot().withTimeout(1.5),
+      new AlignToTarget()
+    /*  new AutoShot().withTimeout(1.5),
       new ParallelCommandGroup(
-        //new CalculatedShot(),
         new AutoHopper(),
-        new AutoShoot(),
+        new AutoShot(),
         new AutoFeeder()).withTimeout(2.5),
       new StopFeederAuto().withTimeout(.1),
       new StopShooterAuto(),
       new StopHopperAuto().withTimeout(.1)
+     */ 
     );
     
   }

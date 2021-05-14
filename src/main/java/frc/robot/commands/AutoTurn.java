@@ -26,6 +26,7 @@ public class AutoTurn extends CommandBase {
   @Override
   public void initialize() {
     RobotContainer.m_drivetrain.resetEncoders();
+    //RobotContainer.m_drivetrain.resetDirection();
     currentHeading = RobotContainer.m_drivetrain.getDirection();
   }
 
@@ -33,9 +34,9 @@ public class AutoTurn extends CommandBase {
   @Override
   public void execute() {
     if(degrees > 0){
-      RobotContainer.m_drivetrain.tankDriveVolts(6.0, -6.0);
+      RobotContainer.m_drivetrain.tankDriveVolts(4.0, -4.0);
     } else {
-      RobotContainer.m_drivetrain.tankDriveVolts(-6.0, 6.0);
+      RobotContainer.m_drivetrain.tankDriveVolts(-4.0, 4.0);
     }
   }
 

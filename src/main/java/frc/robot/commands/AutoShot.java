@@ -7,38 +7,23 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
-public class CalculatedShot extends CommandBase {
-
-
-  double distance, minOutput, maxOutput, minDistance, maxDistance, slope;
-
-  /** Creates a new CalculatedShot. */
-  public CalculatedShot() {
+public class AutoShot extends CommandBase {
+  /** Creates a new AutoShoot. */
+  public AutoShot() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.m_limelight);
     addRequirements(RobotContainer.m_shooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    distance = RobotContainer.m_limelight.getDistance();
-    minOutput = 1900;
-    maxOutput = 1950;
-    minDistance = 125;
-    maxDistance = 215;
-    slope = (maxOutput - minOutput) / (maxDistance - minDistance);
-    
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    double setSpeed = minOutput + Math.round(slope * (distance - minDistance));
-
-    RobotContainer.m_shooter.setRPM(setSpeed);
-
+    RobotContainer.m_shooter.setRPM(1975);
   }
 
   // Called once the command ends or is interrupted.

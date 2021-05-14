@@ -54,8 +54,8 @@ public class VelocityShooter extends SubsystemBase {
         for (TalonFX shooterMotor : shooterMotors) {
             shooterMotor.configFactoryDefault();
             shooterMotor.setNeutralMode(NeutralMode.Coast);
-            shooterMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 0, 0));
-            shooterMotor.configVoltageCompSaturation(10);
+            shooterMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0));
+            shooterMotor.configVoltageCompSaturation(11);
             shooterMotor.enableVoltageCompensation(true);
         }
         shooterMotors[0].setInverted(false);

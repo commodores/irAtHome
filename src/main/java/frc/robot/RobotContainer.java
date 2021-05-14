@@ -4,23 +4,13 @@
 
 package frc.robot;
 
-import java.util.List;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
-import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
-import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
-import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AlignToTarget;
 import frc.robot.commands.CalculatedShot;
@@ -61,33 +51,6 @@ public class RobotContainer {
   public static final XboxController m_driver2Controller = new XboxController(OIConstants.kDriverController2Port);
 
   private final SendableChooser<String> m_autoChooser = new SendableChooser<>();
-
-  // Create a voltage constraint to ensure we don't accelerate too fast
-  DifferentialDriveVoltageConstraint autoVoltageConstraint =
-  new DifferentialDriveVoltageConstraint(
-      new SimpleMotorFeedforward(DriveConstants.ksVolts,
-                                DriveConstants.kvVoltSecondsPerMeter,
-                                DriveConstants.kaVoltSecondsSquaredPerMeter),
-      DriveConstants.kDriveKinematics,
-      10);
-  // Create config for trajectory
-  TrajectoryConfig config =
-    new TrajectoryConfig(DriveConstants.kMaxSpeedMetersPerSecond,
-                        DriveConstants.kMaxAccelerationMetersPerSecondSquared)
-        // Add kinematics to ensure max speed is actually obeyed
-        .setKinematics(DriveConstants.kDriveKinematics)
-        // Apply the voltage constraint
-        .addConstraint(autoVoltageConstraint);
-
-  // Create config for trajectory
-  TrajectoryConfig configBackwards =
-    new TrajectoryConfig(DriveConstants.kMaxSpeedMetersPerSecond,
-                        DriveConstants.kMaxAccelerationMetersPerSecondSquared)
-        // Add kinematics to ensure max speed is actually obeyed
-        .setKinematics(DriveConstants.kDriveKinematics)
-        .setReversed(true)
-        // Apply the voltage constraint
-        .addConstraint(autoVoltageConstraint);
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -112,7 +75,7 @@ public class RobotContainer {
     //Shooter
 
     new JoystickButton(m_driverController, Button.kX.value)
-      .whenPressed(() -> m_feeder.runFeed(1))
+      .whenPressed(() -> m_feeder.runFeed(.5))
       .whenReleased(() -> m_feeder.stopFeeder());
 
     new JoystickButton(m_driverController, Button.kY.value)
@@ -128,9 +91,13 @@ public class RobotContainer {
       .whenReleased(() -> m_shooter.setRPM(-1));
 
     new JoystickButton(m_driverController, Button.kStart.value)
-      .whenPressed(() -> m_shooter.setRPM(2260))
-      .whenReleased(() -> m_shooter.setRPM(-1));
+      .whileHeld(new CalculatedShot());
 
+    new JoystickButton(m_driver2Controller, Button.kBack.value)
+      .whenPressed(()-> m_shooter.setRPM(1000));
+
+    new JoystickButton(m_driver2Controller, Button.kStart.value)
+      .whenPressed(() -> m_shooter.setRPM(-1));
     
     //Hood
     
@@ -183,7 +150,8 @@ public class RobotContainer {
 
   private void initializeStartup()
   {
-
+    
+    //SmartDashboard.putData("Ramp it up!!", new AutoShoot());
     m_drivetrain.setDefaultCommand(
       new DriveManual(m_drivetrain));
   }
@@ -207,25 +175,7 @@ public class RobotContainer {
     
   }  
   
-  public Trajectory getSixBallTrench(){
-    Trajectory sixBallTrench = TrajectoryGenerator.generateTrajectory(
-      // Start
-      new Pose2d(0, 0, new Rotation2d(0)),
-      List.of(
-          new Translation2d(1, -.75),
-          new Translation2d(0, -1.75)
-          //new Translation2d(Units.feetToMeters(-5), Units.feetToMeters(-2)),
-          
-
-      ),
-      new Pose2d(-4.5, -1.75, new Rotation2d(0)),
-      config
-    );
-    return sixBallTrench;
-  }
-
-  
-  
+    
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
