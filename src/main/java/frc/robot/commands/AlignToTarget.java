@@ -9,18 +9,18 @@ import frc.robot.RobotContainer;
 
 public class AlignToTarget extends CommandBase {
   double Kp = 0.009;
-  double min_command = 1.1;
+  double min_command = 1;
 
   public AlignToTarget() {
         // Use requires() here to declare subsystem dependencies
         addRequirements(RobotContainer.m_drivetrain);
         addRequirements(RobotContainer.m_limelight);
-        addRequirements(RobotContainer.m_hopper);
     }
 
     // Called just before this Command runs the first time
     @Override
     public void initialize() {
+      RobotContainer.m_drivetrain.tankDriveVolts(0.0, 0.0);
     }
 
     // Called repeatedly when this Command is scheduled to run

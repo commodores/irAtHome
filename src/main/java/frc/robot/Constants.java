@@ -51,12 +51,12 @@ public final class Constants {
         public static final double kRamseteB = 2;
         public static final double kRamseteZeta = 0.7;
 
-        public static final double kMaxSpeedMetersPerSecond = 2; //3 Slalom
+        public static final double kMaxSpeedMetersPerSecond = 1.75; //3 Slalom
         public static final double kMaxAccelerationMetersPerSecondSquared = 1.75; //2 Slalom 
 
         public static final boolean kGyroReversed = true;
 
-        public static StatorCurrentLimitConfiguration TALON_CURRENT_LIMIT = new StatorCurrentLimitConfiguration(true, 38.5, 38.5, 0.25);
+        public static StatorCurrentLimitConfiguration TALON_CURRENT_LIMIT = new StatorCurrentLimitConfiguration(true, 36.5, 36.5, 0.25);
         
 
     }

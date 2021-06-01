@@ -63,7 +63,7 @@ public Trajectory getSixBallTrench(){
             
 
         ),
-        new Pose2d(-3.5, -1.5, new Rotation2d(Math.PI )),
+        new Pose2d(-3.6, -1.5, new Rotation2d(Math.PI )),
         config
     );
     return sixBallTrench;

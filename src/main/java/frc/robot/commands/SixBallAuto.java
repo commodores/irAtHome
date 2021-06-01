@@ -31,13 +31,15 @@ public class SixBallAuto extends SequentialCommandGroup {
         new AutoFeeder()).withTimeout(1.5),
       new StopFeederAuto().withTimeout(.1),
       new StopHopperAuto().withTimeout(.1),
+      new StopShooterAuto().withTimeout(.1),
       new ParallelCommandGroup(
         new AutoIntake(),
-        new RunTrajectory()).withTimeout(6),
+        new RunTrajectory()),
       new StopIntake().withTimeout(.1),
-      new AutoTurn(118),
-      new AlignToTarget()
-    /*  new AutoShot().withTimeout(1.5),
+      new AutoTurn(130),
+      new AutoDrive(2).withTimeout(1),
+      new AlignToTarget(),
+      new AutoShot().withTimeout(1.5),
       new ParallelCommandGroup(
         new AutoHopper(),
         new AutoShot(),
@@ -45,7 +47,6 @@ public class SixBallAuto extends SequentialCommandGroup {
       new StopFeederAuto().withTimeout(.1),
       new StopShooterAuto(),
       new StopHopperAuto().withTimeout(.1)
-     */ 
     );
     
   }

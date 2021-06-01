@@ -23,8 +23,8 @@ public class CalculatedShot extends CommandBase {
   @Override
   public void initialize() {
     distance = RobotContainer.m_limelight.getDistance();
-    minOutput = 1900;
-    maxOutput = 1950;
+    minOutput = 1850;
+    maxOutput = 1900;
     minDistance = 125;
     maxDistance = 215;
     slope = (maxOutput - minOutput) / (maxDistance - minDistance);
